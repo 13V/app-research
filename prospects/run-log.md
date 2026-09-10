@@ -289,3 +289,72 @@ bigpond and outlook addresses, and per-project compliance paperwork with no syst
 4. **Two rows sit outside the ICP and say so in their own `score_reasoning`:** Floors 2 Go is a
    retail showroom that also installs, and JS Form describes itself as partly a labour-hire
    company (an explicit exclude category). Both are flagged rather than silently kept or dropped.
+
+---
+
+# ADDENDUM — repositioned for a bespoke build practice
+
+**Context change:** the business model is not a SaaS product sold to many trades. It is a
+**custom app build, sold one client at a time, at roughly $20k one-off**. One app has been
+delivered (for a tiler) covering quoting/estimating/takeoff, scheduling and job tracking,
+compliance and site records, and invoicing/variations/admin. Next client can be any trade.
+
+**What this changes about the target profile.** The original ICP looked for businesses with
+*no* software. For a $20k one-off that is the wrong filter, because a business with no software
+and no acute pain will simply buy ServiceM8 for about $100 a month and you lose the deal.
+
+The qualifying question becomes: **is there a specific compliance artefact or workflow that
+off-the-shelf software genuinely cannot produce?** That is the only honest reason to pay $20k
+instead of $1,200 a year. Everything else is a feature argument you will lose on price.
+
+The revised buyer profile:
+1. **Owner-led** — one head makes the call, no procurement layer
+2. **Enough cash that $20k reads as a quarter of an admin salary**, not a bet
+3. **A workflow artefact generic SaaS does not produce** — ITP packs, fire asset registers with
+   statutory test dates, scaffold handover certificates, asbestos registers
+4. **A named human currently absorbing the admin manually**
+5. **No prior software investment to defend**
+
+**Output:** `prospects/next-client-shortlist.csv` — six ranked targets with contact name, the
+bespoke justification, the opening line and the risk on each.
+
+## Ranking
+
+| # | Business | Why |
+|---|---|---|
+| 1 | **Adelaide Partitions & Ceilings** | Patricia (Co-Director) personally runs administration, accounts, payroll, compliance and project support across $100M of delivered packages. bigpond.com email — no software to displace. Two named directors, no gatekeeper. |
+| 2 | **Compliant Fire Services** | 11-50 employees confirmed, 35+ vehicles, and they **pay an answering service to do after-hours dispatch**. Fire asset registers with AS 1851 test intervals are a genuine build. Paul Ware named. |
+| 3 | **Kolen Carpentry** | Item-level ITP records per doorset against a hardware schedule, across FMC and Mount Barker Hospital. No off-the-shelf product does this. Damien Kolen named. **Size unverified — qualify first.** |
+| 4 | **Master Linings** | The referral play, not the build. Sharon Curyer (former AWCI CEO 2015-19) and Daryl Curyer (former AWCI CEO 2008-15, current national technical committee) are both in the business. Winning them opens the national AWCI membership. |
+| 5 | **ICS Scaffolding** | Per-scaffold AS 1576 certification plus JSA/SWMS per job, produced manually. Scaffold stock allocation is chronically underserved by generic apps. Phone-only contact. |
+| 6 | **Elec Mech Services** | Best reachability on the list — Mike Jeffery and Mark Vella bought the business in 2006 and still run it. Weakest bespoke justification, so lead on 20 years of unsearchable job history. |
+
+## Anti-targets — do not spend time on these at $20k
+
+| Business | Why not |
+|---|---|
+| **Ballestrin Construction Services** | 51-200 staff and already runs "a centralised Data Management System that can be accessed by all staff". Enterprise procurement, long cycle, incumbent to displace. |
+| **DCM Services** | Triple ISO with in-house Revit and engineering teams. Sophisticated enough to build internally or buy enterprise. |
+| **Olde Style Roofing** | On ServiceM8 and only ~10 staff. $20k against a ~$100/month incumbent is a hard sell at that size. |
+| **Universal Waterproofing** | Already advertises "cutting edge live job tracking & scheduling software". |
+| **Floortek** | Commercial-only and well run, but no manual-process evidence published — nothing to sell against yet. |
+
+## New verification done for this addendum
+
+- **Compliant Fire Services** — LinkedIn company page confirms **"11-50 employees"**, founded 2002,
+  HQ 11 Woodlands Tce Edwardstown SA 5039, 8 employees discoverable, **Paul Ware** named. This
+  resolves the earlier open question about whether a 35+ vehicle fleet put them over the 50 ceiling.
+  It does not.
+- **Kolen Carpentry** — company page names **Damien Kolen**, Nicholas Prettejohn and Bhuvan Poojar.
+  Only 5 employees discoverable, which is LinkedIn profile count rather than headcount, but it is
+  a size caution worth carrying into the first call.
+- **Synergy Specialists** — a search surfaced "Scott Bungey, Owner/Director of Synergy Concreting".
+  That is a **different company**. No decision maker confirmed for Synergy Specialists; left blank.
+
+## Pricing note
+
+The $20k one-off is a direct counter to per-seat SaaS, and that framing matters more than any
+feature. A 25-person business on a mid-tier platform pays a recurring per-seat fee indefinitely
+and owns nothing at the end. Frame $20k against the cost of the admin hire they are about to
+make, or against several years of subscription they will never stop paying — not against the
+monthly price of ServiceM8, which is a comparison you lose.
