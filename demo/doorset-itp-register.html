@@ -1,312 +1,395 @@
-<title>Doorset ITP Register</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap">
+<title>Doorset Checks</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap">
 <style>
 :root{
-  --paper:#FCFCFB; --ink:#1A1D20; --ink-2:#5C636A; --ink-3:#9AA1A8;
-  --rule:#E4E4E0; --sig:#2F6B4F; --fire:#A8322A;
-  --sans:"Source Sans 3",system-ui,-apple-system,Segoe UI,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --bg:#EDEEF0; --card:#FFFFFF; --sub:#F5F6F7;
+  --ink:#15181B; --ink-2:#5D646B; --ink-3:#9198A0;
+  --line:#E2E4E7; --line-2:#CFD3D8;
+  --go:#0E7C4A; --go-soft:#E6F4ED;
+  --fire:#C0392B; --fire-soft:#FBEAE8;
+  --amber:#B7791F;
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --dis:"Archivo",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --paper:#101315; --ink:#E9EAE7; --ink-2:#A6ADB3; --ink-3:#767D84;
-    --rule:#282C2F; --sig:#66AB86; --fire:#D9736A;
+    --bg:#0C0E10; --card:#17191C; --sub:#1F2226;
+    --ink:#F0F1F2; --ink-2:#A6ADB4; --ink-3:#767D85;
+    --line:#26292D; --line-2:#3A3F45;
+    --go:#3FB57C; --go-soft:#12291F; --fire:#E2695C; --fire-soft:#2C1A18; --amber:#D9A441;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#101315; --ink:#E9EAE7; --ink-2:#A6ADB3; --ink-3:#767D84;
-  --rule:#282C2F; --sig:#66AB86; --fire:#D9736A;
+  --bg:#0C0E10; --card:#17191C; --sub:#1F2226;
+  --ink:#F0F1F2; --ink-2:#A6ADB4; --ink-3:#767D85;
+  --line:#26292D; --line-2:#3A3F45;
+  --go:#3FB57C; --go-soft:#12291F; --fire:#E2695C; --fire-soft:#2C1A18; --amber:#D9A441;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.page{max-width:760px;margin:0 auto;padding-inline:22px;padding-block:0 80px}
-button{font:inherit;cursor:pointer}
-:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
-.mono{font-family:var(--mono)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--go);outline-offset:2px}
 
-.origin{max-width:760px;margin:0 auto;padding:12px 22px 0;font-size:14px;color:var(--ink-3)}
+/* ── page: explainer + device ── */
+.stage{max-width:1060px;margin:0 auto;padding:32px 22px 64px;
+  display:grid;grid-template-columns:1fr 390px;gap:56px;align-items:start}
+.tell .kicker{font-family:var(--dis);font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3)}
+.tell h1{font-family:var(--dis);font-size:34px;font-weight:700;letter-spacing:-.025em;
+  line-height:1.12;margin:10px 0 0;text-wrap:balance}
+.tell .lede{font-size:17px;color:var(--ink-2);margin:14px 0 0;max-width:44ch;line-height:1.6}
+.tell ol{margin:26px 0 0;padding:0;list-style:none;counter-reset:s;max-width:44ch}
+.tell ol li{counter-increment:s;position:relative;padding:0 0 14px 34px;font-size:15.5px;
+  color:var(--ink-2);line-height:1.5}
+.tell ol li::before{content:counter(s);position:absolute;left:0;top:1px;width:22px;height:22px;
+  border-radius:50%;background:var(--ink);color:var(--bg);font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;font-family:var(--dis)}
+.tell ol li b{color:var(--ink);font-weight:600}
+.tell .sig{margin:26px 0 0;padding:15px 17px;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;font-size:14.5px;color:var(--ink-2);line-height:1.55;max-width:44ch}
+.tell .sig b{color:var(--ink)}
 
-header{padding-block:26px 8px}
-h1{margin:0;font-size:25px;font-weight:600;letter-spacing:-.02em}
-.job{margin:5px 0 0;font-size:15px;color:var(--ink-2)}
-.state{margin:20px 0 0;font-size:17px;line-height:1.55}
-.state b{font-weight:600}
-.state .w{color:var(--fire)}
+/* ── device ── */
+.device{position:sticky;top:32px;justify-self:center}
+.bezel{width:390px;height:800px;background:#0A0C0D;border-radius:44px;padding:11px;
+  box-shadow:0 1px 3px rgba(0,0,0,.28),0 22px 50px -12px rgba(0,0,0,.42)}
+.screen{width:100%;height:100%;background:var(--bg);border-radius:34px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column}
+.caption{text-align:center;font-size:13px;color:var(--ink-3);margin-top:14px}
 
-.filters{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;
-  margin-top:26px;padding-bottom:9px;border-bottom:1px solid var(--rule);font-size:15px}
-.filters button{background:none;border:0;padding:0;color:var(--ink-2);
-  border-bottom:1.5px solid transparent}
-.filters button:hover{color:var(--ink)}
-.filters button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
-.filters .sp{flex:1}
-.filters label{color:var(--ink-3);font-size:14px}
-.filters input{font-family:var(--mono);font-size:15px;width:46px;padding:0 3px;text-transform:uppercase;
-  border:0;border-bottom:1px solid var(--ink-3);background:none;color:var(--ink);text-align:center}
+/* status bar */
+.statusbar{flex:none;height:46px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 26px 0 30px;font-size:14px;font-weight:600;background:var(--card);color:var(--ink)}
+.statusbar .dots{display:flex;gap:3px;align-items:center}
+.statusbar .dots i{width:4px;border-radius:1px;background:var(--ink);display:block}
+.statusbar .batt{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;
+  padding:1.4px;display:flex}
+.statusbar .batt span{flex:1;background:var(--ink);border-radius:1px}
 
-/* ── the register: four columns, nothing else ── */
-.door{display:grid;grid-template-columns:auto 1fr auto;gap:0 18px;align-items:center;
-  padding:14px 2px;border-bottom:1px solid var(--rule);cursor:pointer;text-align:left;
-  width:100%;background:none;border-left:0;border-right:0;border-top:0;color:inherit}
-.door:hover{background:var(--rule)}
-.door .ref{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:-.02em}
-.door .loc{font-size:16px;min-width:0}
-.door .loc em{font-style:normal;font-family:var(--mono);font-size:13px;color:var(--fire);
-  margin-left:9px;white-space:nowrap}
-.door .st{display:flex;align-items:center;gap:11px;justify-self:end}
-.trk{display:flex;gap:3px}
-.trk i{width:14px;height:16px;display:block;background:var(--sig);border-radius:1px}
-.trk i.open{background:var(--rule)}
-.trk i.na{background:none;box-shadow:inset 0 0 0 1px var(--rule)}
-.door .at{font-size:14px;color:var(--ink-2);width:98px;text-align:right;white-space:nowrap}
-.door .at.done{color:var(--sig);font-weight:600}
+/* nav bar */
+.nav{flex:none;background:var(--card);border-bottom:1px solid var(--line);
+  padding:6px 14px 12px;display:flex;align-items:center;gap:6px;min-height:52px}
+.nav .back{display:flex;align-items:center;gap:3px;color:var(--go);font-size:16px;
+  font-weight:500;padding:6px 6px 6px 2px;margin-left:-4px}
+.nav .ttl{flex:1;min-width:0}
+.nav .ttl b{display:block;font-size:17px;font-weight:600;letter-spacing:-.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .ttl span{display:block;font-size:13px;color:var(--ink-2);margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav .sync{font-size:11.5px;color:var(--ink-3);display:flex;align-items:center;gap:5px;
+  white-space:nowrap}
+.nav .sync i{width:7px;height:7px;border-radius:50%;background:var(--go);display:block}
 
-/* ── one doorset opened ── */
-.itp{padding:6px 2px 26px;border-bottom:1px solid var(--rule)}
-.spec{font-size:14px;color:var(--ink-2);padding:4px 0 16px}
-.spec span{display:inline-block;margin-right:20px}
-.spec b{font-family:var(--mono);font-weight:500;color:var(--ink)}
-.pt{display:grid;grid-template-columns:1fr auto;gap:14px 20px;align-items:start;
-  padding:13px 0;border-top:1px solid var(--rule)}
-.pt .h{font-size:16px;font-weight:600;line-height:1.4}
-.pt .h u{text-decoration:none;font-family:var(--mono);font-size:13px;font-weight:500;
-  color:var(--ink-3);margin-right:9px}
-.pt p{margin:3px 0 0;font-size:15px;color:var(--ink-2);line-height:1.5;max-width:56ch}
-.pt.signed .h,.pt.signed p{color:var(--ink-2)}
-.pt.signed .h{font-weight:400}
-.pt.skip{opacity:.45}
-.by{font-family:var(--mono);font-size:14px;color:var(--sig);
-  display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
-.by u{text-decoration:none;color:var(--ink-3)}
-.undo{background:none;border:0;padding:0;font-size:13px;color:var(--ink-3);text-decoration:underline}
-.undo:hover{color:var(--fire)}
-.sign{background:none;border:1px solid var(--ink);padding:5px 15px;font-size:14px;
-  font-weight:600;color:var(--ink);white-space:nowrap;border-radius:2px}
-.sign:hover{background:var(--ink);color:var(--paper)}
-.na-note{font-size:14px;color:var(--ink-3);white-space:nowrap}
+/* scrolling body */
+.body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:22px}
+.body::-webkit-scrollbar{width:0}
 
-footer{margin-top:34px;font-size:15px;color:var(--ink-2);line-height:1.65}
-footer b{color:var(--ink);font-weight:600}
-footer .more{margin-top:16px}
-footer summary{cursor:pointer;font-size:15px;color:var(--ink-2);
-  text-decoration:underline;text-underline-offset:3px}
-footer summary::-webkit-details-marker{display:none}
-footer textarea{width:100%;min-height:84px;font-family:var(--mono);font-size:13px;line-height:1.6;
-  margin-top:12px;padding:10px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
-  resize:vertical;border-radius:2px}
-footer .row{display:flex;gap:14px;align-items:center;margin-top:10px;flex-wrap:wrap}
-footer .msg{font-family:var(--mono);font-size:13px;color:var(--sig)}
-footer .msg.bad{color:var(--fire)}
-.pk{background:none;border:1px solid var(--ink);padding:6px 16px;font-size:14px;font-weight:600;
-  color:var(--ink);border-radius:2px}
-.pk:hover{background:var(--ink);color:var(--paper)}
+/* segmented */
+.seg{display:flex;gap:2px;padding:10px 14px 4px;background:var(--card)}
+.seg button{flex:1;padding:8px 0;font-size:14px;font-weight:600;border-radius:8px;
+  color:var(--ink-2);background:var(--sub)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
 
-@media (max-width:560px){
-  .door{grid-template-columns:auto 1fr;gap:2px 14px}
-  .door .st{grid-column:1/-1;justify-self:start;margin-top:7px}
-  .pt{grid-template-columns:1fr}
+.groupcap{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);padding:20px 20px 8px}
+
+/* door rows */
+.rows{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.row{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:14px 16px;
+  border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row:active{background:var(--sub)}
+.ring{flex:none;width:42px;height:42px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;letter-spacing:-.03em}
+.row .txt{flex:1;min-width:0}
+.row .txt b{display:block;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.row .txt span{display:block;font-size:13.5px;color:var(--ink-2);margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .txt span.wait{color:var(--amber);font-weight:500}
+.row .txt span.ok{color:var(--go);font-weight:600}
+.pill{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;
+  border-radius:5px;background:var(--fire-soft);color:var(--fire)}
+.chev{flex:none;color:var(--ink-3);font-size:20px;line-height:1}
+
+/* door spec */
+.spec{background:var(--card);border-bottom:1px solid var(--line);padding:14px 16px;
+  display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.spec div span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--ink-3)}
+.spec div b{display:block;font-size:14.5px;font-weight:600;margin-top:2px}
+
+/* check rows */
+.chk{display:flex;align-items:flex-start;gap:13px;width:100%;text-align:left;padding:14px 16px;
+  border-bottom:1px solid var(--line);background:var(--card)}
+.chk:last-child{border-bottom:0}
+.chk:active{background:var(--sub)}
+.box{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line-2);
+  margin-top:1px;display:flex;align-items:center;justify-content:center}
+.chk.on .box{background:var(--go);border-color:var(--go)}
+.chk.on .box::after{content:"";width:11px;height:6px;border-left:2.5px solid #fff;
+  border-bottom:2.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.chk .t{flex:1;min-width:0}
+.chk .t b{display:block;font-size:15.5px;font-weight:600;line-height:1.35}
+.chk.on .t b{font-weight:500;color:var(--ink-2)}
+.chk .t span{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.chk .t span.done{color:var(--go)}
+.chk.na{opacity:.45}
+.chk .go{flex:none;color:var(--ink-3);font-size:20px;line-height:1;margin-top:3px}
+
+/* check detail */
+.det{padding:18px 16px 0}
+.det .code{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--go)}
+.det h2{margin:6px 0 0;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.25}
+.det p{margin:10px 0 0;font-size:15.5px;color:var(--ink-2);line-height:1.55}
+.shot{margin:18px 0 0}
+.shot .cap{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:8px}
+.shots{display:flex;gap:9px;flex-wrap:wrap}
+.thumb{width:76px;height:76px;border-radius:10px;background:var(--sub);border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  font-size:9.5px;color:var(--ink-3);text-align:center;padding:4px;overflow:hidden}
+.thumb.add{border-style:dashed;border-color:var(--line-2);color:var(--go);font-weight:600;font-size:11px}
+.thumb .lens{width:22px;height:22px;border-radius:50%;border:2px solid currentColor}
+.thumb.shot-on{background:linear-gradient(150deg,#8E9AA6,#5C6773 60%,#454E58);color:#fff;
+  border-color:transparent;justify-content:flex-end;align-items:flex-start;padding:6px}
+.thumb.shot-on em{font-style:normal;font-size:9px;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+
+/* bottom action */
+.foot{flex:none;background:var(--card);border-top:1px solid var(--line);padding:12px 16px 20px;
+  display:flex;flex-direction:column;gap:9px}
+.big{width:100%;padding:15px;border-radius:12px;background:var(--go);color:#fff;
+  font-size:17px;font-weight:700;letter-spacing:-.01em}
+.big:active{filter:brightness(.92)}
+.big.ghost{background:var(--sub);color:var(--ink)}
+.big.grey{background:var(--sub);color:var(--ink-3)}
+.who{text-align:center;font-size:12.5px;color:var(--ink-3)}
+
+.done-note{background:var(--go-soft);border-bottom:1px solid var(--line);padding:12px 16px;
+  font-size:14px;color:var(--go);font-weight:600;display:flex;align-items:center;gap:9px}
+
+@media (max-width:900px){
+  .stage{grid-template-columns:1fr;gap:34px;padding:0 0 48px}
+  .device{position:static;order:-1;justify-self:stretch}
+  .bezel{width:100%;height:auto;min-height:100svh;border-radius:0;padding:0;box-shadow:none}
+  .screen{border-radius:0;min-height:100svh}
+  .caption{display:none}
+  .tell{padding:0 22px}
 }
-@media print{
-  .origin,.filters,.sign,.undo,footer{display:none!important}
-  body{background:#fff;color:#000;font-size:10.5pt}
-  .page{max-width:none;padding:0}
-  .itp,.door{break-inside:avoid}
-}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
-<p class="origin"><b>Prototype</b> — built by [your studio] for Kolen Carpentry.
-Fictional job data.</p>
-
-<div class="page">
-  <header>
-    <h1>Doorset ITP Register</h1>
-    <p class="job">Ward 1A Refurbishment · CS Construction · ITP-DR-01 rev C</p>
-    <p class="state" id="state"></p>
-  </header>
-
-  <div class="filters">
-    <button id="fAll" aria-pressed="true">All 12</button>
-    <button id="fFire" aria-pressed="false">Fire-rated</button>
-    <button id="fOpen" aria-pressed="false">Outstanding</button>
-    <span class="sp"></span>
-    <label for="initials">Signing as</label>
-    <input id="initials" value="DK" maxlength="4" aria-label="Your initials">
+<div class="stage">
+  <div class="tell">
+    <div class="kicker">Prototype for Kolen Carpentry</div>
+    <h1>The carpenter's phone, not the office spreadsheet.</h1>
+    <p class="lede">Every doorset in a hospital gets seven checks before handover, and someone has
+      to evidence all of them. This is what that looks like for the person actually holding the drill.</p>
+    <ol>
+      <li>Open the app on site — <b>today's doors, and what each one still needs</b>.</li>
+      <li>Tap a door. The seven checks, in the order you'd do them.</li>
+      <li>Tap a check, <b>photograph it, sign it off</b>. Takes about ten seconds.</li>
+      <li>The office sees it immediately. The handover pack builds itself.</li>
+    </ol>
+    <p class="sig"><b>Try it.</b> Tap through a door and sign a check off — it behaves like the
+      real thing. Sample job data; nothing here is Kolen's project information.
+      <br><br>Built by <b>[your studio]</b>. If the seven checks are wrong for how you actually
+      work, that's the useful part — tell us where.</p>
   </div>
 
-  <div id="list"></div>
-
-  <footer>
-    <b>What this is.</b> A working slice, not a finished product — the register, the hold points
-    and the handover pack, on sample data. Sign-offs stay in this browser. The real build pulls
-    the schedule from the door register, captures photos against each hold point, and issues the
-    signed pack as a PDF.
-    <br><br>
-    <b>If these hold points are wrong for how Kolen works, that's the useful part. Tell us where.</b>
-    <div class="row"><button class="pk" id="printPack">Print handover pack</button></div>
-    <details class="more">
-      <summary>Load a different hardware schedule</summary>
-      <textarea id="csv" spellcheck="false" aria-label="Hardware schedule CSV"></textarea>
-      <div class="row">
-        <button class="pk" id="doImport">Rebuild register</button>
-        <span class="msg" id="msg">CSV columns: ref, location, leaf, frame, frl, hw, tag</span>
+  <div class="device">
+    <div class="bezel"><div class="screen">
+      <div class="statusbar">
+        <span>7:42</span>
+        <span style="display:flex;gap:7px;align-items:center">
+          <span class="dots"><i style="height:5px"></i><i style="height:7px"></i><i style="height:9px"></i><i style="height:11px"></i></span>
+          <span class="batt"><span style="flex:0 0 72%"></span></span>
+        </span>
       </div>
-    </details>
-  </footer>
+      <div class="nav" id="nav"></div>
+      <div class="body" id="body"></div>
+      <div id="foot"></div>
+    </div></div>
+    <p class="caption">Tap through it — it works.</p>
+  </div>
 </div>
 
 <script>
-const SAMPLE=`ref,location,leaf,frame,frl,hw,tag
-D-1.014,Ward 1A corridor north,2040x920x45 solid core,Steel painted,-/60/30,HW-04,FD-1142
-D-1.015,Ward 1A corridor south,2040x920x45 solid core,Steel painted,-/60/30,HW-04,FD-1143
-D-1.021,Treatment room 1,2040x870x40 solid core,Timber MDF,-,HW-11,
-D-1.022,Treatment room 2,2040x870x40 solid core,Timber MDF,-,HW-11,
-D-1.030,Clean utility,2040x920x45 solid core,Steel painted,-/60/30,HW-06,FD-1147
-D-1.031,Dirty utility,2040x920x45 solid core,Steel painted,-/60/30,HW-06,FD-1148
-D-1.040,Staff station store,2040x820x40 solid core,Timber MDF,-,HW-02,
-D-1.055,Fire stair 2 lobby,2040x1020x45 solid core,Steel painted,-/120/30,HW-09,FD-1151
-D-1.056,Fire stair 2 landing,2040x1020x45 solid core,Steel painted,-/120/30,HW-09,FD-1152
-D-1.061,Plant room 1.6,2100x920x45 solid core,Steel painted,-/60/30,HW-07,FD-1155
-D-1.070,Bed bay 4 ensuite,2040x870x40 solid core,Timber MDF,-,HW-13,
-D-1.071,Bed bay 5 ensuite,2040x870x40 solid core,Timber MDF,-,HW-13,`;
-
-const HP=[
- {c:'H1',s:'delivery check',n:'Delivery conformance',
-  d:'Leaf and frame checked against the schedule. Certification labels present and legible.'},
- {c:'H2',s:'frame',n:'Frame set out and fixed',
-  d:'Frame plumb and square within tolerance. Fixings to manufacturer specification.'},
- {c:'W1',s:'leaf hang',n:'Leaf hung, clearances recorded',
-  d:'Perimeter and threshold gaps measured, within AS 1905.1 tolerance for the rating.'},
- {c:'H3',s:'hardware',n:'Hardware installed to set',
-  d:'All items fitted per the hardware set. Fire-rated components certified for the assembly.'},
- {c:'W2',s:'function test',n:'Function test',
-  d:'Self-closes from 15 degrees and latches without manual assistance. Seals continuous.'},
- {c:'H4',s:'fire tag',n:'Fire tag affixed and registered',fire:true,
-  d:'Tag number recorded against the door and entered in the fire door register per AS 1905.1.'},
- {c:'H5',s:'handover',n:'Final QA and handover',
-  d:'Defects closed out. Doorset released for the handover pack.'}
+const DOORS=[
+ {ref:'D-1.014',loc:'Ward 1A corridor north',leaf:'2040×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-04',tag:'FD-1142'},
+ {ref:'D-1.015',loc:'Ward 1A corridor south',leaf:'2040×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-04',tag:'FD-1143'},
+ {ref:'D-1.021',loc:'Treatment room 1',leaf:'2040×870×40 solid core',frame:'Timber, MDF',frl:'',hw:'HW-11',tag:''},
+ {ref:'D-1.022',loc:'Treatment room 2',leaf:'2040×870×40 solid core',frame:'Timber, MDF',frl:'',hw:'HW-11',tag:''},
+ {ref:'D-1.030',loc:'Clean utility',leaf:'2040×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-06',tag:'FD-1147'},
+ {ref:'D-1.031',loc:'Dirty utility',leaf:'2040×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-06',tag:'FD-1148'},
+ {ref:'D-1.040',loc:'Staff station store',leaf:'2040×820×40 solid core',frame:'Timber, MDF',frl:'',hw:'HW-02',tag:''},
+ {ref:'D-1.055',loc:'Fire stair 2 lobby',leaf:'2040×1020×45 solid core',frame:'Steel, painted',frl:'-/120/30',hw:'HW-09',tag:'FD-1151'},
+ {ref:'D-1.061',loc:'Plant room 1.6',leaf:'2100×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-07',tag:'FD-1155'},
+ {ref:'D-1.070',loc:'Bed bay 4 ensuite',leaf:'2040×870×40 solid core',frame:'Timber, MDF',frl:'',hw:'HW-13',tag:''}
+];
+const CHECKS=[
+ {c:'1',s:'Delivery check',n:'Right door turned up',
+  d:'Check the leaf and frame against the schedule. Certification labels present and readable.'},
+ {c:'2',s:'Frame',n:'Frame straight and fixed',
+  d:'Frame plumb and square. Fixings the right type and spacing for this frame.'},
+ {c:'3',s:'Leaf hung',n:'Gaps within tolerance',
+  d:'Measure the gap around the leaf and at the threshold. Must sit inside AS 1905.1 tolerance for the rating.'},
+ {c:'4',s:'Hardware',n:'Hardware on and correct',
+  d:'Everything fitted per the hardware set. On a fire door, every component has to be certified for the assembly.'},
+ {c:'5',s:'Function',n:'Closes and latches by itself',
+  d:'Open it 15 degrees and let go. It must swing shut and latch with no help. Seals continuous.'},
+ {c:'6',s:'Fire tag',n:'Fire tag on and logged',fire:true,
+  d:'Fix the tag, then record the tag number against this door in the fire door register.'},
+ {c:'7',s:'Handover',n:'Final check, no defects',
+  d:'Walk it one more time. Anything outstanding gets raised now, not at handover.'}
 ];
 
-const KEY='doorset-itp-v3';
-let doors=[],signs={},filter='all',open=null;
+const KEY='kolen-worker-v1';
+let st={}, view={s:'list',door:null,check:null}, tab='todo';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fire=d=>d.frl&&d.frl!=='-';
-const has=(h,d)=>!h.fire||fire(d);
-const pts=d=>HP.filter(h=>has(h,d));
-const ok=(d,h)=>!!signs[d.ref+'|'+h.c];
-const done=d=>pts(d).filter(h=>ok(d,h)).length;
-const next=d=>pts(d).find(h=>!ok(d,h))||null;
+const fire=d=>!!d.frl;
+const applies=(k,d)=>!k.fire||fire(d);
+const list=d=>CHECKS.filter(k=>applies(k,d));
+const on=(d,k)=>st[d.ref+'|'+k.c];
+const nDone=d=>list(d).filter(k=>on(d,k)).length;
+const nextChk=d=>list(d).find(k=>!on(d,k))||null;
 
-function load(){try{signs=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){signs={}}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(signs))}catch(e){}}
+function load(){try{st=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){st={}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 
-function parseCSV(t){
-  const L=t.trim().split(/\r?\n/).filter(x=>x.trim());
-  if(!L.length)throw new Error('nothing to read');
-  const h=L[0].split(',').map(x=>x.trim().toLowerCase());
-  const miss=['ref','location','leaf','frame','frl','hw'].filter(n=>!h.includes(n));
-  if(miss.length)throw new Error('missing column: '+miss.join(', '));
-  return L.slice(1).map(l=>{const c=l.split(',').map(v=>v.trim()),o={};
-    h.forEach((k,i)=>o[k]=c[i]||'');return o}).filter(o=>o.ref);
+function ring(done,total){
+  const r=17,c=2*Math.PI*r,p=total?done/total:0;
+  const col=done===total?'var(--go)':'var(--amber)';
+  return `<span class="ring"><svg width="42" height="42" viewBox="0 0 42 42">
+    <circle cx="21" cy="21" r="${r}" fill="none" stroke="var(--line)" stroke-width="3.5"/>
+    <circle cx="21" cy="21" r="${r}" fill="none" stroke="${col}" stroke-width="3.5"
+      stroke-linecap="round" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}"/>
+  </svg><b style="color:${done===total?'var(--go)':'var(--ink)'}">${done===total?'✓':done+'/'+total}</b></span>`;
 }
 
-/* one sentence, not a dashboard */
-function state(){
-  const rel=doors.filter(d=>!next(d)).length;
-  if(!doors.length){$('#state').textContent='';return}
-  if(rel===doors.length){
-    $('#state').innerHTML=`<b>All ${doors.length} doorsets released.</b> The handover pack is complete.`;
-    return;
-  }
-  const tally={};
-  doors.filter(next).forEach(d=>{const c=next(d);tally[c.c]=(tally[c.c]||0)+1});
-  const top=Object.entries(tally).sort((a,b)=>b[1]-a[1])[0];
-  const hp=HP.find(h=>h.c===top[0]);
-  $('#state').innerHTML=`<b>${rel} of ${doors.length} doorsets released.</b>
-    The most common hold-up is <span class="w">${esc(hp.s)}</span> — ${top[1]} waiting.`;
-  $('#fAll').textContent='All '+doors.length;
+function screenList(){
+  const todo=DOORS.filter(d=>nextChk(d)), done=DOORS.filter(d=>!nextChk(d));
+  const show=tab==='todo'?todo:done;
+  $('#nav').innerHTML=`<div class="ttl"><b>Ward 1A Refurbishment</b>
+    <span>CS Construction · ${DOORS.length} doorsets</span></div>
+    <span class="sync"><i></i>Saved</span>`;
+  $('#body').innerHTML=`
+    <div class="seg">
+      <button id="tTodo" aria-pressed="${tab==='todo'}">To do (${todo.length})</button>
+      <button id="tDone" aria-pressed="${tab==='done'}">Done (${done.length})</button>
+    </div>
+    <div class="groupcap">${tab==='todo'?'Assigned to you today':'Signed off'}</div>
+    <div class="rows">${show.map(d=>{
+      const n=nextChk(d), t=list(d).length;
+      return `<button class="row" data-door="${esc(d.ref)}">
+        ${ring(nDone(d),t)}
+        <span class="txt"><b>${esc(d.ref)}</b>
+          <span>${esc(d.loc)}</span>
+          <span class="${n?'wait':'ok'}">${n?'Next: '+esc(n.s.toLowerCase()):'All checks signed'}</span></span>
+        ${fire(d)?`<span class="pill">${esc(d.frl)}</span>`:''}
+        <span class="chev">›</span></button>`}).join('')
+      ||`<div style="padding:34px 20px;text-align:center;color:var(--ink-3);font-size:14.5px">
+         Nothing here yet.</div>`}</div>
+`;
+  $('#foot').innerHTML='';
+  $('#tTodo').onclick=()=>{tab='todo';render()};
+  $('#tDone').onclick=()=>{tab='done';render()};
 }
 
-function track(d){
-  return `<span class="trk">`+HP.map(h=>
-    !has(h,d) ? `<i class="na" title="${h.c} not applicable"></i>`
-    : ok(d,h) ? `<i title="${h.c} signed"></i>`
-              : `<i class="open" title="${h.c} ${esc(h.s)}"></i>`).join('')+`</span>`;
+function screenDoor(){
+  const d=view.door, t=list(d).length, n=nextChk(d);
+  $('#nav').innerHTML=`<button class="back" id="back">‹ Doors</button>
+    <div class="ttl"><b>${esc(d.ref)}</b><span>${esc(d.loc)}</span></div>`;
+  $('#body').innerHTML=`
+    ${!n?`<div class="done-note">✓ All checks signed — ready for handover</div>`:''}
+    <div class="spec">
+      <div><span>Leaf</span><b>${esc(d.leaf)}</b></div>
+      <div><span>Frame</span><b>${esc(d.frame)}</b></div>
+      <div><span>Hardware set</span><b>${esc(d.hw)}</b></div>
+      <div><span>${fire(d)?'Fire rating':'Rating'}</span>
+        <b style="${fire(d)?'color:var(--fire)':'color:var(--ink-3)'}">${fire(d)?esc(d.frl):'Not rated'}</b></div>
+      ${d.tag?`<div><span>Fire tag</span><b>${esc(d.tag)}</b></div>`:''}
+    </div>
+    <div class="groupcap">${nDone(d)} of ${t} checks signed</div>
+    <div class="rows">${CHECKS.map(k=>{
+      if(!applies(k,d))return `<div class="chk na"><span class="box"></span>
+        <span class="t"><b>${esc(k.n)}</b><span>Not needed — this door isn't fire rated</span></span></div>`;
+      const s=on(d,k);
+      return `<button class="chk ${s?'on':''}" data-chk="${k.c}">
+        <span class="box"></span>
+        <span class="t"><b>${esc(k.n)}</b>
+          <span class="${s?'done':''}">${s?`${esc(s.by)} · ${esc(s.on)}${s.photos?` · ${s.photos} photo${s.photos>1?'s':''}`:''}`:esc(k.d.split('.')[0])+'.'}</span></span>
+        <span class="go">›</span></button>`}).join('')}</div>`;
+  $('#foot').innerHTML=n
+    ? `<div class="foot"><button class="big" id="cont">Continue — ${esc(n.s.toLowerCase())}</button></div>`
+    : `<div class="foot"><button class="big ghost" id="back2">Back to doors</button></div>`;
+  $('#back').onclick=()=>{view={s:'list'};render()};
+  const c=$('#cont'); if(c)c.onclick=()=>{view={s:'check',door:d,check:n};render()};
+  const b2=$('#back2'); if(b2)b2.onclick=()=>{view={s:'list'};render()};
+}
+
+function screenCheck(){
+  const d=view.door,k=view.check,s=on(d,k);
+  const idx=list(d).findIndex(x=>x.c===k.c)+1, tot=list(d).length;
+  const shots=s?s.photos:(view.shots||0);
+  $('#nav').innerHTML=`<button class="back" id="back">‹ ${esc(d.ref)}</button>
+    <div class="ttl"><b>Check ${idx} of ${tot}</b><span>${esc(d.loc)}</span></div>`;
+  $('#body').innerHTML=`<div class="det">
+      <div class="code">${fire(d)&&k.fire?'FIRE DOOR · ':''}CHECK ${esc(k.c)}</div>
+      <h2>${esc(k.n)}</h2>
+      <p>${esc(k.d)}</p>
+      <div class="shot"><div class="cap">Photos${shots?` (${shots})`:''}</div>
+        <div class="shots">
+          ${Array.from({length:shots}).map((_,i)=>`<div class="thumb shot-on">
+            <em>IMG_${2840+i}</em></div>`).join('')}
+          ${s?'':`<button class="thumb add" id="snap"><span class="lens"></span>Add</button>`}
+        </div></div>
+    </div>`;
+  $('#foot').innerHTML=s
+    ? `<div class="foot"><div class="who">Signed by ${esc(s.by)} · ${esc(s.on)}</div>
+        <button class="big ghost" id="undo">Undo sign-off</button></div>`
+    : `<div class="foot"><button class="big" id="done">Mark complete</button>
+        <div class="who">Signs as DK · saved on this device</div></div>`;
+  $('#back').onclick=()=>{view={s:'door',door:d};render()};
+  const sn=$('#snap'); if(sn)sn.onclick=()=>{view.shots=(view.shots||0)+1;render()};
+  const dn=$('#done'); if(dn)dn.onclick=()=>{
+    st[d.ref+'|'+k.c]={by:'DK',on:new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short'}),
+      photos:view.shots||0};
+    save();view.shots=0;
+    const nx=nextChk(d);
+    view = nx ? {s:'check',door:d,check:nx} : {s:'door',door:d};
+    render();
+  };
+  const un=$('#undo'); if(un)un.onclick=()=>{delete st[d.ref+'|'+k.c];save();view.shots=0;render()};
 }
 
 function render(){
-  state();
-  const list=doors.filter(d=>filter==='fire'?fire(d):filter==='open'?!!next(d):true);
-  $('#list').innerHTML = list.map(d=>{
-    const n=next(d);
-    const row=`<button class="door" data-ref="${esc(d.ref)}" aria-expanded="${open===d.ref}">
-      <span class="ref">${esc(d.ref)}</span>
-      <span class="loc">${esc(d.location)}${fire(d)?`<em>${esc(d.frl)}</em>`:''}</span>
-      <span class="st">${track(d)}<span class="at ${n?'':'done'}">${n?esc(n.s):'released'}</span></span>
-    </button>`;
-    return row + (open===d.ref ? panel(d) : '');
-  }).join('') || `<p style="padding:26px 2px;color:var(--ink-3)">No doorsets match.</p>`;
+  if(view.s==='list')screenList();
+  else if(view.s==='door')screenDoor();
+  else screenCheck();
+  $('#body').scrollTop=0;
 }
 
-function panel(d){
-  const body=HP.map(h=>{
-    if(!has(h,d)) return `<div class="pt skip">
-      <div class="h"><u>${h.c}</u>${esc(h.n)}</div>
-      <span class="na-note">not applicable</span></div>`;
-    const k=d.ref+'|'+h.c,s=signs[k];
-    return `<div class="pt ${s?'signed':''}">
-      <div><div class="h"><u>${h.c}</u>${esc(h.n)}</div><p>${esc(h.d)}</p></div>
-      ${s?`<span class="by">${esc(s.by)} <u>${esc(s.on)}</u>
-            <button class="undo" data-k="${esc(k)}" data-a="u">undo</button></span>`
-         :`<button class="sign" data-k="${esc(k)}" data-a="s">Sign off</button>`}</div>`;
-  }).join('');
-  return `<div class="itp"><div class="spec">
-      <span>Leaf <b>${esc(d.leaf)}</b></span><span>Frame <b>${esc(d.frame)}</b></span>
-      <span>Hardware <b>${esc(d.hw)}</b></span>
-      ${d.tag?`<span>Fire tag <b>${esc(d.tag)}</b></span>`:''}
-    </div>${body}</div>`;
-}
-
-$('#list').addEventListener('click',e=>{
-  const b=e.target.closest('[data-a]');
-  if(b){e.stopPropagation();const k=b.dataset.k;
-    if(b.dataset.a==='s')signs[k]={by:($('#initials').value||'QA').toUpperCase().slice(0,4),
-      on:new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short'})};
-    else delete signs[k];
-    save();render();return}
-  const r=e.target.closest('.door');
-  if(r){open = open===r.dataset.ref ? null : r.dataset.ref; render()}
+document.addEventListener('click',e=>{
+  const dr=e.target.closest('[data-door]');
+  if(dr){view={s:'door',door:DOORS.find(x=>x.ref===dr.dataset.door)};view.shots=0;render();return}
+  const ck=e.target.closest('[data-chk]');
+  if(ck){const d=view.door;view={s:'check',door:d,check:CHECKS.find(x=>x.c===ck.dataset.chk),shots:0};render()}
 });
-function setF(f,b){filter=f;open=null;
-  ['#fAll','#fFire','#fOpen'].forEach(s=>$(s).setAttribute('aria-pressed','false'));
-  b.setAttribute('aria-pressed','true');render()}
-$('#fAll').onclick=e=>setF('all',e.currentTarget);
-$('#fFire').onclick=e=>setF('fire',e.currentTarget);
-$('#fOpen').onclick=e=>setF('open',e.currentTarget);
-$('#printPack').onclick=()=>{const o=open;open='__all__';
-  $('#list').innerHTML=doors.map(d=>`<button class="door"><span class="ref">${esc(d.ref)}</span>
-    <span class="loc">${esc(d.location)}${fire(d)?`<em>${esc(d.frl)}</em>`:''}</span>
-    <span class="st">${track(d)}</span></button>`+panel(d)).join('');
-  window.print();open=o;render()};
-$('#doImport').onclick=()=>{const m=$('#msg');
-  try{const r=parseCSV($('#csv').value);if(!r.length)throw new Error('no doorsets found');
-    doors=r;open=null;render();m.className='msg';
-    m.textContent=`${r.length} doorsets · ${r.filter(fire).length} fire-rated`;
-  }catch(err){m.className='msg bad';m.textContent='Could not read that — '+err.message}};
 
 load();
-doors=parseCSV(SAMPLE);
-$('#csv').value=SAMPLE;
-if(!Object.keys(signs).length){
-  const seed=[['D-1.014',5],['D-1.015',7],['D-1.021',6],['D-1.022',4],
-              ['D-1.030',7],['D-1.031',3],['D-1.040',6],['D-1.055',2],
-              ['D-1.056',2],['D-1.061',0],['D-1.070',4],['D-1.071',1]];
+if(!Object.keys(st).length){
+  const seed=[['D-1.014',5],['D-1.015',7],['D-1.021',6],['D-1.022',3],['D-1.030',7],
+              ['D-1.031',2],['D-1.040',6],['D-1.055',1],['D-1.061',0],['D-1.070',4]];
   const who=['DK','NP','BP'];
-  seed.forEach(([ref,n],i)=>{const d=doors.find(x=>x.ref===ref);if(!d)return;
-    pts(d).slice(0,n).forEach((h,j)=>{
-      signs[ref+'|'+h.c]={by:who[(i+j)%who.length],
-        on:new Date(Date.now()-(14-j)*864e5).toLocaleDateString('en-AU',{day:'2-digit',month:'short'})}});
+  seed.forEach(([ref,n],i)=>{const d=DOORS.find(x=>x.ref===ref);if(!d)return;
+    list(d).slice(0,n).forEach((k,j)=>{
+      st[ref+'|'+k.c]={by:who[(i+j)%3],
+        on:new Date(Date.now()-(9-j)*864e5).toLocaleDateString('en-AU',{day:'numeric',month:'short'}),
+        photos:j%3===0?2:1}});
   });
   save();
 }

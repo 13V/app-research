@@ -1,82 +1,63 @@
-# Spec demo — Doorset ITP Register
+# Spec demo — Doorset Checks (worker phone app)
 
 **Live:** https://claude.ai/code/artifact/f9c9f94c-0e75-462b-bd13-e478ab78cf6f
-**Built for:** Kolen Carpentry (target 3) — send this *with* the email, don't pitch first.
+**For:** Kolen Carpentry (target 3) — send this *with* the email, don't pitch first.
 **Source:** `doorset-itp-register.html` — self-contained, no build step, no dependencies.
 
-## Why this exists
+## The problem, in plain English
 
-Kolen's site says, verbatim:
+Kolen installs doors in hospitals. Hospital doors are safety-critical, so every one gets checked
+at seven points as it goes in:
 
-> *"Every doorset checked, installed and functioned against the hardware schedule, with
-> item-level ITP records supporting every sign-off."*
+1. Did the right door turn up?
+2. Is the frame straight and fixed properly?
+3. Are the gaps around the leaf within tolerance?
+4. Is the correct hardware on it?
+5. Does it swing shut and latch by itself?
+6. *(fire doors only)* Is the certification tag on it and logged?
+7. Final check — no defects.
 
-No off-the-shelf trade app produces that. Not ServiceM8, not Tradify, not Fergus. So instead of
-describing what you'd build, this **is** a slice of it, running on sample data.
+Someone records every one of those checks, for every door, and hands the builder a folder of
+evidence at handover. A hospital job is hundreds of doors — thousands of records, currently
+living in a spreadsheet, a clipboard and someone's camera roll.
 
-Speculative work converts far better than proposals at this price point, because the buyer stops
-imagining and starts using.
+Kolen's own website advertises this: *"item-level ITP records supporting every sign-off."*
+They're proud of it, which means it costs them real time.
 
-## What it does
+## What the demo is
 
-- Parses a door and hardware schedule (CSV) into a doorset register
-- Generates the ITP hold points per doorset — **fire-rated assemblies automatically get the
-  extra AS 1905.1 fire-tag hold point; non-rated ones don't**, and the track shows those as
-  skipped rather than outstanding
-- **Hold-point funnel** — how many doorsets have cleared each stage, with the bottleneck
-  highlighted: *"2 doorsets waiting on W1 Leaf hung"*
-- **Per-doorset stage track** — seven segments showing exactly where each door is stuck,
-  instead of a percentage nobody can act on
-- Sign-off per hold point, stamped with initials and date
-- Filters: all / fire-rated / incomplete
-- "Generate handover pack" opens a print view with every hold point expanded
+**A phone app for the carpenter, not a dashboard for the office.** The person doing the checks is
+standing at a door with dusty hands, so that's the screen that had to be built.
 
-Opens in a realistic mid-job state — some packs closed out, some part-signed, one not started.
+Three screens:
 
-## Design notes
+1. **Today's doors** — progress ring, door ref, where it is, what it still needs. Fire-rated doors
+   carry their FRL as a red pill.
+2. **One door** — its spec, then the seven checks as a tappable list with big targets.
+3. **One check** — what to look for, add photos, one large *Mark complete* button. Signing off
+   advances straight to the next check, so a carpenter can work a door without going back to a menu.
 
-Deliberately stripped back. Earlier versions carried a stage funnel, six header fields, an
-eight-column table and a two-column footer — a product, when what a prospect needs in thirty
-seconds is a demonstration of one idea.
+Shown in a phone frame on desktop with a plain-English explainer beside it, so it reads as an app
+rather than a web page. On a phone it fills the screen.
 
-What's left: a one-sentence status, a filter row, and the register. Four columns — door, location,
-fire rating, progress. Click a door for its spec line and seven hold points.
+## Details that show trade knowledge
 
-Two choices carry the information design:
-
-- **The status word beats a percentage.** Each row ends in plain English — *leaf hang*, *function
-  test*, *fire tag*, *released* — so you read what a door is waiting on, not how far along it is.
-- **Signed items recede.** Completed hold points drop to normal weight and grey; outstanding ones
-  stay bold black. Your eye lands on the work left to do.
-
-Source Sans 3 for reading, IBM Plex Mono only for identifiers — door refs, ratings, tags, initials.
-One green for signed, one red for fire ratings, grey for everything else.
-
-## The seven hold points
-
-These are the demo's best guess at Kolen's actual workflow, and **the guess is the point**. If
-they're wrong, Damien will tell you exactly how — which is a far better first conversation than
-any discovery call you could book.
-
-| | | |
-|---|---|---|
-| H1 | Hold | Delivery conformance — leaf and frame against schedule, certification labels |
-| H2 | Hold | Frame set out and fixed — plumb, square, fixing centres |
-| W1 | Witness | Leaf hung, clearances recorded — AS 1905.1 tolerance |
-| H3 | Hold | Hardware installed to set — fire-rated items certified |
-| W2 | Witness | Function test — self-closes from 15°, latches unassisted |
-| H4 | Hold | Fire tag affixed and registered — *fire-rated doorsets only* |
-| H5 | Hold | Final QA and handover |
+- **Fire doors get a seventh check; non-rated doors don't** — check 6 renders as "not needed" and
+  is excluded from the count, so a plain door never looks incomplete.
+- Progress rings show `5/7` on fire doors and `3/6` on non-rated ones.
+- AS 1905.1 named where it actually applies — leaf clearances and tag registration.
+- The "Saved" indicator in the nav bar — sites have poor reception, and the thing a worker needs
+  to trust is that their sign-off didn't vanish.
 
 ## Before you send it
 
-1. Replace `[your studio]` in the prototype banner with your business name.
-2. The banner already states this is a prototype on fictional data and not Kolen's real project
-   information. **Leave that in.** It's what keeps a spec build honest.
-3. Sign-offs save to the viewer's own browser only — nothing leaves their machine. Say so if asked.
+1. Replace `[your studio]` in the explainer panel with your business name.
+2. The panel already states it's a prototype on sample data and not Kolen's project information.
+   **Leave that in.**
+3. Sign-offs save to the viewer's own browser only. Say so if asked.
 
 ## If they bite
 
-The real build adds what a demo can't fake: schedule imported straight from the door register,
-photo capture against each hold point, defect tracking, and the signed pack out as a PDF.
-That's the $20k conversation.
+What a demo can't fake, and the real build adds: the schedule imported straight from the door
+register, real camera capture, offline queueing for dead spots on site, the office view, and the
+signed handover pack out as a PDF. That's the $20k conversation.

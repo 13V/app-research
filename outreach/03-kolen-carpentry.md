@@ -8,7 +8,7 @@
 
 ## Email — send this WITH the demo link
 
-> **Subject:** Built you something — doorset ITP packs
+> **Subject:** Built you something — doorset checks on the phone
 
 Hi Damien,
 
@@ -16,7 +16,7 @@ I build custom software for SA trade businesses. Rather than send you a proposal
 
 Your site says every doorset gets checked and functioned against the hardware schedule, with item-level ITP records behind every sign-off. On something the size of the FMC redevelopment that's a lot of records held together by someone's care.
 
-So I built a doorset ITP generator. Drop in a hardware schedule, it produces the per-door inspection records and the handover pack. Takes about a minute:
+So I built the phone app your carpenters would use. Today's doors, the seven checks on each one, photograph it, sign it off. Have a tap through it:
 
 **https://claude.ai/code/artifact/f9c9f94c-0e75-462b-bd13-e478ab78cf6f**
 
@@ -29,7 +29,7 @@ It's a prototype, built off a guess at how you work. If the guess is wrong I'd g
 
 ## Phone follow-up (3–4 days later)
 
-> "Hi Damien, [X] here — I sent through a doorset ITP thing last week. Not chasing a sale, just want to know if I got the workflow right or not."
+> "Hi Damien, [X] here — I sent through a doorset checks app last week. Not chasing a sale, just want to know if I got the workflow right or not."
 
 **Then:** "How long does the ITP pack actually take to put together at the end of a job like Mount Barker? And who does it?"
 
