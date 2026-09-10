@@ -35,14 +35,22 @@ Opens in a realistic mid-job state — some packs closed out, some part-signed, 
 
 ## Design notes
 
-Laid out as a construction document rather than a web dashboard: a drawing-office title block
-carrying project, ITP number, revision and standard; fire tags rendered as the physical discs
-they are; sign-offs stamped rather than ticked. Archivo for headings, IBM Plex Sans for text,
-IBM Plex Mono for every door ref, FRL and tag number.
+Deliberately stripped back. Earlier versions carried a stage funnel, six header fields, an
+eight-column table and a two-column footer — a product, when what a prospect needs in thirty
+seconds is a demonstration of one idea.
 
-The information design is the argument. A supervisor doesn't need to know a door is 71% done —
-they need to know it's waiting on a function test. That's what the track and the funnel show, and
-it's the thing no generic job app does.
+What's left: a one-sentence status, a filter row, and the register. Four columns — door, location,
+fire rating, progress. Click a door for its spec line and seven hold points.
+
+Two choices carry the information design:
+
+- **The status word beats a percentage.** Each row ends in plain English — *leaf hang*, *function
+  test*, *fire tag*, *released* — so you read what a door is waiting on, not how far along it is.
+- **Signed items recede.** Completed hold points drop to normal weight and grey; outstanding ones
+  stay bold black. Your eye lands on the work left to do.
+
+Source Sans 3 for reading, IBM Plex Mono only for identifiers — door refs, ratings, tags, initials.
+One green for signed, one red for fire ratings, grey for everything else.
 
 ## The seven hold points
 

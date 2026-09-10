@@ -1,279 +1,194 @@
 <title>Doorset ITP Register</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap">
 <style>
 :root{
-  --paper:#FBFBF9; --field:#FFFFFF; --wash:#F1F1ED;
-  --ink:#14171A; --ink-2:#4A5157; --ink-3:#6E757C;
-  --rule:#D9D9D3; --rule-hard:#14171A;
-  --sig:#2D6A4A;      /* signed */
-  --hold:#9A6B14;     /* outstanding / bottleneck */
-  --fire:#A32B21;     /* fire rating — semantic only */
-  --link:#1B4D8F;
-  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --paper:#FCFCFB; --ink:#1A1D20; --ink-2:#5C636A; --ink-3:#9AA1A8;
+  --rule:#E4E4E0; --sig:#2F6B4F; --fire:#A8322A;
+  --sans:"Source Sans 3",system-ui,-apple-system,Segoe UI,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --paper:#0D0F11; --field:#141719; --wash:#1B1F22;
-    --ink:#E8E9E5; --ink-2:#AAB2B8; --ink-3:#848C93;
-    --rule:#292E32; --rule-hard:#5A6167;
-    --sig:#5FA47F; --hold:#C79A45; --fire:#D46A5F; --link:#7FA9E0;
+    --paper:#101315; --ink:#E9EAE7; --ink-2:#A6ADB3; --ink-3:#767D84;
+    --rule:#282C2F; --sig:#66AB86; --fire:#D9736A;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0D0F11; --field:#141719; --wash:#1B1F22;
-  --ink:#E4E5E1; --ink-2:#9CA3A9; --ink-3:#6B7278;
-  --rule:#292E32; --rule-hard:#5A6167;
-  --sig:#5FA47F; --hold:#C79A45; --fire:#D46A5F; --link:#7FA9E0;
+  --paper:#101315; --ink:#E9EAE7; --ink-2:#A6ADB3; --ink-3:#767D84;
+  --rule:#282C2F; --sig:#66AB86; --fire:#D9736A;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-.sheet{max-width:1040px;margin:0 auto;padding-inline:18px;padding-block:0 64px}
-h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-.015em}
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:760px;margin:0 auto;padding-inline:22px;padding-block:0 80px}
 button{font:inherit;cursor:pointer}
-:focus-visible{outline:1.5px solid var(--link);outline-offset:1px}
-.cap{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
-.m{font-family:var(--mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.mono{font-family:var(--mono)}
 
-/* ── header: one dense band, fields on a baseline ── */
-.top{border-bottom:1.5px solid var(--rule-hard);padding-block:22px 0}
-.top .id{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.top .id .no{font-family:var(--mono);font-size:13.5px;color:var(--ink-2)}
-.top .id .rev{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);
-  padding:1px 6px;color:var(--ink-2)}
-.fields{display:flex;flex-wrap:wrap;gap:4px 34px;margin-top:16px;padding-bottom:16px}
-.fld{display:flex;flex-direction:column;gap:3px;padding-block:2px}
-.fld .v{font-family:var(--mono);font-size:14px;font-weight:500;white-space:nowrap}
-.fld .v.warn{color:var(--hold)}
+.origin{max-width:760px;margin:0 auto;padding:12px 22px 0;font-size:14px;color:var(--ink-3)}
 
-/* ── stage strip: small multiples, not stat boxes ── */
-.strip{display:flex;align-items:flex-end;gap:0;border-bottom:1px solid var(--rule);
-  padding:18px 0 0}
-.st{flex:1;min-width:0;padding:0 10px 12px;border-right:1px solid var(--rule);position:relative}
-.st:last-child{border-right:0}
-.st .n{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em}
-.st .n u{text-decoration:none;color:var(--ink-3);font-size:11.5px}
-.st .plot{height:6px;background:var(--rule);margin:9px 0 9px}
-.st .plot i{display:block;height:100%;background:var(--sig);min-width:1px}
-.st .k{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);letter-spacing:.01em}
-.st .k b{color:var(--ink);font-weight:600}
-.st.fireonly .k b{color:var(--fire)}
-.st.stuck{background:var(--wash)}
-.st.stuck .plot i{background:var(--hold)}
-.st.stuck .n{color:var(--hold)}
-.stripnote{padding:14px 0 2px;font-size:14px;color:var(--ink-2)}
-.stripnote b{color:var(--ink);font-weight:600}
-.stripnote .m{color:var(--hold);font-weight:500}
+header{padding-block:26px 8px}
+h1{margin:0;font-size:25px;font-weight:600;letter-spacing:-.02em}
+.job{margin:5px 0 0;font-size:15px;color:var(--ink-2)}
+.state{margin:20px 0 0;font-size:17px;line-height:1.55}
+.state b{font-weight:600}
+.state .w{color:var(--fire)}
 
-/* ── controls: text, not chrome ── */
-.ctl{display:flex;gap:8px 22px;flex-wrap:wrap;align-items:center;padding:15px 0;
-  border-bottom:1px solid var(--rule);font-size:14px}
-.ctl .grp{display:flex;gap:12px;align-items:center}
-.ctl .grow{flex:1}
-.lk{background:none;border:0;padding:0;color:var(--ink-2);font-size:14px;
-  border-bottom:1px solid transparent}
-.lk:hover{color:var(--link);border-bottom-color:var(--link)}
-.lk[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
-.ctl input{font-family:var(--mono);font-size:14px;width:50px;padding:2px 4px;text-transform:uppercase;
-  border:0;border-bottom:1px solid var(--rule-hard);background:none;color:var(--ink);text-align:center}
-.act{background:none;border:1px solid var(--rule-hard);padding:6px 14px;font-size:13px;
-  font-weight:500;color:var(--ink)}
-.act:hover{background:var(--ink);color:var(--paper)}
+.filters{display:flex;gap:18px;align-items:baseline;flex-wrap:wrap;
+  margin-top:26px;padding-bottom:9px;border-bottom:1px solid var(--rule);font-size:15px}
+.filters button{background:none;border:0;padding:0;color:var(--ink-2);
+  border-bottom:1.5px solid transparent}
+.filters button:hover{color:var(--ink)}
+.filters button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.filters .sp{flex:1}
+.filters label{color:var(--ink-3);font-size:14px}
+.filters input{font-family:var(--mono);font-size:15px;width:46px;padding:0 3px;text-transform:uppercase;
+  border:0;border-bottom:1px solid var(--ink-3);background:none;color:var(--ink);text-align:center}
 
-/* ── register ── */
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:760px}
-th{padding:11px 11px 9px;border-bottom:1px solid var(--rule-hard);text-align:left;white-space:nowrap;
-  font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
-th.r,td.r{text-align:right}
-td{padding:9px 11px;border-bottom:1px solid var(--rule);white-space:nowrap;font-size:14px}
-tr.row{cursor:pointer}
-tr.row:hover td{background:var(--wash)}
-tr.row[aria-expanded="true"] td{background:var(--wash);border-bottom-color:var(--rule-hard)}
-td.ref{font-family:var(--mono);font-weight:600;letter-spacing:-.01em}
-td.loc{white-space:normal;color:var(--ink)}
-td.d{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
-td.frl{font-family:var(--mono);font-size:13px;color:var(--ink-3)}
-td.frl.rated{color:var(--fire);font-weight:500}
-td.tag{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
-td.tag.none{color:var(--ink-3)}
-
-/* stage track — seven cells, read left to right like the ITP itself */
-.trk{display:inline-flex;gap:1px;vertical-align:-2px}
-.trk i{width:13px;height:15px;display:block;background:var(--sig)}
+/* ── the register: four columns, nothing else ── */
+.door{display:grid;grid-template-columns:auto 1fr auto;gap:0 18px;align-items:center;
+  padding:14px 2px;border-bottom:1px solid var(--rule);cursor:pointer;text-align:left;
+  width:100%;background:none;border-left:0;border-right:0;border-top:0;color:inherit}
+.door:hover{background:var(--rule)}
+.door .ref{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:-.02em}
+.door .loc{font-size:16px;min-width:0}
+.door .loc em{font-style:normal;font-family:var(--mono);font-size:13px;color:var(--fire);
+  margin-left:9px;white-space:nowrap}
+.door .st{display:flex;align-items:center;gap:11px;justify-self:end}
+.trk{display:flex;gap:3px}
+.trk i{width:14px;height:16px;display:block;background:var(--sig);border-radius:1px}
 .trk i.open{background:var(--rule)}
-.trk i.next{background:var(--hold)}
-.trk i.na{background:repeating-linear-gradient(45deg,transparent,transparent 2px,var(--rule) 2px,var(--rule) 3px)}
-.at{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-left:11px}
-.at.done{color:var(--sig)}
+.trk i.na{background:none;box-shadow:inset 0 0 0 1px var(--rule)}
+.door .at{font-size:14px;color:var(--ink-2);width:98px;text-align:right;white-space:nowrap}
+.door .at.done{color:var(--sig);font-weight:600}
 
-/* ── expanded ITP: an indented sub-register, not cards ── */
-tr.det td{padding:0;background:var(--wash);border-bottom:1.5px solid var(--rule-hard)}
-.itp{padding:6px 11px 18px 34px}
-.itp table{min-width:0;width:100%}
-.itp th{border-bottom:1px solid var(--rule);padding:13px 10px 8px 0}
-.itp td{border-bottom:1px solid var(--rule);padding:11px 10px 11px 0;white-space:normal;
-  vertical-align:baseline}
-.itp tr:last-child td{border-bottom:0}
-.itp .c{font-family:var(--mono);font-size:13px;font-weight:600;width:38px;color:var(--ink)}
-.itp .kd{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);width:72px}
-.itp .nm{font-weight:600;font-size:14px}
-.itp .nm span{display:block;font-weight:400;font-size:13.5px;color:var(--ink-2);
-  margin-top:3px;max-width:62ch;line-height:1.5}
-.itp .by{font-family:var(--mono);font-size:13px;color:var(--sig);width:1%;white-space:nowrap}
-.itp .by u{text-decoration:none;color:var(--ink-3);margin-left:7px}
-.itp tr.skip .nm,.itp tr.skip .c,.itp tr.skip .kd{color:var(--ink-3);font-weight:400}
-.itp tr.skip .nm{font-weight:500}
-.sign{background:none;border:1px solid var(--rule-hard);padding:4px 12px;font-size:12.5px;
-  font-weight:500;color:var(--ink);white-space:nowrap}
-.sign:hover{background:var(--ink);color:var(--paper)}
-.undo{background:none;border:0;padding:0;margin-left:10px;font-size:12px;color:var(--ink-3);
-  text-decoration:underline}
+/* ── one doorset opened ── */
+.itp{padding:6px 2px 26px;border-bottom:1px solid var(--rule)}
+.spec{font-size:14px;color:var(--ink-2);padding:4px 0 16px}
+.spec span{display:inline-block;margin-right:20px}
+.spec b{font-family:var(--mono);font-weight:500;color:var(--ink)}
+.pt{display:grid;grid-template-columns:1fr auto;gap:14px 20px;align-items:start;
+  padding:13px 0;border-top:1px solid var(--rule)}
+.pt .h{font-size:16px;font-weight:600;line-height:1.4}
+.pt .h u{text-decoration:none;font-family:var(--mono);font-size:13px;font-weight:500;
+  color:var(--ink-3);margin-right:9px}
+.pt p{margin:3px 0 0;font-size:15px;color:var(--ink-2);line-height:1.5;max-width:56ch}
+.pt.signed .h,.pt.signed p{color:var(--ink-2)}
+.pt.signed .h{font-weight:400}
+.pt.skip{opacity:.45}
+.by{font-family:var(--mono);font-size:14px;color:var(--sig);
+  display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.by u{text-decoration:none;color:var(--ink-3)}
+.undo{background:none;border:0;padding:0;font-size:13px;color:var(--ink-3);text-decoration:underline}
 .undo:hover{color:var(--fire)}
+.sign{background:none;border:1px solid var(--ink);padding:5px 15px;font-size:14px;
+  font-weight:600;color:var(--ink);white-space:nowrap;border-radius:2px}
+.sign:hover{background:var(--ink);color:var(--paper)}
+.na-note{font-size:14px;color:var(--ink-3);white-space:nowrap}
 
-/* ── footer ── */
-.foot{margin-top:34px;padding-top:20px;border-top:1px solid var(--rule);
-  display:grid;grid-template-columns:1fr 1fr;gap:34px;font-size:14px;color:var(--ink-2);line-height:1.6}
-.foot b{color:var(--ink);font-weight:600}
-.foot textarea{width:100%;min-height:80px;font-family:var(--mono);font-size:12.5px;line-height:1.65;
-  margin-top:7px;padding:7px;border:1px solid var(--rule);background:var(--field);color:var(--ink);
-  resize:vertical}
-.foot .row{display:flex;gap:10px;align-items:center;margin-top:7px;flex-wrap:wrap}
-.foot .msg{font-family:var(--mono);font-size:12.5px;color:var(--sig)}
-.foot .msg.bad{color:var(--fire)}
+footer{margin-top:34px;font-size:15px;color:var(--ink-2);line-height:1.65}
+footer b{color:var(--ink);font-weight:600}
+footer .more{margin-top:16px}
+footer summary{cursor:pointer;font-size:15px;color:var(--ink-2);
+  text-decoration:underline;text-underline-offset:3px}
+footer summary::-webkit-details-marker{display:none}
+footer textarea{width:100%;min-height:84px;font-family:var(--mono);font-size:13px;line-height:1.6;
+  margin-top:12px;padding:10px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
+  resize:vertical;border-radius:2px}
+footer .row{display:flex;gap:14px;align-items:center;margin-top:10px;flex-wrap:wrap}
+footer .msg{font-family:var(--mono);font-size:13px;color:var(--sig)}
+footer .msg.bad{color:var(--fire)}
+.pk{background:none;border:1px solid var(--ink);padding:6px 16px;font-size:14px;font-weight:600;
+  color:var(--ink);border-radius:2px}
+.pk:hover{background:var(--ink);color:var(--paper)}
 
-.origin{padding:9px 18px;border-bottom:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);
-  max-width:1040px;margin:0 auto}
-.origin b{color:var(--ink-2);font-weight:600}
-
-@media (max-width:760px){
-  .st .k{font-size:9px}
-  .foot{grid-template-columns:1fr}
-  .itp{padding-left:9px}
-}
-@media (max-width:460px){
-  .strip{flex-wrap:wrap}
-  .st{flex:0 0 25%;border-bottom:1px solid var(--rule)}
-  .st:nth-child(4n){border-right:0}
+@media (max-width:560px){
+  .door{grid-template-columns:auto 1fr;gap:2px 14px}
+  .door .st{grid-column:1/-1;justify-self:start;margin-top:7px}
+  .pt{grid-template-columns:1fr}
 }
 @media print{
-  .ctl,.foot,.sign,.undo,.origin,.strip,.stripnote{display:none!important}
-  body{background:#fff;color:#000;font-size:9.5pt}
-  .sheet{max-width:none;padding:0}
-  table{min-width:0}
-  tr.det{display:table-row!important}
-  .itp tr{break-inside:avoid}
-  thead{display:table-header-group}
+  .origin,.filters,.sign,.undo,footer{display:none!important}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .page{max-width:none;padding:0}
+  .itp,.door{break-inside:avoid}
 }
 </style>
 
-<div class="origin"><b>Prototype</b> — built by [your studio] for Kolen Carpentry.
-Fictional job data; nothing here is Kolen's project information.</div>
+<p class="origin"><b>Prototype</b> — built by [your studio] for Kolen Carpentry.
+Fictional job data.</p>
 
-<div class="sheet">
-
-  <header class="top">
-    <div class="id">
-      <h1>Doorset ITP Register</h1>
-      <span class="no">ITP-DR-01</span>
-      <span class="rev">REV C</span>
-    </div>
-    <div class="fields">
-      <div class="fld"><span class="cap">Project</span><span class="v">Ward 1A Refurbishment</span></div>
-      <div class="fld"><span class="cap">Head contractor</span><span class="v">CS Construction</span></div>
-      <div class="fld"><span class="cap">Standard</span><span class="v">AS 1905.1</span></div>
-      <div class="fld"><span class="cap">Doorsets</span><span class="v" id="fDoors">—</span></div>
-      <div class="fld"><span class="cap">Released</span><span class="v" id="fRel">—</span></div>
-      <div class="fld"><span class="cap">Outstanding</span><span class="v warn" id="fOut">—</span></div>
-    </div>
+<div class="page">
+  <header>
+    <h1>Doorset ITP Register</h1>
+    <p class="job">Ward 1A Refurbishment · CS Construction · ITP-DR-01 rev C</p>
+    <p class="state" id="state"></p>
   </header>
 
-  <section class="strip" id="strip"></section>
-  <p class="stripnote" id="stripnote"></p>
-
-  <div class="ctl">
-    <div class="grp">
-      <span class="cap">Show</span>
-      <button class="lk" id="fAll" aria-pressed="true">All</button>
-      <button class="lk" id="fFire" aria-pressed="false">Fire-rated</button>
-      <button class="lk" id="fOpen" aria-pressed="false">Outstanding</button>
-    </div>
-    <div class="grp">
-      <span class="cap">Signing as</span>
-      <input id="initials" value="DK" maxlength="4" aria-label="Your initials">
-    </div>
-    <div class="grow"></div>
-    <button class="lk" id="expandAll">Expand all</button>
-    <button class="act" id="printPack">Handover pack</button>
+  <div class="filters">
+    <button id="fAll" aria-pressed="true">All 12</button>
+    <button id="fFire" aria-pressed="false">Fire-rated</button>
+    <button id="fOpen" aria-pressed="false">Outstanding</button>
+    <span class="sp"></span>
+    <label for="initials">Signing as</label>
+    <input id="initials" value="DK" maxlength="4" aria-label="Your initials">
   </div>
 
-  <div class="scroll">
-    <table>
-      <thead><tr>
-        <th>Door</th><th>Location</th><th>Leaf</th><th>Frame</th><th>FRL</th>
-        <th>HW</th><th>Tag</th><th>ITP</th>
-      </tr></thead>
-      <tbody id="rows"></tbody>
-    </table>
-  </div>
+  <div id="list"></div>
 
-  <div class="foot">
-    <div>
-      <b>Import a hardware schedule.</b> Paste a CSV from the door and hardware schedule —
-      <span class="m">ref, location, leaf, frame, frl, hw, tag</span>. An <span class="m">frl</span>
-      of <span class="m">-</span> means non-rated, and H4 drops out of that doorset's ITP.
+  <footer>
+    <b>What this is.</b> A working slice, not a finished product — the register, the hold points
+    and the handover pack, on sample data. Sign-offs stay in this browser. The real build pulls
+    the schedule from the door register, captures photos against each hold point, and issues the
+    signed pack as a PDF.
+    <br><br>
+    <b>If these hold points are wrong for how Kolen works, that's the useful part. Tell us where.</b>
+    <div class="row"><button class="pk" id="printPack">Print handover pack</button></div>
+    <details class="more">
+      <summary>Load a different hardware schedule</summary>
       <textarea id="csv" spellcheck="false" aria-label="Hardware schedule CSV"></textarea>
       <div class="row">
-        <button class="act" id="doImport">Rebuild register</button>
-        <button class="lk" id="loadSample">Restore sample</button>
-        <span class="msg" id="msg"></span>
+        <button class="pk" id="doImport">Rebuild register</button>
+        <span class="msg" id="msg">CSV columns: ref, location, leaf, frame, frl, hw, tag</span>
       </div>
-    </div>
-    <div>
-      <b>What this is.</b> A working slice, not a finished product — the register, the hold points
-      and the handover pack, on sample data. Sign-offs stay in this browser. The real build pulls
-      the schedule from the door register, captures photos against each hold point, and issues the
-      signed pack as a PDF.<br><br>
-      <b>If these hold points are wrong for how Kolen works, that's the useful part. Tell us where.</b>
-    </div>
-  </div>
+    </details>
+  </footer>
 </div>
 
 <script>
 const SAMPLE=`ref,location,leaf,frame,frl,hw,tag
-D-1.014,Ward 1A corridor north,2040x920x45 SC,Steel painted,-/60/30,HW-04,FD-1142
-D-1.015,Ward 1A corridor south,2040x920x45 SC,Steel painted,-/60/30,HW-04,FD-1143
-D-1.021,Treatment room 1,2040x870x40 SC,Timber MDF,-,HW-11,
-D-1.022,Treatment room 2,2040x870x40 SC,Timber MDF,-,HW-11,
-D-1.030,Clean utility,2040x920x45 SC,Steel painted,-/60/30,HW-06,FD-1147
-D-1.031,Dirty utility,2040x920x45 SC,Steel painted,-/60/30,HW-06,FD-1148
-D-1.040,Staff station store,2040x820x40 SC,Timber MDF,-,HW-02,
-D-1.055,Fire stair 2 lobby,2040x1020x45 SC,Steel painted,-/120/30,HW-09,FD-1151
-D-1.056,Fire stair 2 landing,2040x1020x45 SC,Steel painted,-/120/30,HW-09,FD-1152
-D-1.061,Plant room 1.6,2100x920x45 SC,Steel painted,-/60/30,HW-07,FD-1155
-D-1.070,Bed bay 4 ensuite,2040x870x40 SC,Timber MDF,-,HW-13,
-D-1.071,Bed bay 5 ensuite,2040x870x40 SC,Timber MDF,-,HW-13,`;
+D-1.014,Ward 1A corridor north,2040x920x45 solid core,Steel painted,-/60/30,HW-04,FD-1142
+D-1.015,Ward 1A corridor south,2040x920x45 solid core,Steel painted,-/60/30,HW-04,FD-1143
+D-1.021,Treatment room 1,2040x870x40 solid core,Timber MDF,-,HW-11,
+D-1.022,Treatment room 2,2040x870x40 solid core,Timber MDF,-,HW-11,
+D-1.030,Clean utility,2040x920x45 solid core,Steel painted,-/60/30,HW-06,FD-1147
+D-1.031,Dirty utility,2040x920x45 solid core,Steel painted,-/60/30,HW-06,FD-1148
+D-1.040,Staff station store,2040x820x40 solid core,Timber MDF,-,HW-02,
+D-1.055,Fire stair 2 lobby,2040x1020x45 solid core,Steel painted,-/120/30,HW-09,FD-1151
+D-1.056,Fire stair 2 landing,2040x1020x45 solid core,Steel painted,-/120/30,HW-09,FD-1152
+D-1.061,Plant room 1.6,2100x920x45 solid core,Steel painted,-/60/30,HW-07,FD-1155
+D-1.070,Bed bay 4 ensuite,2040x870x40 solid core,Timber MDF,-,HW-13,
+D-1.071,Bed bay 5 ensuite,2040x870x40 solid core,Timber MDF,-,HW-13,`;
 
 const HP=[
- {c:'H1',k:'Hold',s:'Delivery',n:'Delivery conformance',
-  d:'Leaf and frame checked against the door and hardware schedule. Certification labels present and legible.'},
- {c:'H2',k:'Hold',s:'Frame',n:'Frame set out and fixed',
-  d:'Frame plumb and square within tolerance. Fixing type and centres to manufacturer specification.'},
- {c:'W1',k:'Witness',s:'Hung',n:'Leaf hung, clearances recorded',
-  d:'Perimeter and threshold gaps measured and within AS 1905.1 tolerance for the rating.'},
- {c:'H3',k:'Hold',s:'Hardware',n:'Hardware installed to set',
+ {c:'H1',s:'delivery check',n:'Delivery conformance',
+  d:'Leaf and frame checked against the schedule. Certification labels present and legible.'},
+ {c:'H2',s:'frame',n:'Frame set out and fixed',
+  d:'Frame plumb and square within tolerance. Fixings to manufacturer specification.'},
+ {c:'W1',s:'leaf hang',n:'Leaf hung, clearances recorded',
+  d:'Perimeter and threshold gaps measured, within AS 1905.1 tolerance for the rating.'},
+ {c:'H3',s:'hardware',n:'Hardware installed to set',
   d:'All items fitted per the hardware set. Fire-rated components certified for the assembly.'},
- {c:'W2',k:'Witness',s:'Function',n:'Function test',
+ {c:'W2',s:'function test',n:'Function test',
   d:'Self-closes from 15 degrees and latches without manual assistance. Seals continuous.'},
- {c:'H4',k:'Hold',s:'Tag',n:'Fire tag affixed and registered',fire:true,
-  d:'Tag number recorded against the door reference and entered in the fire door register per AS 1905.1.'},
- {c:'H5',k:'Hold',s:'Handover',n:'Final QA and handover',
-  d:'Defects closed out. Doorset released for inclusion in the handover pack.'}
+ {c:'H4',s:'fire tag',n:'Fire tag affixed and registered',fire:true,
+  d:'Tag number recorded against the door and entered in the fire door register per AS 1905.1.'},
+ {c:'H5',s:'handover',n:'Final QA and handover',
+  d:'Defects closed out. Doorset released for the handover pack.'}
 ];
 
-const KEY='doorset-itp-v2';
-let doors=[],signs={},filter='all';
+const KEY='doorset-itp-v3';
+let doors=[],signs={},filter='all',open=null;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fire=d=>d.frl&&d.frl!=='-';
@@ -296,108 +211,89 @@ function parseCSV(t){
     h.forEach((k,i)=>o[k]=c[i]||'');return o}).filter(o=>o.ref);
 }
 
-function strip(){
-  const cells=HP.map(h=>{
-    const scope=doors.filter(d=>has(h,d));
-    const cleared=scope.filter(d=>ok(d,h)).length;
-    const stuck=doors.filter(d=>{const n=next(d);return n&&n.c===h.c}).length;
-    return{h,cleared,total:scope.length,stuck};
-  });
-  const worst=cells.reduce((a,b)=>b.stuck>a.stuck?b:a,cells[0]);
+/* one sentence, not a dashboard */
+function state(){
   const rel=doors.filter(d=>!next(d)).length;
-  const out=doors.reduce((n,d)=>n+(pts(d).length-done(d)),0);
-
-  $('#strip').innerHTML=cells.map(c=>{
-    const pct=c.total?c.cleared/c.total:0;
-    return `<div class="st ${c.h.fire?'fireonly':''} ${c.stuck&&c===worst&&c.stuck>0?'stuck':''}">
-      <div class="n">${c.cleared}<u>/${c.total}</u></div>
-      <div class="plot"><i style="width:${Math.max(pct*100,1.5)}%"></i></div>
-      <div class="k"><b>${c.h.c}</b> ${esc(c.h.s)}</div></div>`;}).join('');
-
-  $('#stripnote').innerHTML = worst&&worst.stuck
-    ? `Bottleneck: <b>${worst.stuck}</b> doorset${worst.stuck===1?'':'s'} waiting on
-       <span class="m">${worst.h.c}</span> <b>${esc(worst.h.n).toLowerCase()}</b>.`
-    : `<b>All doorsets released.</b> Handover pack is complete.`;
-  $('#fDoors').textContent=doors.length;
-  $('#fRel').textContent=`${rel} of ${doors.length}`;
-  $('#fOut').textContent=`${out} sign-off${out===1?'':'s'}`;
+  if(!doors.length){$('#state').textContent='';return}
+  if(rel===doors.length){
+    $('#state').innerHTML=`<b>All ${doors.length} doorsets released.</b> The handover pack is complete.`;
+    return;
+  }
+  const tally={};
+  doors.filter(next).forEach(d=>{const c=next(d);tally[c.c]=(tally[c.c]||0)+1});
+  const top=Object.entries(tally).sort((a,b)=>b[1]-a[1])[0];
+  const hp=HP.find(h=>h.c===top[0]);
+  $('#state').innerHTML=`<b>${rel} of ${doors.length} doorsets released.</b>
+    The most common hold-up is <span class="w">${esc(hp.s)}</span> — ${top[1]} waiting.`;
+  $('#fAll').textContent='All '+doors.length;
 }
 
 function track(d){
-  const n=next(d);
-  const cells=HP.map(h=>{
-    if(!has(h,d))return `<i class="na" title="${h.c} not applicable"></i>`;
-    if(ok(d,h))return `<i title="${h.c} signed"></i>`;
-    if(n&&n.c===h.c)return `<i class="next" title="${h.c} ${esc(h.s)} — next"></i>`;
-    return `<i class="open" title="${h.c} ${esc(h.s)}"></i>`;
-  }).join('');
-  return `<span class="trk">${cells}</span>`+(n
-    ? `<span class="at">${n.c}</span>`
-    : `<span class="at done">released</span>`);
+  return `<span class="trk">`+HP.map(h=>
+    !has(h,d) ? `<i class="na" title="${h.c} not applicable"></i>`
+    : ok(d,h) ? `<i title="${h.c} signed"></i>`
+              : `<i class="open" title="${h.c} ${esc(h.s)}"></i>`).join('')+`</span>`;
 }
 
-function rows(){
+function render(){
+  state();
   const list=doors.filter(d=>filter==='fire'?fire(d):filter==='open'?!!next(d):true);
-  $('#rows').innerHTML=list.map(d=>`
-    <tr class="row" data-ref="${esc(d.ref)}" aria-expanded="${d._o?'true':'false'}" tabindex="0">
-      <td class="ref">${esc(d.ref)}</td>
-      <td class="loc">${esc(d.location)}</td>
-      <td class="d">${esc(d.leaf)}</td>
-      <td class="d">${esc(d.frame)}</td>
-      <td class="frl ${fire(d)?'rated':''}">${fire(d)?esc(d.frl):'—'}</td>
-      <td class="d">${esc(d.hw)}</td>
-      <td class="tag ${d.tag?'':'none'}">${esc(d.tag||'—')}</td>
-      <td>${track(d)}</td>
-    </tr>`+(d._o?detail(d):'')).join('')
-    ||`<tr><td colspan="8" style="padding:24px 9px;color:var(--ink-3)">No doorsets match.</td></tr>`;
+  $('#list').innerHTML = list.map(d=>{
+    const n=next(d);
+    const row=`<button class="door" data-ref="${esc(d.ref)}" aria-expanded="${open===d.ref}">
+      <span class="ref">${esc(d.ref)}</span>
+      <span class="loc">${esc(d.location)}${fire(d)?`<em>${esc(d.frl)}</em>`:''}</span>
+      <span class="st">${track(d)}<span class="at ${n?'':'done'}">${n?esc(n.s):'released'}</span></span>
+    </button>`;
+    return row + (open===d.ref ? panel(d) : '');
+  }).join('') || `<p style="padding:26px 2px;color:var(--ink-3)">No doorsets match.</p>`;
 }
 
-function detail(d){
+function panel(d){
   const body=HP.map(h=>{
-    if(!has(h,d))return `<tr class="skip"><td class="c">${h.c}</td><td class="kd">${h.k}</td>
-      <td class="nm">${esc(h.n)}<span>Not applicable — non-rated doorset.</span></td>
-      <td class="by" style="color:var(--ink-3)">n/a</td></tr>`;
+    if(!has(h,d)) return `<div class="pt skip">
+      <div class="h"><u>${h.c}</u>${esc(h.n)}</div>
+      <span class="na-note">not applicable</span></div>`;
     const k=d.ref+'|'+h.c,s=signs[k];
-    return `<tr><td class="c">${h.c}</td><td class="kd">${h.k}</td>
-      <td class="nm">${esc(h.n)}<span>${esc(h.d)}</span></td>
-      <td class="by">${s
-        ?`${esc(s.by)}<u>${esc(s.on)}</u><button class="undo" data-k="${esc(k)}" data-a="u">undo</button>`
-        :`<button class="sign" data-k="${esc(k)}" data-a="s">Sign off</button>`}</td></tr>`;
+    return `<div class="pt ${s?'signed':''}">
+      <div><div class="h"><u>${h.c}</u>${esc(h.n)}</div><p>${esc(h.d)}</p></div>
+      ${s?`<span class="by">${esc(s.by)} <u>${esc(s.on)}</u>
+            <button class="undo" data-k="${esc(k)}" data-a="u">undo</button></span>`
+         :`<button class="sign" data-k="${esc(k)}" data-a="s">Sign off</button>`}</div>`;
   }).join('');
-  return `<tr class="det"><td colspan="8"><div class="itp"><table>
-    <thead><tr><th colspan="3">Hold points — ${esc(d.ref)}${fire(d)?' · fire-rated assembly':''}</th>
-    <th class="r">${done(d)} of ${pts(d).length} signed</th></tr></thead>
-    <tbody>${body}</tbody></table></div></td></tr>`;
+  return `<div class="itp"><div class="spec">
+      <span>Leaf <b>${esc(d.leaf)}</b></span><span>Frame <b>${esc(d.frame)}</b></span>
+      <span>Hardware <b>${esc(d.hw)}</b></span>
+      ${d.tag?`<span>Fire tag <b>${esc(d.tag)}</b></span>`:''}
+    </div>${body}</div>`;
 }
 
-function render(){strip();rows()}
-
-$('#rows').addEventListener('click',e=>{
+$('#list').addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');
-  if(b){const k=b.dataset.k;
+  if(b){e.stopPropagation();const k=b.dataset.k;
     if(b.dataset.a==='s')signs[k]={by:($('#initials').value||'QA').toUpperCase().slice(0,4),
       on:new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short'})};
     else delete signs[k];
     save();render();return}
-  const r=e.target.closest('tr.row');
-  if(r){const d=doors.find(x=>x.ref===r.dataset.ref);if(d){d._o=!d._o;render()}}
+  const r=e.target.closest('.door');
+  if(r){open = open===r.dataset.ref ? null : r.dataset.ref; render()}
 });
-$('#rows').addEventListener('keydown',e=>{
-  if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('row')){e.preventDefault();e.target.click()}});
-function setF(f,b){filter=f;['#fAll','#fFire','#fOpen'].forEach(s=>$(s).setAttribute('aria-pressed','false'));
-  b.setAttribute('aria-pressed','true');rows()}
+function setF(f,b){filter=f;open=null;
+  ['#fAll','#fFire','#fOpen'].forEach(s=>$(s).setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');render()}
 $('#fAll').onclick=e=>setF('all',e.currentTarget);
 $('#fFire').onclick=e=>setF('fire',e.currentTarget);
 $('#fOpen').onclick=e=>setF('open',e.currentTarget);
-$('#expandAll').onclick=e=>{const a=doors.some(d=>!d._o);doors.forEach(d=>d._o=a);
-  e.currentTarget.textContent=a?'Collapse all':'Expand all';rows()};
-$('#printPack').onclick=()=>{doors.forEach(d=>d._o=true);rows();window.print()};
+$('#printPack').onclick=()=>{const o=open;open='__all__';
+  $('#list').innerHTML=doors.map(d=>`<button class="door"><span class="ref">${esc(d.ref)}</span>
+    <span class="loc">${esc(d.location)}${fire(d)?`<em>${esc(d.frl)}</em>`:''}</span>
+    <span class="st">${track(d)}</span></button>`+panel(d)).join('');
+  window.print();open=o;render()};
 $('#doImport').onclick=()=>{const m=$('#msg');
   try{const r=parseCSV($('#csv').value);if(!r.length)throw new Error('no doorsets found');
-    doors=r;render();m.className='msg';m.textContent=`${r.length} doorsets · ${r.filter(fire).length} fire-rated`;
+    doors=r;open=null;render();m.className='msg';
+    m.textContent=`${r.length} doorsets · ${r.filter(fire).length} fire-rated`;
   }catch(err){m.className='msg bad';m.textContent='Could not read that — '+err.message}};
-$('#loadSample').onclick=()=>{$('#csv').value=SAMPLE;doors=parseCSV(SAMPLE);
-  $('#msg').className='msg';$('#msg').textContent='Sample restored.';render()};
 
 load();
 doors=parseCSV(SAMPLE);
@@ -414,6 +310,5 @@ if(!Object.keys(signs).length){
   });
   save();
 }
-doors[0]._o=true;
 render();
 </script>
