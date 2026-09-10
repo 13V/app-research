@@ -36,7 +36,7 @@ All three give you HTTPS and a custom domain on the free tier.
 ### 3. GitHub Pages — free, but the URL says github.io
 
 Fine if you attach a custom domain. Without one, `yourname.github.io/...` is only slightly better
-than the artifact link — it still says "developer側 project" rather than "your studio".
+than the artifact link — it still reads as someone else's project rather than your studio.
 
 ### 4. Any web host you already pay for
 
@@ -59,9 +59,11 @@ It's one static file. Drop it in a folder and you're done.
 
 ## Before you send it
 
-1. Replace `[your studio]` in the explainer panel with your business name.
-2. Consider adding your logo and a real "get in touch" link to the explainer column — right now
-   it's deliberately unbranded.
+1. Set `STUDIO` and `EMAIL` at the top of the `<script>` in `doorset-itp-register.html`,
+   then re-run `python3 demo/build-standalone.py`. Those two constants fill the page header,
+   the footer and the mailto link — no placeholder reaches the client.
+2. The page now carries your name in a header bar and a "get in touch" mailto in the footer.
+   Swap the green tick mark for your own logo if you have one.
 3. The panel states it's a prototype on sample data and not Kolen's project information.
    **Leave that in.**
 4. Sign-offs save to the viewer's browser via localStorage. Nothing is transmitted anywhere.

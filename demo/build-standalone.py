@@ -92,7 +92,7 @@ def main():
                             '--dis:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;')
 
     manifest = ('{"name":"Doorset Checks","short_name":"Doorsets","display":"standalone",'
-                '"background_color":"#EDEEF0","theme_color":"#0E7C4A","start_url":"./",'
+                '"background_color":"#EFF0F2","theme_color":"#FFFFFF","start_url":"./",'
                 f'"icons":[{{"src":"data:image/svg+xml,{ICON_SVG}","sizes":"any",'
                 '"type":"image/svg+xml"}]}')
 
@@ -104,7 +104,8 @@ def main():
 <title>{TITLE}</title>
 <meta name="description" content="{DESC}">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#0E7C4A">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#17191C" media="(prefers-color-scheme:dark)">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="{TITLE}">

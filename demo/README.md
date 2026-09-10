@@ -51,7 +51,9 @@ rather than a web page. On a phone it fills the screen.
 
 ## Before you send it
 
-1. Replace `[your studio]` in the explainer panel with your business name.
+1. Open `doorset-itp-register.html` and set the two constants at the top of the `<script>`:
+   `STUDIO` (your business name) and `EMAIL` (where replies go). They fill the page header,
+   the footer and the mailto link — two lines, and no placeholder reaches the client.
 2. The panel already states it's a prototype on sample data and not Kolen's project information.
    **Leave that in.**
 3. Sign-offs save to the viewer's own browser only. Say so if asked.

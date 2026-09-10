@@ -1,185 +1,349 @@
 <title>Doorset Checks</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&display=swap">
 <style>
 :root{
-  --bg:#EDEEF0; --card:#FFFFFF; --sub:#F5F6F7;
-  --ink:#15181B; --ink-2:#5D646B; --ink-3:#9198A0;
-  --line:#E2E4E7; --line-2:#CFD3D8;
-  --go:#0E7C4A; --go-soft:#E6F4ED;
-  --fire:#C0392B; --fire-soft:#FBEAE8;
-  --amber:#B7791F;
+  --page:#E4E6EA; --bezel:#0B0D0F;
+  --bg:#EFF0F2; --card:#FFFFFF; --sub:#ECEEF1;
+  --ink:#15181B; --ink-2:#5D646B; --ink-3:#666C73; --ink-4:#889099;
+  --line:#E2E4E7; --line-2:#8A9199; --track:#C2C7CD;
+  --go:#0C7245; --go-fill:#0E7C4A; --on-go:#FFFFFF; --go-soft:#E6F4ED;
+  --fire:#B42318; --amber:#8A5A05; --go-line:#B9DCCA;
+  --seg-thumb:#FFFFFF;
+  --seg-shadow:0 1px 2px rgba(16,20,24,.14),0 0 0 .5px rgba(16,20,24,.05);
+  --foot-shadow:0 -1px 0 var(--line),0 -12px 24px -18px rgba(16,20,26,.35);
+  --bezel-shadow:inset 0 0 0 1px rgba(255,255,255,.08),0 0 0 1px rgba(16,20,26,.10),
+                 0 2px 4px rgba(16,20,26,.18),0 16px 28px -12px rgba(16,20,26,.30),
+                 0 44px 72px -32px rgba(16,20,26,.34);
+  --gut:16px;
   --ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --dis:"Archivo",system-ui,sans-serif;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --bg:#0C0E10; --card:#17191C; --sub:#1F2226;
-    --ink:#F0F1F2; --ink-2:#A6ADB4; --ink-3:#767D85;
-    --line:#26292D; --line-2:#3A3F45;
-    --go:#3FB57C; --go-soft:#12291F; --fire:#E2695C; --fire-soft:#2C1A18; --amber:#D9A441;
+    --page:#08090B; --bezel:#262B31;
+    --bg:#0C0E10; --card:#17191C; --sub:#22262A;
+    --ink:#F0F1F2; --ink-2:#A6ADB4; --ink-3:#9AA1A9; --ink-4:#767D85;
+    --line:#26292D; --line-2:#697079; --track:#3F454C;
+    --go:#4FC08D; --go-fill:#2E9C67; --on-go:#08130D; --go-soft:#12291F;
+    --fire:#F07A6C; --amber:#D9A441; --go-line:#25493A;
+    --seg-thumb:#2A2E33; --seg-shadow:0 1px 3px rgba(0,0,0,.55);
+    --foot-shadow:0 -1px 0 var(--line),0 -12px 24px -16px rgba(0,0,0,.55);
+    --bezel-shadow:inset 0 0 0 1px rgba(255,255,255,.10),0 0 0 1px #000,
+                   0 30px 60px -24px rgba(0,0,0,.80);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0C0E10; --card:#17191C; --sub:#1F2226;
-  --ink:#F0F1F2; --ink-2:#A6ADB4; --ink-3:#767D85;
-  --line:#26292D; --line-2:#3A3F45;
-  --go:#3FB57C; --go-soft:#12291F; --fire:#E2695C; --fire-soft:#2C1A18; --amber:#D9A441;
+  --page:#08090B; --bezel:#262B31;
+  --bg:#0C0E10; --card:#17191C; --sub:#22262A;
+  --ink:#F0F1F2; --ink-2:#A6ADB4; --ink-3:#9AA1A9; --ink-4:#767D85;
+  --line:#26292D; --line-2:#697079; --track:#3F454C;
+  --go:#4FC08D; --go-fill:#2E9C67; --on-go:#08130D; --go-soft:#12291F;
+  --fire:#F07A6C; --amber:#D9A441; --go-line:#25493A;
+  --seg-thumb:#2A2E33; --seg-shadow:0 1px 3px rgba(0,0,0,.55);
+  --foot-shadow:0 -1px 0 var(--line),0 -12px 24px -16px rgba(0,0,0,.55);
+  --bezel-shadow:inset 0 0 0 1px rgba(255,255,255,.10),0 0 0 1px #000,
+                 0 30px 60px -24px rgba(0,0,0,.80);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);
+body{margin:0;background:var(--page);color:var(--ink);font-family:var(--ui);
   font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
-button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
-:focus-visible{outline:2px solid var(--go);outline-offset:2px}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit;
+  touch-action:manipulation}
+:focus-visible{outline:none;box-shadow:0 0 0 2px var(--card),0 0 0 4px var(--ink)}
+.row:focus-visible,.chk:focus-visible{box-shadow:inset 0 0 0 3px var(--ink)}
+
+/* ── page chrome ── */
+.topbar{max-width:1120px;margin:0 auto;padding:0 24px;height:60px;display:flex;
+  align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.mark{flex:none;width:20px;height:20px;border-radius:6px;background:var(--go-fill);
+  display:flex;align-items:center;justify-content:center}
+.brand b{min-width:0;font-family:var(--dis);font-size:14.5px;font-weight:700;
+  letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chips{display:flex;align-items:center;gap:8px}
+.tagline{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);margin-right:4px}
+.chip{display:flex;gap:6px;align-items:center;height:28px;padding:0 10px;border-radius:8px;
+  border:1px solid var(--line-2);font-size:12px;font-weight:600;color:var(--ink-2);
+  background:var(--card);transition:color .18s ease,border-color .18s ease}
+.chip:hover{color:var(--ink);border-color:var(--ink-3)}
+.chip svg{flex:none;display:block}
+.botbar{max-width:1120px;margin:0 auto;padding:22px 24px 44px;border-top:1px solid var(--line);
+  display:flex;gap:18px;justify-content:space-between;align-items:baseline;flex-wrap:wrap}
+.botbar p{margin:0;font-size:12.5px;color:var(--ink-3);max-width:64ch;line-height:1.55}
+.botbar a{font-size:14px;color:var(--go);font-weight:600;text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:3px;white-space:nowrap}
 
 /* ── page: explainer + device ── */
-.stage{max-width:1060px;margin:0 auto;padding:32px 22px 64px;
-  display:grid;grid-template-columns:1fr 390px;gap:56px;align-items:start}
+.stage{max-width:1120px;margin:0 auto;padding:56px 24px 72px;
+  display:grid;grid-template-columns:minmax(0,1fr) 417px;gap:72px;align-items:center}
 .tell .kicker{font-family:var(--dis);font-size:11px;font-weight:600;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-3)}
-.tell h1{font-family:var(--dis);font-size:34px;font-weight:700;letter-spacing:-.025em;
-  line-height:1.12;margin:10px 0 0;text-wrap:balance}
-.tell .lede{font-size:17px;color:var(--ink-2);margin:14px 0 0;max-width:44ch;line-height:1.6}
-.tell ol{margin:26px 0 0;padding:0;list-style:none;counter-reset:s;max-width:44ch}
-.tell ol li{counter-increment:s;position:relative;padding:0 0 14px 34px;font-size:15.5px;
+.tell h1{font-family:var(--dis);font-size:clamp(30px,3.4vw,42px);font-weight:700;
+  letter-spacing:-.03em;line-height:1.05;margin:12px 0 0;max-width:15ch;text-wrap:balance}
+.tell .lede{font-size:17.5px;color:var(--ink-2);margin:16px 0 0;max-width:44ch;
+  line-height:1.62;text-wrap:pretty}
+.tell ol{margin:28px 0 0;padding:0 0 0 30px;list-style:none;counter-reset:s;max-width:44ch;
+  position:relative}
+.tell ol::before{content:"";position:absolute;left:11px;top:6px;bottom:20px;width:1px;
+  background:var(--line-2)}
+.tell ol li{counter-increment:s;position:relative;padding:0 0 15px 0;font-size:15.5px;
   color:var(--ink-2);line-height:1.5}
-.tell ol li::before{content:counter(s);position:absolute;left:0;top:1px;width:22px;height:22px;
-  border-radius:50%;background:var(--ink);color:var(--bg);font-size:12px;font-weight:600;
-  display:flex;align-items:center;justify-content:center;font-family:var(--dis)}
+.tell ol li::before{content:counter(s);position:absolute;left:-30px;top:1px;width:23px;height:23px;
+  border-radius:50%;background:var(--bg);border:1px solid var(--line-2);color:var(--ink-2);
+  font-size:11.5px;font-weight:600;display:flex;align-items:center;justify-content:center;
+  font-family:var(--dis);font-variant-numeric:tabular-nums}
+.tell ol li:first-child::before{background:var(--ink);border-color:var(--ink);color:var(--card)}
 .tell ol li b{color:var(--ink);font-weight:600}
-.tell .sig{margin:26px 0 0;padding:15px 17px;background:var(--card);border:1px solid var(--line);
-  border-radius:10px;font-size:14.5px;color:var(--ink-2);line-height:1.55;max-width:44ch}
+.tell .sig{margin:28px 0 0;padding:2px 0 2px 16px;border-left:2px solid var(--go);
+  font-size:14px;color:var(--ink-2);line-height:1.6;max-width:44ch}
 .tell .sig b{color:var(--ink)}
 
 /* ── device ── */
-.device{position:sticky;top:32px;justify-self:center}
-.bezel{width:390px;height:800px;background:#0A0C0D;border-radius:44px;padding:11px;
-  box-shadow:0 1px 3px rgba(0,0,0,.28),0 22px 50px -12px rgba(0,0,0,.42)}
-.screen{width:100%;height:100%;background:var(--bg);border-radius:34px;overflow:hidden;
+.device{justify-self:center}
+.bezel{width:417px;height:876px;background:var(--bezel);border-radius:59px;padding:12px;
+  box-shadow:var(--bezel-shadow)}
+.screen{width:100%;height:100%;background:var(--bg);border-radius:47px;overflow:hidden;
   position:relative;display:flex;flex-direction:column}
-.caption{text-align:center;font-size:13px;color:var(--ink-3);margin-top:14px}
+.screen::before{content:"";position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  width:125px;height:37px;border-radius:19px;background:#000;z-index:8;pointer-events:none}
+.screen::after{content:"";position:absolute;left:50%;bottom:8px;transform:translateX(-50%);
+  width:140px;height:5px;border-radius:100px;background:var(--ink);opacity:.28;z-index:7;
+  pointer-events:none}
+.caption{text-align:center;font-size:13px;color:var(--ink-3);margin-top:16px}
 
 /* status bar */
-.statusbar{flex:none;height:46px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 26px 0 30px;font-size:14px;font-weight:600;background:var(--card);color:var(--ink)}
-.statusbar .dots{display:flex;gap:3px;align-items:center}
+.statusbar{flex:none;height:54px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 22px 0 32px;background:var(--card);color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.statusbar .clock{font-size:15px;font-weight:600;letter-spacing:-.3px}
+.statusbar .dots{display:flex;gap:3px;align-items:flex-end}
 .statusbar .dots i{width:4px;border-radius:1px;background:var(--ink);display:block}
-.statusbar .batt{width:22px;height:11px;border:1.4px solid var(--ink);border-radius:3px;
-  padding:1.4px;display:flex}
-.statusbar .batt span{flex:1;background:var(--ink);border-radius:1px}
+.statusbar .batt{position:relative;width:25px;height:12px;border:1px solid var(--ink);
+  border-radius:3.5px;padding:1.5px;display:flex}
+.statusbar .batt::after{content:"";position:absolute;right:-3px;top:50%;
+  transform:translateY(-50%);width:1.5px;height:4px;border-radius:0 1px 1px 0;
+  background:var(--ink);opacity:.4}
+.statusbar .batt span{flex:1;background:var(--ink);border-radius:1.5px}
 
 /* nav bar */
-.nav{flex:none;background:var(--card);border-bottom:1px solid var(--line);
-  padding:6px 14px 12px;display:flex;align-items:center;gap:6px;min-height:52px}
-.nav .back{display:flex;align-items:center;gap:3px;color:var(--go);font-size:16px;
-  font-weight:500;padding:6px 6px 6px 2px;margin-left:-4px}
-.nav .ttl{flex:1;min-width:0}
-.nav .ttl b{display:block;font-size:17px;font-weight:600;letter-spacing:-.01em;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav{flex:none;background:var(--card);box-shadow:0 1px 0 var(--line);position:relative;z-index:2;
+  padding:6px 12px 12px;display:flex;align-items:center;gap:8px;min-height:52px}
+.nav.flat{box-shadow:none}
+.nav .back{display:flex;align-items:center;gap:5px;color:var(--go);font-size:16px;
+  font-weight:400;min-height:44px;padding:0 10px 0 4px;margin-left:-6px;border-radius:10px;
+  flex:none}
+.nav .ttl{flex:1;min-width:0;animation:push .24s cubic-bezier(.32,.72,0,1) 70ms both}
+.nav .ttl b{display:block;font-family:var(--dis);font-size:17px;font-weight:600;
+  letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-variant-numeric:tabular-nums}
 .nav .ttl span{display:block;font-size:13px;color:var(--ink-2);margin-top:1px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.nav .sync{font-size:11.5px;color:var(--ink-3);display:flex;align-items:center;gap:5px;
-  white-space:nowrap}
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.nav .sync{flex:none;font-size:11px;color:var(--ink-3);display:flex;align-items:center;gap:5px;
+  white-space:nowrap;font-weight:600}
 .nav .sync i{width:7px;height:7px;border-radius:50%;background:var(--go);display:block}
 
 /* scrolling body */
-.body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:22px}
+.body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding-bottom:30px}
 .body::-webkit-scrollbar{width:0}
+.pane{animation:push .3s cubic-bezier(.32,.72,0,1) both}
+.pane.back{animation-name:pop}
+@keyframes push{from{transform:translate3d(16px,0,0);opacity:0}to{transform:none;opacity:1}}
+@keyframes pop{from{transform:translate3d(-16px,0,0);opacity:0}to{transform:none;opacity:1}}
 
-/* segmented */
-.seg{display:flex;gap:2px;padding:10px 14px 4px;background:var(--card)}
-.seg button{flex:1;padding:8px 0;font-size:14px;font-weight:600;border-radius:8px;
-  color:var(--ink-2);background:var(--sub)}
-.seg button[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+/* segmented control */
+.seg{background:var(--card);padding:10px var(--gut) 12px;box-shadow:0 1px 0 var(--line);
+  position:relative;z-index:1}
+.segtrack{position:relative;display:flex;background:var(--sub);border-radius:11px;padding:3px;
+  height:46px}
+.segtrack::before{content:"";position:absolute;top:3px;bottom:3px;left:3px;width:calc(50% - 3px);
+  border-radius:8px;background:var(--seg-thumb);box-shadow:var(--seg-shadow);
+  transform:translate3d(var(--segx,0),0,0);transition:transform .3s cubic-bezier(.32,.72,0,1)}
+.seg button{position:relative;z-index:1;flex:1;background:none;font-size:13.5px;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink-2);font-variant-numeric:tabular-nums;border-radius:8px;
+  margin:-3px 0;padding:3px 0;transition:color .18s cubic-bezier(.4,0,.2,1)}
+.seg button[aria-pressed="true"]{color:var(--ink)}
+.seg button:active{transform:scale(.97);transition:transform 90ms cubic-bezier(.2,0,0,1)}
 
-.groupcap{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
-  color:var(--ink-3);padding:20px 20px 8px}
+.groupcap{font-family:var(--dis);font-size:13px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-3);padding:22px var(--gut) 8px;
+  font-variant-numeric:tabular-nums}
 
 /* door rows */
 .rows{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.row{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:14px 16px;
-  border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
-.row:active{background:var(--sub)}
-.ring{flex:none;width:42px;height:42px;position:relative}
-.ring svg{transform:rotate(-90deg)}
+.row{position:relative;display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+  padding:14px var(--gut);transition:background-color .3s cubic-bezier(.25,.1,.25,1)}
+.row::after{content:"";position:absolute;left:73px;right:0;bottom:0;height:1px;
+  background:var(--line);transform:scaleY(.5);transform-origin:bottom}
+.row:last-child::after{display:none}
+.row:active{background:var(--sub);transition-duration:0s}
+.ring{flex:none;width:44px;height:44px;position:relative}
+.ring svg{transform:rotate(-90deg);display:block}
 .ring b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;letter-spacing:-.03em}
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ring b em{font-style:normal;font-family:var(--dis);font-size:13px;font-weight:700;color:var(--ink)}
+.ring b s{text-decoration:none;font-size:9.5px;font-weight:600;color:var(--ink-3);margin-left:.5px}
+.ring b svg{transform:none}
 .row .txt{flex:1;min-width:0}
-.row .txt b{display:block;font-size:16px;font-weight:600;letter-spacing:-.01em}
-.row .txt span{display:block;font-size:13.5px;color:var(--ink-2);margin-top:1px;
+.row .txt b{display:block;font-family:var(--dis);font-size:16px;font-weight:600;
+  letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+.row .txt span{display:block;font-size:13px;color:var(--ink-3);margin-top:1px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.row .txt span.wait{color:var(--amber);font-weight:500}
-.row .txt span.ok{color:var(--go);font-weight:600}
-.pill{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;
-  border-radius:5px;background:var(--fire-soft);color:var(--fire)}
-.chev{flex:none;color:var(--ink-3);font-size:20px;line-height:1}
+.row .txt span.wait,.row .txt span.ok{font-weight:600;color:var(--ink-2)}
+.row .txt span.ok{color:var(--go)}
+.row .txt span.wait b,.row .txt span.ok b{display:inline;color:var(--ink);font-weight:600}
+.row .txt span.ok b{color:var(--go)}
+.row .txt span i{display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--ink-4);margin-right:6px;vertical-align:1px}
+.row .txt span.zero i{background:var(--amber)}
+.row .txt span.ok i{background:var(--go)}
+.pill{flex:none;font-family:var(--dis);font-size:11px;font-weight:600;letter-spacing:.02em;
+  padding:3px 7px 4px;border-radius:6px;border:1px solid var(--line-2);color:var(--ink-2);
+  background:transparent;margin-right:2px;font-variant-numeric:tabular-nums}
+.chev{flex:none;align-self:center;color:var(--ink-4);display:block}
 
 /* door spec */
-.spec{background:var(--card);border-bottom:1px solid var(--line);padding:14px 16px;
-  display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
-.spec div span{display:block;font-size:11px;font-weight:600;letter-spacing:.06em;
-  text-transform:uppercase;color:var(--ink-3)}
-.spec div b{display:block;font-size:14.5px;font-weight:600;margin-top:2px}
+.spec{background:var(--card);border-bottom:1px solid var(--line);padding:14px var(--gut);
+  display:grid;grid-template-columns:1fr 1fr;gap:14px var(--gut)}
+.spec div span{display:block;font-family:var(--dis);font-size:11px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.spec div b{display:block;font-family:var(--dis);font-size:15px;font-weight:600;margin-top:2px;
+  font-variant-numeric:tabular-nums}
 
 /* check rows */
-.chk{display:flex;align-items:flex-start;gap:13px;width:100%;text-align:left;padding:14px 16px;
-  border-bottom:1px solid var(--line);background:var(--card)}
-.chk:last-child{border-bottom:0}
-.chk:active{background:var(--sub)}
+.chk{position:relative;display:flex;align-items:flex-start;gap:13px;width:100%;text-align:left;
+  padding:14px var(--gut);background:var(--card);
+  transition:background-color .3s cubic-bezier(.25,.1,.25,1)}
+.chk::after{content:"";position:absolute;left:55px;right:0;bottom:0;height:1px;
+  background:var(--line);transform:scaleY(.5);transform-origin:bottom}
+.chk:last-child::after{display:none}
+.chk:active{background:var(--sub);transition-duration:0s}
 .box{flex:none;width:26px;height:26px;border-radius:50%;border:2px solid var(--line-2);
-  margin-top:1px;display:flex;align-items:center;justify-content:center}
-.chk.on .box{background:var(--go);border-color:var(--go)}
-.chk.on .box::after{content:"";width:11px;height:6px;border-left:2.5px solid #fff;
-  border-bottom:2.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+  margin-top:1px;display:flex;align-items:center;justify-content:center;color:var(--on-go)}
+.chk.on .box{background:var(--go-fill);border-color:var(--go-fill)}
+.chk.on.fresh .box{animation:boxpop .32s cubic-bezier(.34,1.56,.64,1)}
+@keyframes boxpop{from{transform:scale(.55)}to{transform:scale(1)}}
 .chk .t{flex:1;min-width:0}
-.chk .t b{display:block;font-size:15.5px;font-weight:600;line-height:1.35}
+.chk .t b{display:block;font-size:16px;font-weight:600;line-height:1.35;letter-spacing:-.01em}
 .chk.on .t b{font-weight:500;color:var(--ink-2)}
-.chk .t span{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.chk .t span{display:block;font-size:13.5px;line-height:1.45;color:var(--ink-3);margin-top:2px;
+  font-variant-numeric:tabular-nums}
 .chk .t span.done{color:var(--go)}
-.chk.na{opacity:.45}
-.chk .go{flex:none;color:var(--ink-3);font-size:20px;line-height:1;margin-top:3px}
+.chk.na{background:var(--sub)}
+.chk.na .t b{color:var(--ink-2);font-weight:500}
+.chk.na .box{border-style:dashed;border-width:1.5px;border-color:var(--line-2);background:none}
+.chk .go{flex:none;align-self:center;color:var(--ink-4);display:block}
 
 /* check detail */
-.det{padding:18px 16px 0}
-.det .code{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--go)}
-.det h2{margin:6px 0 0;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.25}
-.det p{margin:10px 0 0;font-size:15.5px;color:var(--ink-2);line-height:1.55}
-.shot{margin:18px 0 0}
-.shot .cap{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--ink-3);margin-bottom:8px}
-.shots{display:flex;gap:9px;flex-wrap:wrap}
-.thumb{width:76px;height:76px;border-radius:10px;background:var(--sub);border:1px solid var(--line);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
-  font-size:9.5px;color:var(--ink-3);text-align:center;padding:4px;overflow:hidden}
-.thumb.add{border-style:dashed;border-color:var(--line-2);color:var(--go);font-weight:600;font-size:11px}
+.det{padding:18px var(--gut) 0}
+.det .code{font-family:var(--dis);font-size:12.5px;font-weight:700;letter-spacing:.09em;
+  color:var(--go)}
+.det .code em{font-style:normal;color:var(--fire)}
+.det h2{margin:6px 0 0;font-family:var(--dis);font-size:23px;font-weight:700;
+  letter-spacing:-.022em;line-height:1.2}
+.det p{margin:10px 0 0;font-size:16px;color:var(--ink-2);line-height:1.6}
+.shot{margin:20px 0 0}
+.shot .cap,.steps .cap{font-family:var(--dis);font-size:12px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:9px}
+.shots{display:flex;gap:8px;flex-wrap:wrap}
+.steps{margin:26px 0 0;padding:18px 0 0;border-top:1px solid var(--line)}
+.stepgrid{display:flex;gap:6px;margin-top:9px}
+.step{flex:1;height:44px;border-radius:10px;background:var(--card);color:var(--ink-3);
+  box-shadow:inset 0 0 0 1px var(--line);
+  font-family:var(--dis);font-size:14px;font-weight:600;display:flex;align-items:center;
+  justify-content:center;font-variant-numeric:tabular-nums;
+  transition:transform .28s cubic-bezier(.22,1,.36,1)}
+.step:active{transform:scale(.94);transition-duration:90ms}
+.step.on{background:var(--go-soft);color:var(--go);box-shadow:inset 0 0 0 1px var(--go-line)}
+.step.cur{background:var(--ink);color:var(--card);box-shadow:none}
+.step[disabled]{opacity:1;cursor:default}
+.thumb{position:relative;width:82px;height:82px;border-radius:10px;background:var(--sub);
+  border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:5px;font-size:12px;color:var(--ink-3);text-align:center;
+  padding:4px;overflow:hidden}
+.thumb.add{border-style:dashed;border-color:var(--line-2);color:var(--go);font-weight:600;
+  transition:transform .28s cubic-bezier(.32,.72,0,1)}
+.thumb.add:active{transform:scale(.97);transition:transform 90ms cubic-bezier(.2,0,0,1)}
 .thumb .lens{width:22px;height:22px;border-radius:50%;border:2px solid currentColor}
-.thumb.shot-on{background:linear-gradient(150deg,#8E9AA6,#5C6773 60%,#454E58);color:#fff;
-  border-color:transparent;justify-content:flex-end;align-items:flex-start;padding:6px}
-.thumb.shot-on em{font-style:normal;font-size:9px;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.thumb.shot-on{
+  background:
+    linear-gradient(180deg,rgba(0,0,0,0) 48%,rgba(0,0,0,.55) 100%),
+    linear-gradient(var(--a,94deg),#737F8B 0 36%,#39414A 36% 39.5%,#939EA9 39.5% 43%,
+                    #55606A 43% 100%),
+    #4A535C;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);
+  color:#fff;border-color:transparent;justify-content:flex-end;align-items:flex-start;padding:7px}
+.thumb.shot-on em{font-style:normal;font-size:11.5px;font-weight:600;letter-spacing:-.01em;
+  white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.7);font-variant-numeric:tabular-nums}
+.thumb.fresh{animation:thumbIn .28s cubic-bezier(.34,1.4,.64,1) both}
+@keyframes thumbIn{from{transform:scale(.82);opacity:0}to{transform:none;opacity:1}}
 
 /* bottom action */
-.foot{flex:none;background:var(--card);border-top:1px solid var(--line);padding:12px 16px 20px;
-  display:flex;flex-direction:column;gap:9px}
-.big{width:100%;padding:15px;border-radius:12px;background:var(--go);color:#fff;
-  font-size:17px;font-weight:700;letter-spacing:-.01em}
-.big:active{filter:brightness(.92)}
+.foot{flex:none;background:var(--card);box-shadow:var(--foot-shadow);padding:12px var(--gut) 34px;
+  display:flex;flex-direction:column;gap:8px;position:relative;z-index:2}
+.big{width:100%;min-height:56px;padding:14px;border-radius:12px;background:var(--go-fill);
+  color:var(--on-go);font-family:var(--dis);font-size:17px;font-weight:600;letter-spacing:-.005em;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .28s cubic-bezier(.22,1,.36,1),filter .28s linear}
+.big:active{transform:scale(.975);filter:brightness(.94);transition-duration:90ms;
+  transition-timing-function:cubic-bezier(.4,0,1,1)}
+.big:focus-visible{transform:none}
 .big.ghost{background:var(--sub);color:var(--ink)}
-.big.grey{background:var(--sub);color:var(--ink-3)}
-.who{text-align:center;font-size:12.5px;color:var(--ink-3)}
+.big .tick path{stroke-dasharray:17;stroke-dashoffset:17;
+  animation:draw .2s cubic-bezier(.65,0,.35,1) .11s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.who{text-align:center;font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
 
-.done-note{background:var(--go-soft);border-bottom:1px solid var(--line);padding:12px 16px;
+.done-note{background:var(--go-soft);border-bottom:1px solid var(--line);padding:12px var(--gut);
   font-size:14px;color:var(--go);font-weight:600;display:flex;align-items:center;gap:9px}
 
+@media (min-width:901px) and (max-height:920px){
+  .device{transform:scale(.82);transform-origin:top center;margin-bottom:-158px}
+  .stage{align-items:start}
+}
 @media (max-width:900px){
-  .stage{grid-template-columns:1fr;gap:34px;padding:0 0 48px}
-  .device{position:static;order:-1;justify-self:stretch}
-  .bezel{width:100%;height:auto;min-height:100svh;border-radius:0;padding:0;box-shadow:none}
-  .screen{border-radius:0;min-height:100svh}
+  .page{display:flex;flex-direction:column}
+  .stage{order:0;max-width:none;grid-template-columns:1fr;gap:34px;padding:0 0 44px;
+    align-items:start}
+  .device{order:-1;justify-self:stretch;transform:none;margin-bottom:0}
+  .bezel{width:100%;height:auto;min-height:100dvh;border-radius:0;padding:0;box-shadow:none;
+    background:var(--bg)}
+  .screen{border-radius:0;height:auto;min-height:100dvh}
+  .screen::before,.screen::after{display:none}
+  .statusbar{display:none}
+  .nav{padding-top:calc(6px + env(safe-area-inset-top))}
+  .foot{padding-bottom:calc(20px + env(safe-area-inset-bottom))}
   .caption{display:none}
   .tell{padding:0 22px}
+  .topbar{order:1;border-bottom:0;border-top:1px solid var(--line);padding:0 16px;gap:10px}
+  .chips{gap:6px}
+  .botbar{order:2;padding-bottom:calc(44px + env(safe-area-inset-bottom))}
+  .tagline{display:none}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;
+    animation-iteration-count:1!important;transition-duration:.01ms!important;
+    transition-delay:0ms!important;scroll-behavior:auto!important}
+  .pane{animation:rmFade 120ms linear both!important}
+  .big:active{transform:none}
+}
+@keyframes rmFade{from{opacity:0}to{opacity:1}}
+@keyframes ringSweep{from{stroke-dashoffset:119.38}}
 </style>
+
+<div class="page">
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7.5 5.6 11 12 3.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <b id="studio"></b>
+  </div>
+  <div class="chips">
+    <span class="tagline">Prototype &middot; sample data</span>
+    <button class="chip" id="th" type="button"></button>
+    <button class="chip" id="rst" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>Reset demo</button>
+  </div>
+</header>
 
 <div class="stage">
   <div class="tell">
@@ -194,15 +358,14 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
       <li>The office sees it immediately. The handover pack builds itself.</li>
     </ol>
     <p class="sig"><b>Try it.</b> Tap through a door and sign a check off — it behaves like the
-      real thing. Sample job data; nothing here is Kolen's project information.
-      <br><br>Built by <b>[your studio]</b>. If the seven checks are wrong for how you actually
-      work, that's the useful part — tell us where.</p>
+      real thing. If the seven checks are wrong for how you actually work, that's the useful
+      part: tell us where.</p>
   </div>
 
   <div class="device">
     <div class="bezel"><div class="screen">
       <div class="statusbar">
-        <span>7:42</span>
+        <span class="clock">9:41</span>
         <span style="display:flex;gap:7px;align-items:center">
           <span class="dots"><i style="height:5px"></i><i style="height:7px"></i><i style="height:9px"></i><i style="height:11px"></i></span>
           <span class="batt"><span style="flex:0 0 72%"></span></span>
@@ -216,7 +379,22 @@ button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
   </div>
 </div>
 
+<footer class="botbar">
+  <p id="disclose"></p>
+  <a id="mailto" href="#">Get in touch</a>
+</footer>
+
+</div>
+
 <script>
+/* ─────────────────────────────────────────────────────────────────────────────
+   EDIT THESE TWO LINES BEFORE SENDING THIS TO ANYONE.
+   They are the only placeholders in the file — they appear in the header,
+   the footer and the mailto link.                                              */
+const STUDIO = 'Your Studio Name';
+const EMAIL  = 'you@yourstudio.com.au';
+/* ───────────────────────────────────────────────────────────────────────────── */
+
 const DOORS=[
  {ref:'D-1.014',loc:'Ward 1A corridor north',leaf:'2040×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-04',tag:'FD-1142'},
  {ref:'D-1.015',loc:'Ward 1A corridor south',leaf:'2040×920×45 solid core',frame:'Steel, painted',frl:'-/60/30',hw:'HW-04',tag:'FD-1143'},
@@ -246,9 +424,11 @@ const CHECKS=[
   d:'Walk it one more time. Anything outstanding gets raised now, not at handover.'}
 ];
 
-const KEY='kolen-worker-v1';
-let st={}, view={s:'list',door:null,check:null}, tab='todo';
+const KEY='kolen-worker-v1', THKEY='kolen-theme', MAXSHOTS=4;
+let st={}, view={s:'list',door:null,check:null}, tab='todo', dir=1, justSigned=null;
 const $=s=>document.querySelector(s);
+const RM=matchMedia('(prefers-reduced-motion:reduce)');
+const MOBILE=()=>matchMedia('(max-width:900px)').matches;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fire=d=>!!d.frl;
 const applies=(k,d)=>!k.fire||fire(d);
@@ -257,54 +437,86 @@ const on=(d,k)=>st[d.ref+'|'+k.c];
 const nDone=d=>list(d).filter(k=>on(d,k)).length;
 const nextChk=d=>list(d).find(k=>!on(d,k))||null;
 
+const CHEV='<svg class="chev" width="7" height="12" viewBox="0 0 7 12" fill="none" aria-hidden="true"><path d="M1 1l5 5-5 5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const BACKARROW='<svg width="11" height="19" viewBox="0 0 11 19" fill="none" aria-hidden="true"><path d="M9.5 1.5 1.5 9.5l8 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const TICK=(sz,col)=>`<svg width="${sz}" height="${sz}" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7.5 5.6 11 12 3.5" stroke="${col}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const SYNC='<span class="sync"><i></i>Saved</span>';
+
 function load(){try{st=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){st={}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}}
 
+/* ── progress ring ─────────────────────────────────────────────────────────── */
 function ring(done,total){
-  const r=17,c=2*Math.PI*r,p=total?done/total:0;
-  const col=done===total?'var(--go)':'var(--amber)';
-  return `<span class="ring"><svg width="42" height="42" viewBox="0 0 42 42">
-    <circle cx="21" cy="21" r="${r}" fill="none" stroke="var(--line)" stroke-width="3.5"/>
-    <circle cx="21" cy="21" r="${r}" fill="none" stroke="${col}" stroke-width="3.5"
-      stroke-linecap="round" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}"/>
-  </svg><b style="color:${done===total?'var(--go)':'var(--ink)'}">${done===total?'✓':done+'/'+total}</b></span>`;
+  const c=119.38, p=total?done/total:0, full=total>0&&done===total;
+  const col=done===0?'var(--amber)':'var(--go-fill)';
+  const arc=p>0
+    ? `<circle cx="22" cy="22" r="19" fill="none" stroke="${col}" stroke-width="4"
+        stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}"
+        style="animation:ringSweep .6s cubic-bezier(.22,1,.36,1) both"/>`
+    : '';
+  const label=full ? `<b>${TICK(15,'var(--go)')}</b>` : `<b><em>${done}</em><s>/${total}</s></b>`;
+  return `<span class="ring"><svg width="44" height="44" viewBox="0 0 44 44">
+    <circle cx="22" cy="22" r="19" fill="none" stroke="var(--track)" stroke-width="3"/>${arc}
+  </svg>${label}</span>`;
+}
+
+/* ── screen 1: the doors ───────────────────────────────────────────────────── */
+function doorRows(){
+  const todo=DOORS.filter(d=>nextChk(d)), done=DOORS.filter(d=>!nextChk(d));
+  const show=tab==='todo'?todo:done;
+  if(!show.length) return `<div style="padding:34px 20px;text-align:center;color:var(--ink-3);
+    font-size:15px">Nothing here yet.</div>`;
+  return show.map(d=>{
+    const n=nextChk(d), t=list(d).length, k=nDone(d);
+    const status=n
+      ? `<span class="wait${k===0?' zero':''}"><i></i>Next: <b>${esc(n.s.toLowerCase())}</b></span>`
+      : `<span class="ok"><i></i>All checks signed</span>`;
+    return `<button class="row" type="button" data-door="${esc(d.ref)}">
+      ${ring(k,t)}
+      <span class="txt"><b>${esc(d.ref)}</b>
+        <span>${esc(d.loc)}</span>
+        ${status}</span>
+      ${fire(d)?`<span class="pill">${esc(d.frl)}</span>`:''}
+      ${CHEV}</button>`;
+  }).join('');
 }
 
 function screenList(){
-  const todo=DOORS.filter(d=>nextChk(d)), done=DOORS.filter(d=>!nextChk(d));
-  const show=tab==='todo'?todo:done;
+  const todo=DOORS.filter(d=>nextChk(d)).length, done=DOORS.length-todo;
+  $('#nav').className='nav flat';
   $('#nav').innerHTML=`<div class="ttl"><b>Ward 1A Refurbishment</b>
-    <span>CS Construction · ${DOORS.length} doorsets</span></div>
-    <span class="sync"><i></i>Saved</span>`;
-  $('#body').innerHTML=`
-    <div class="seg">
-      <button id="tTodo" aria-pressed="${tab==='todo'}">To do (${todo.length})</button>
-      <button id="tDone" aria-pressed="${tab==='done'}">Done (${done.length})</button>
-    </div>
-    <div class="groupcap">${tab==='todo'?'Assigned to you today':'Signed off'}</div>
-    <div class="rows">${show.map(d=>{
-      const n=nextChk(d), t=list(d).length;
-      return `<button class="row" data-door="${esc(d.ref)}">
-        ${ring(nDone(d),t)}
-        <span class="txt"><b>${esc(d.ref)}</b>
-          <span>${esc(d.loc)}</span>
-          <span class="${n?'wait':'ok'}">${n?'Next: '+esc(n.s.toLowerCase()):'All checks signed'}</span></span>
-        ${fire(d)?`<span class="pill">${esc(d.frl)}</span>`:''}
-        <span class="chev">›</span></button>`}).join('')
-      ||`<div style="padding:34px 20px;text-align:center;color:var(--ink-3);font-size:14.5px">
-         Nothing here yet.</div>`}</div>
-`;
+    <span>CS Construction · ${DOORS.length} doorsets</span></div>${SYNC}`;
+  $('#body').innerHTML=`<div class="pane${dir<0?' back':''}">
+    <div class="seg"><div class="segtrack" id="segtrack" style="--segx:${tab==='done'?'100%':'0'}">
+      <button id="tTodo" type="button" aria-pressed="${tab==='todo'}">To do (${todo})</button>
+      <button id="tDone" type="button" aria-pressed="${tab==='done'}">Done (${done})</button>
+    </div></div>
+    <div class="groupcap" id="cap">${tab==='todo'?'Assigned to you today':'Signed off'}</div>
+    <div class="rows" id="rows">${doorRows()}</div></div>`;
   $('#foot').innerHTML='';
-  $('#tTodo').onclick=()=>{tab='todo';render()};
-  $('#tDone').onclick=()=>{tab='done';render()};
+  $('#tTodo').onclick=()=>switchTab('todo');
+  $('#tDone').onclick=()=>switchTab('done');
 }
 
+/* tab change repaints only the caption and the rows, so the thumb can slide */
+function switchTab(t){
+  if(t===tab)return;
+  tab=t;
+  $('#segtrack').style.setProperty('--segx',t==='done'?'100%':'0');
+  $('#tTodo').setAttribute('aria-pressed',t==='todo');
+  $('#tDone').setAttribute('aria-pressed',t==='done');
+  $('#cap').textContent=t==='todo'?'Assigned to you today':'Signed off';
+  $('#rows').innerHTML=doorRows();
+}
+
+/* ── screen 2: one door ────────────────────────────────────────────────────── */
 function screenDoor(){
   const d=view.door, t=list(d).length, n=nextChk(d);
-  $('#nav').innerHTML=`<button class="back" id="back">‹ Doors</button>
-    <div class="ttl"><b>${esc(d.ref)}</b><span>${esc(d.loc)}</span></div>`;
-  $('#body').innerHTML=`
-    ${!n?`<div class="done-note">✓ All checks signed — ready for handover</div>`:''}
+  $('#nav').className='nav';
+  $('#nav').innerHTML=`<button class="back" id="back" type="button">${BACKARROW}Doors</button>
+    <div class="ttl"><b>${esc(d.ref)}</b><span>${esc(d.loc)}</span></div>${SYNC}`;
+  $('#body').innerHTML=`<div class="pane${dir<0?' back':''}">
+    ${!n?`<div class="done-note">${TICK(15,'currentColor')} All checks signed — ready for handover</div>`:''}
     <div class="spec">
       <div><span>Leaf</span><b>${esc(d.leaf)}</b></div>
       <div><span>Frame</span><b>${esc(d.frame)}</b></div>
@@ -317,51 +529,94 @@ function screenDoor(){
     <div class="rows">${CHECKS.map(k=>{
       if(!applies(k,d))return `<div class="chk na"><span class="box"></span>
         <span class="t"><b>${esc(k.n)}</b><span>Not needed — this door isn't fire rated</span></span></div>`;
-      const s=on(d,k);
-      return `<button class="chk ${s?'on':''}" data-chk="${k.c}">
-        <span class="box"></span>
+      const s=on(d,k), fresh=s&&justSigned===d.ref+'|'+k.c;
+      return `<button class="chk ${s?'on':''}${fresh?' fresh':''}" type="button" data-chk="${k.c}">
+        <span class="box">${s?TICK(14,'currentColor'):''}</span>
         <span class="t"><b>${esc(k.n)}</b>
           <span class="${s?'done':''}">${s?`${esc(s.by)} · ${esc(s.on)}${s.photos?` · ${s.photos} photo${s.photos>1?'s':''}`:''}`:esc(k.d.split('.')[0])+'.'}</span></span>
-        <span class="go">›</span></button>`}).join('')}</div>`;
+        <span class="go">${CHEV}</span></button>`}).join('')}</div></div>`;
   $('#foot').innerHTML=n
-    ? `<div class="foot"><button class="big" id="cont">Continue — ${esc(n.s.toLowerCase())}</button></div>`
-    : `<div class="foot"><button class="big ghost" id="back2">Back to doors</button></div>`;
-  $('#back').onclick=()=>{view={s:'list'};render()};
-  const c=$('#cont'); if(c)c.onclick=()=>{view={s:'check',door:d,check:n};render()};
-  const b2=$('#back2'); if(b2)b2.onclick=()=>{view={s:'list'};render()};
+    ? `<div class="foot"><button class="big" id="cont" type="button">Continue — ${esc(n.s.toLowerCase())}</button></div>`
+    : `<div class="foot"><button class="big ghost" id="back2" type="button">Back to doors</button></div>`;
+  $('#back').onclick=()=>{dir=-1;view={s:'list'};render()};
+  const c=$('#cont'); if(c)c.onclick=()=>{dir=1;view={s:'check',door:d,check:n,shots:0};render()};
+  const b2=$('#back2'); if(b2)b2.onclick=()=>{dir=-1;view={s:'list'};render()};
+  justSigned=null;
+}
+
+/* ── screen 3: one check ───────────────────────────────────────────────────── */
+function shotTiles(s,shots,freshIdx){
+  /* the tile is 82px wide — a date as well as a time wraps, and the date is
+     already on the sign-off line beneath */
+  return Array.from({length:shots}).map((_,i)=>
+    `<div class="thumb shot-on${i===freshIdx?' fresh':''}" style="--a:${94+i*13}deg">
+       <em>7:${38+i}&#8239;am</em></div>`).join('');
+}
+
+/* every check on this doorset, tappable — orientation without leaving the screen */
+function stepper(d,k){
+  return `<div class="steps"><div class="cap">All checks on ${esc(d.ref)}</div>
+    <div class="stepgrid">${list(d).map((x,i)=>{
+      const done=!!on(d,x), cur=x.c===k.c;
+      return `<button class="step${done?' on':''}${cur?' cur':''}" type="button"
+        ${cur?'disabled':`data-chk="${x.c}"`}
+        aria-label="Check ${i+1} — ${esc(x.n)}${done?', signed':''}"
+        >${done?TICK(13,'currentColor'):(i+1)}</button>`}).join('')}</div></div>`;
 }
 
 function screenCheck(){
   const d=view.door,k=view.check,s=on(d,k);
   const idx=list(d).findIndex(x=>x.c===k.c)+1, tot=list(d).length;
   const shots=s?s.photos:(view.shots||0);
-  $('#nav').innerHTML=`<button class="back" id="back">‹ ${esc(d.ref)}</button>
-    <div class="ttl"><b>Check ${idx} of ${tot}</b><span>${esc(d.loc)}</span></div>`;
-  $('#body').innerHTML=`<div class="det">
-      <div class="code">${fire(d)&&k.fire?'FIRE DOOR · ':''}CHECK ${esc(k.c)}</div>
+  const freshIdx=view.justShot?shots-1:-1; view.justShot=false;
+  $('#nav').className='nav';
+  $('#nav').innerHTML=`<button class="back" id="back" type="button">${BACKARROW}${esc(d.ref)}</button>
+    <div class="ttl"><b>Check ${idx} of ${tot}</b><span>${esc(d.loc)}</span></div>${SYNC}`;
+  $('#body').innerHTML=`<div class="pane${dir<0?' back':''}"><div class="det">
+      <div class="code">${fire(d)&&k.fire?'<em>FIRE DOOR</em> · ':''}CHECK ${esc(k.c)}</div>
       <h2>${esc(k.n)}</h2>
       <p>${esc(k.d)}</p>
       <div class="shot"><div class="cap">Photos${shots?` (${shots})`:''}</div>
-        <div class="shots">
-          ${Array.from({length:shots}).map((_,i)=>`<div class="thumb shot-on">
-            <em>IMG_${2840+i}</em></div>`).join('')}
-          ${s?'':`<button class="thumb add" id="snap"><span class="lens"></span>Add</button>`}
+        <div class="shots" id="shots">
+          ${shotTiles(s,shots,freshIdx)}
+          ${(!s&&shots<MAXSHOTS)?`<button class="thumb add" id="snap" type="button"><span class="lens"></span>Add</button>`:''}
         </div></div>
-    </div>`;
+      ${stepper(d,k)}
+    </div></div>`;
   $('#foot').innerHTML=s
     ? `<div class="foot"><div class="who">Signed by ${esc(s.by)} · ${esc(s.on)}</div>
-        <button class="big ghost" id="undo">Undo sign-off</button></div>`
-    : `<div class="foot"><button class="big" id="done">Mark complete</button>
-        <div class="who">Signs as DK · saved on this device</div></div>`;
-  $('#back').onclick=()=>{view={s:'door',door:d};render()};
-  const sn=$('#snap'); if(sn)sn.onclick=()=>{view.shots=(view.shots||0)+1;render()};
+        <button class="big ghost" id="undo" type="button">Undo sign-off</button></div>`
+    : `<div class="foot"><button class="big" id="done" type="button">Mark complete</button>
+        <div class="who">${shots?`Signs as DK · saved on this device`:`No photo attached · signs as DK`}</div></div>`;
+  $('#back').onclick=()=>{dir=-1;view={s:'door',door:d};render()};
+
+  /* adding a photo repaints only the tile strip, so the new tile can animate in */
+  const sn=$('#snap'); if(sn)sn.onclick=()=>{
+    view.shots=(view.shots||0)+1;
+    const n=view.shots;
+    $('#shots').innerHTML=shotTiles(null,n,n-1)+
+      (n<MAXSHOTS?`<button class="thumb add" id="snap" type="button"><span class="lens"></span>Add</button>`:'');
+    $('.shot .cap').textContent=`Photos (${n})`;
+    const w=$('.who'); if(w)w.textContent='Signs as DK · saved on this device';
+    const again=$('#snap'); if(again)again.onclick=sn.onclick;
+  };
+
   const dn=$('#done'); if(dn)dn.onclick=()=>{
-    st[d.ref+'|'+k.c]={by:'DK',on:new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short'}),
-      photos:view.shots||0};
-    save();view.shots=0;
-    const nx=nextChk(d);
-    view = nx ? {s:'check',door:d,check:nx} : {s:'door',door:d};
-    render();
+    const commit=()=>{
+      st[d.ref+'|'+k.c]={by:'DK',
+        on:new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short'}),
+        photos:view.shots||0};
+      save(); justSigned=d.ref+'|'+k.c;
+      const nx=nextChk(d);
+      dir=1;
+      view = nx ? {s:'check',door:d,check:nx,shots:0} : {s:'door',door:d};
+      render();
+    };
+    if(RM.matches){commit();return}
+    dn.style.pointerEvents='none';
+    dn.innerHTML=`<svg class="tick" width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M7.5 13.4 11.1 17 18.6 9.4" stroke="var(--on-go)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    if(navigator.vibrate)navigator.vibrate(12);
+    setTimeout(commit,420);
   };
   const un=$('#undo'); if(un)un.onclick=()=>{delete st[d.ref+'|'+k.c];save();view.shots=0;render()};
 }
@@ -371,15 +626,46 @@ function render(){
   else if(view.s==='door')screenDoor();
   else screenCheck();
   $('#body').scrollTop=0;
+  /* full-bleed on mobile: in-app navigation must never scroll the document,
+     or the app slides off the top and the primary button leaves thumb reach */
+  if(MOBILE()&&window.scrollY>0){
+    window.scrollTo(0,0);
+    requestAnimationFrame(()=>{if(window.scrollY>0)window.scrollTo(0,0)});
+  }
+  dir=1;
 }
 
 document.addEventListener('click',e=>{
   const dr=e.target.closest('[data-door]');
-  if(dr){view={s:'door',door:DOORS.find(x=>x.ref===dr.dataset.door)};view.shots=0;render();return}
+  if(dr){dir=1;view={s:'door',door:DOORS.find(x=>x.ref===dr.dataset.door)};view.shots=0;render();return}
   const ck=e.target.closest('[data-chk]');
-  if(ck){const d=view.door;view={s:'check',door:d,check:CHECKS.find(x=>x.c===ck.dataset.chk),shots:0};render()}
+  if(ck){const d=view.door;dir=1;
+    view={s:'check',door:d,check:CHECKS.find(x=>x.c===ck.dataset.chk),shots:0};render()}
 });
 
+/* ── page chrome: studio credit, theme toggle, demo reset ──────────────────── */
+const SUN='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+const MOON='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg>';
+
+$('#studio').textContent=STUDIO;
+$('#disclose').textContent='Sample job data — nothing shown here is Kolen Carpentry’s project '+
+  'information. Built speculatively by '+STUDIO+' to show what the seven checks look like on a phone.';
+$('#mailto').href='mailto:'+EMAIL;
+$('#mailto').textContent=EMAIL;
+
+function applyTheme(t){
+  document.documentElement.dataset.theme=t;
+  try{localStorage.setItem(THKEY,t)}catch(e){}
+  $('#th').innerHTML=(t==='dark'?SUN:MOON)+(t==='dark'?'Light':'Dark');
+  $('#th').setAttribute('aria-label',t==='dark'?'Switch to light theme':'Switch to dark theme');
+}
+let theme;
+try{theme=localStorage.getItem(THKEY)}catch(e){}
+applyTheme(theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+$('#th').onclick=()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');
+$('#rst').onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){}location.reload()};
+
+/* ── seed a half-finished job ──────────────────────────────────────────────── */
 load();
 if(!Object.keys(st).length){
   const seed=[['D-1.014',5],['D-1.015',7],['D-1.021',6],['D-1.022',3],['D-1.030',7],
@@ -388,7 +674,8 @@ if(!Object.keys(st).length){
   seed.forEach(([ref,n],i)=>{const d=DOORS.find(x=>x.ref===ref);if(!d)return;
     list(d).slice(0,n).forEach((k,j)=>{
       st[ref+'|'+k.c]={by:who[(i+j)%3],
-        on:new Date(Date.now()-(9-j)*864e5).toLocaleDateString('en-AU',{day:'numeric',month:'short'}),
+        on:new Date(Date.now()-(2-Math.min(j,2))*864e5)
+             .toLocaleDateString('en-AU',{day:'numeric',month:'short'}),
         photos:j%3===0?2:1}});
   });
   save();
