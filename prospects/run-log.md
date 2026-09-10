@@ -1,196 +1,291 @@
-# Run log — Batch 1: Waterproofing (South Australia)
+# Run log — SA subcontractor prospect research
 
 **Date:** 2026-09-10
-**Trade category:** Waterproofing
-**Qualified rows written:** 7 (cap was 25 — the SA universe is smaller than the cap)
+**Categories run:** all 15
+**Rows in master.csv:** 61 (deduplicated on ABN, then website domain, then phone)
 
 ---
 
-## Sources tried
+## MID-RUN BRIEF CHANGE
 
-### 1. Master Builders SA member directory — PARTIAL / NOT USABLE FOR THIS TRADE
-- `https://mbasa.com.au/find-a-member/` — blocked by a bot-verification loader via WebFetch.
-- `https://mbasa.com.au/find-a-builder/` — **reachable via curl (HTTP 200)**. Member list is
-  server-rendered as Name / Phone / Website triples.
-- **Two blockers:**
-  1. The list is capped at **100 rows** (A–F, ending at "Fairmont Homes"). It uses the
-     Search & Filter Pro plugin with a client-side/AJAX query. I probed
-     `_sf_s`, `_search`, `sf_s`, `_sfm_field_1` and `s` as GET params — every one returned
-     the identical first 100 rows, so the full roster is not reachable server-side.
-  2. The directory carries **no trade category** at all and is framed for consumers seeking
-     a home builder ("Are you looking for a builder for your new home or major renovation?").
-- Zero matches for `waterproof|membrane|proofing|tanking` in the retrievable portion.
-- The "SA Building Directory Application" link (`sabuildingdirectory.com.au`) failed TLS/connection
-  (HTTP 000) on every attempt.
+Partway through, the brief was revised: *"remember we want the bigger dogs please — a small
+glazing company probably doesn't want to spend $20k on an app."*
 
-### 2. HIA South Australia member directory — FAILED
-- `https://hia.com.au/find-a-member` → HTTP 404.
-- `https://hia.com.au/find-a-builder-or-tradie` → HTTP 404; the site is a Vue SPA that renders
-  only template placeholders (`{{ propApi.searchIcon }}`) to a non-JS fetch. No server-rendered
-  member data reachable. Not usable.
+What changed as a result:
 
-### 3. Trade association directories
-- **Australian Institute of Waterproofing (waterproof.org.au)** — has a members directory, but it
-  sits behind a member CRM login at `aiw.wavecrm.com.au`. `/directory/` → HTTP 404 publicly.
-  Not publicly queryable.
-- **Remedial Waterproofing Association** — `/installers/` → HTTP 404.
-  `/find-a-tradie/sa/` returns HTTP 200 but serves default WordPress sample content
-  ("Hi there! I'm a bike messenger by day...") — i.e. **no SA members exist on this site**.
-  Its state nav lists ACT/NSW/NT/QLD/VIC/WA only — SA is absent. Site footer reads
-  "© 2021 Remedial Membranes", a NSW business. Not usable for SA.
-- NECA SA / Master Plumbers SA / Master Painters / AMCA / FPA Australia — not applicable to
-  waterproofing; deferred to their own trade batches.
+1. **`prospects/master.csv` is now sorted into size tiers**, biggest first (Tier A → Tier D).
+   The sort key is verified headcount and scale evidence first, then `fit_score`.
+2. **Ballestrin Construction Services was added back** after being excluded earlier for
+   exceeding the original 8–50 ceiling. At 51–200 staff it is the largest SA-owned operator
+   found. It sits in `prospects/big-operators-above-ceiling.csv` as well as master, and its
+   row states plainly that it breaches the original ICP ceiling.
+3. **Clean Power Electrical Group was corrected downward.** Its site copy implied a
+   substantial crewed operation and it was originally scored 7. Its LinkedIn company page
+   shows **"2-10 employees"**. The row now records that band, the score is cut to 5, and it
+   is demoted to Tier D. This was my error, caught on re-check.
+4. Categories run after the change (joinery, scaffolding, demolition) were worked
+   biggest-operator-first.
+
+**Everything below Tier B is size-unverified, not size-confirmed.** Tier C is not a
+statement that those businesses are small — it means no headcount could be verified from a
+first-party source. Several Tier C rows (De-Construct, DCM Services, MAINair, Kolen) show
+scale evidence as strong as Tier A but publish no number.
+
+---
+
+## Size tiers in master.csv
+
+| Tier | Meaning | Count |
+|---|---|---|
+| **A** | Biggest operators — verified headcount ≥ 10, or hard scale evidence (multi-depot, 5,000sqm facility, 35+ vehicle fleet) | 9 |
+| **B** | Verified headcount band inside 8–50 | 2 |
+| **C** | Real crewed businesses, headcount not verifiable from any first-party source | 48 |
+| **D** | LinkedIn band below the 8–50 floor — deprioritised | 2 |
+
+### Tier A — the big dogs
+
+| Business | Trade | Size evidence |
+|---|---|---|
+| **Festival Glass & Glazing** | Glazing | "employs more than 25 people" — the only self-published headcount above 25 |
+| **Compliant Fire Services** | Fire protection | "over 35 vehicles on the road"; five employed trades listed |
+| **Hillsley Scaffolding** | Scaffolding | Three depots — Lonsdale, Dry Creek, Moonta |
+| **RAMVEK** | Joinery / shopfitting | "our 5,000sqm facility" |
+| **IMR Electrical** | Electrical | "12 employees" (LinkedIn) |
+| **Ballestrin Construction Services** | Concreting / remedial | "51-200 employees" (LinkedIn) — **above the original ceiling** |
+| **Ceiling and Wall Contractors Australia** | Ceilings & partitions | Two full-time offices (SA + WA), trading since 1992 |
+| **Patch and Caulk** | Caulking / remediation | 1000+ Tier 1 & 2 projects; five ticketed trades |
+| **Olde Style Roofing & Guttering** | Roofing | "Over 10 In House Staff" — but runs ServiceM8, see below |
+
+---
+
+## Sources worked, by priority order
+
+### 1. Master Builders SA — PARTIAL, not usable for subcontractor discovery
+`mbasa.com.au/find-a-member/` is behind a bot-verification loader. `find-a-builder/` loads via
+curl but the list caps at **100 rows (A–F)** and carries **no trade categories** — it is framed
+for consumers seeking a home builder. Its Search & Filter Pro widget is client-side only:
+`_sf_s`, `_search`, `sf_s`, `_sfm_field_1` and `s` all returned the identical first 100 rows.
+Zero waterproofing matches in the retrievable portion. `sabuildingdirectory.com.au` (the member
+app) failed TLS on every attempt.
+
+### 2. HIA — FAILED
+`hia.com.au/find-a-member` and `/find-a-builder-or-tradie` both 404. The site is a Vue SPA that
+renders only template placeholders (`{{ propApi.searchIcon }}`) to a non-JS fetch.
+
+### 3. Trade association directories — MIXED, and the single best source of the run
+
+| Association | Result |
+|---|---|
+| **AMCA Australia** (HVAC) | **Best source of the run.** The entire member directory is embedded server-side with states of operation. Yielded **29 SA-based members**. |
+| **Master Painters SA** | **49 SA members with website URLs.** The "MPA Member Websites" nav item is non-linked text; the page was found via the WordPress REST API (`/wp-json/wp/v2/pages`). Their "Find a Painter" is a contact form, not a directory. |
+| **AWCI Australia** (wall & ceiling) | Directory queryable by POST with an SA category code (26610). Returned **exactly one SA member** — Adelaide Partitions & Ceilings. That is the complete SA membership, not a fetch failure. |
+| **NECA SA** | `findanelectrician.com.au` and `necasa.asn.au/find-neca-electrician/` both return HTTP 202 bot-blocks. ~450 SA/NT businesses are behind it, unreached. |
+| **Master Plumbers SA** | `find-a-plumber` is a GET form but results do not render server-side. Filters are consumer-oriented (toilets, blockages, hot water), not commercial. |
+| **Fire Protection Association Australia** | `/find-a-member` 404. |
+| **Fire Industry Alliance** | Members page renders no member content. |
+| **Australian Institute of Waterproofing** | Directory behind a member CRM login (`aiw.wavecrm.com.au`). |
+| **Remedial Waterproofing Association** | `/find-a-tradie/sa/` returns default WordPress sample content — **no SA members exist**. State nav lists ACT/NSW/NT/QLD/VIC/WA only. |
+| **Specialist Contractors SA** | Lists the associations themselves, not businesses. Useful for confirming which bodies exist per trade. |
 
 ### 4. CBS SA contractor's licence register — UNREACHABLE
-- `https://www.cbs.sa.gov.au/find-a-licence-holder` → **HTTP 403** via both curl and WebFetch.
-- `https://www.cbs.sa.gov.au/public-registers` → **HTTP 403**.
-- The register is behind a WAF that rejects non-browser clients. I could not reach the search
-  form, so I could not determine whether it is query-parameter driven or a JS portal.
-  **No licence numbers were guessed or inferred.** Where a licence number appears in a row it was
-  copied from the business's own website (e.g. Dayproof "SA Lic 304834", XS "BLD 323458").
+`cbs.sa.gov.au/find-a-licence-holder` and `/public-registers` both return **HTTP 403** to curl
+and to WebFetch. The register sits behind a WAF that rejects non-browser clients. I could not
+reach the search form, so I cannot say whether it is query-parameter driven or a JS portal.
+**No licence numbers were guessed.** Every licence number in the dataset was copied from the
+business's own website (e.g. Dayproof "SA Lic 304834", XS "BLD 323458", Unley Glass "BLD 159957",
+APC "BLD186942", Master Linings "BLD 218185").
 
-### 5. ABN Lookup (abr.business.gov.au) — WORKED WELL
-Both `/ABN/View?abn=` and `/Search/ResultsActive?SearchText=` are reachable and server-rendered.
-Used to confirm entity name, entity type, registration date, main business location and
-registered business names. Notable resolutions:
-- Dayproof Waterproofing → trading name of **MEZ CONTRACTING (AUS) PTY LTD**, ABN 68 620 869 196.
-- XS Waterproofing & Flooring → **DELCORP WATERPROOFING AND FLOORING PTY LTD**, ABN 55 662 811 252
-  (a second, later entity — DELCORP WATERPROOFING & FLOORING SERVICES PTY LTD, ABN 46 679 605 406 —
-  holds the current business-name registration; both noted in the row).
-- No ABN could be found for **Hydroproof** or **Universal Waterproofing** under those names;
-  `abn_status` left blank for both.
+### 5. ABN Lookup — WORKED THROUGHOUT
+Both `/ABN/View?abn=` and `/Search/ResultsActive?SearchText=` are server-rendered and reliable.
+Used on every row to confirm entity name, type, registration date, main business location and
+registered business names. It did the heaviest lifting in the run and caught several things a
+website alone would have hidden — see *Identity surprises* below.
 
-### 6. Business websites — PRIMARY SOURCE, fetched directly for every row
-Every qualified row was verified against pages fetched from the business's own domain
-(about, team, projects, contact). No row rests on a directory summary alone.
+### 6. Business websites — PRIMARY SOURCE
+Every row was verified against pages fetched from the business's own domain. No row rests on a
+directory summary alone.
 
-### 7. Public LinkedIn company pages — MOSTLY ABSENT
-Only **Floortek Group** has a LinkedIn company page ("11-50 employees", Adelaide SA, founded 2016,
-Anthony Gouros director). Guessed slugs for Dayproof, Patch and Caulk, XS Waterproofing and
-Universal Waterproofing all returned HTTP 404, and targeted searches surfaced no company pages.
-Personal LinkedIn profiles did surface for two businesses; **these were not used**, per the rule
-against collecting from personal social media profiles. This is why several `staff_estimate`
-and `decision_maker_linkedin` fields are blank.
+### 7. Public LinkedIn company pages — SPARSE BUT DECISIVE
+Most SA subcontractors have no company page. Where one existed it was often the single most
+important fact in the row, and it cut both ways — it confirmed IMR (12), Floortek (11–50) and
+Ballestrin (51–200), and it disqualified Ballestrin from the original ICP, Tapp Electrical (4),
+Adelaide Electrical Group (2–10), DNA Electrical (2–10), H. Irwin (2–10) and Clean Power (2–10).
+**Personal LinkedIn profiles were never used**, per the sourcing rules — this is why several
+`decision_maker_linkedin` fields are blank where a personal profile was available.
 
 ### 8. Google Places API — NOT USED
-No Google Places / Maps API key is present in the environment. Per instructions, Google Maps HTML
-was not scraped.
+No API key in the environment. Google Maps HTML was not scraped.
 
-### Supplementary directories used to build the candidate pool
-- **Remedial Building Australia** SA waterproofing directory (28 SA listings) — the single most
-  productive discovery source. Used for discovery and contact cross-checks only; every business
-  taken forward was then verified on its own site.
-- Yellow Pages "Waterproofing Contractors, Greater Adelaide" — used for discovery only.
+### Supplementary discovery sources
+Remedial Building Australia SA directories (28 waterproofing listings — the most productive
+discovery source for batch 1) and Yellow Pages. Both used for discovery only; every business
+taken forward was then verified on its own site.
 
 ---
 
-## Sources that failed (unreachable)
+## Sources that failed
 
 | Source | Result |
 |---|---|
-| `mbasa.com.au/find-a-member/` | Bot-verification loader; no content |
-| `sabuildingdirectory.com.au` | HTTP 000 — TLS/connection failure |
-| `hia.com.au/find-a-member` | HTTP 404 |
-| `hia.com.au/find-a-builder-or-tradie` | HTTP 404; JS-only SPA |
-| `cbs.sa.gov.au/find-a-licence-holder` | HTTP 403 (WAF) |
-| `cbs.sa.gov.au/public-registers` | HTTP 403 (WAF) |
-| `waterproof.org.au/directory/` | HTTP 404; directory behind member login |
-| `remedialwaterproofingassociation.com.au/installers/` | HTTP 404 |
-| `remedialwaterproofingassociation.com.au/find-a-tradie/sa/` | 200 but placeholder content — no SA members |
-| `waterpro.com.au` | HTTP 403 via curl **and** WebFetch — candidate dropped, see below |
-| `hydron.com.au` | HTTP 000 — TLS/connection failure — candidate dropped, see below |
-| `stopsaltdamp.com.au` (Tech-Dry SA) | Connection reset on curl; reached via WebFetch only |
-| `seek.com.au` | HTTP 403 — could not check job ads directly |
+| `mbasa.com.au/find-a-member/` | Bot-verification loader |
+| `sabuildingdirectory.com.au` | HTTP 000 — TLS failure |
+| `hia.com.au` member directories | 404; JS-only SPA |
+| `cbs.sa.gov.au` (both register URLs) | HTTP 403 (WAF) |
+| `findanelectrician.com.au` / NECA SA | HTTP 202 bot-block |
+| `fpaa.com.au/find-a-member` | 404 |
+| `waterproof.org.au/directory/` | 404; behind member login |
+| `remedialwaterproofingassociation.com.au` | 404; no SA members |
+| `seek.com.au` | HTTP 403 — job ads could not be checked directly |
+| `waterpro.com.au` | HTTP 403 to curl and WebFetch — candidate dropped |
+| `hydron.com.au` | HTTP 000 — TLS failure — candidate dropped |
+| `hartleyglass.com.au` | HTTP 202 bot-block — **16-vehicle fleet, a likely Tier A glazier, unverifiable** |
+| `jfloors.com.au`, `camillericoncrete.com.au`, `hillsepoxyfloors.com`, `specialistcontractors.asn.au` | HTTP 202 bot-blocks |
+| `bceandcjelectrical.com.au`, `pridal.com.au`, `mrmpainting.com.au`, `adelite.com.au`, `safefire.com.au` | HTTP 403 |
+| `stopsaltdamp.com.au` | Connection reset on curl; reached via WebFetch only |
 
 ---
 
-## Counts
+## Identity surprises found via ABN Lookup
 
-- **Candidates identified:** 40+
-- **Qualified and written to CSV:** 7
-- **Excluded:** 33+ (reasons below)
+Several businesses trade under a name that does not match their registered entity. Anyone
+contracting from this list should use the `abn_status` column, not the trading name.
 
-## Exclusions and why
-
-### Not a trade business — lead-generation / referral sites (2)
-These are the most dangerous entries for a lead list; both look like contractors at a glance.
-- **Pro Waterproofing Adelaide** (`prowaterproofingadelaide.com.au`) — "we help you find a licensed
-  waterproofing contractor"; "Sample feedback from licensed waterproofing contractors we work with".
-  Also lists a different phone number (08 7184 0784) from the one in the directory (08 7093 6066).
-- **ADL Waterproofers** (`adlwaterproofers.com`) — states outright: "Waterproofing Adelaide does not
-  hold a BSA waterproofing licence and does not perform waterproofing work."
-
-### Not SA-based / multi-state corporates (5)
-- **RCR Services** — "across Adelaide, Melbourne, Sydney, and Newcastle"
-- **WS Remedial Group** — "across Queensland and New South Wales"
-- **Southern Remedial Solutions** — Wollongong / Illawarra NSW
-- **TBR Services** — "Melbourne-based, servicing nationwide"
-- **United Trade Links** — Sydney/NSW operation
-
-### Manufacturers / suppliers, not subcontractors (4)
-Tremco CPG Australia (NSW), Bostik, Superflex Membranes/Ardex Australia, Projex Group.
-
-### National franchise (1)
-Megasealed Adelaide.
-
-### Fails the 8–50 headcount rule — evidence of a 1–3 person operation (2)
-- **JDF Waterproofing** — single named individual (jason@), single mobile, no team language.
-- **Tech-Dry SA** — no staff evidence anywhere; Yellow Pages lists opening hours of Friday
-  9:00am–12:00pm only, closed Mon–Thu and weekends. Domestic salt-damp focus.
-
-### Wrong trade for this batch — carried forward (1)
-- **Synergy Specialists Pty Ltd** (ABN 96 613 052 789, Edwardstown SA 5039, founded 1987,
-  (08) 8357-8200, admin@synspec.com.au). Strong prospect — SA owned and operated, in-house
-  engineering, government and commercial client list (SA Water, Royal Adelaide Hospital,
-  Women's and Children's Hospital, BHP, Myer Centre), "our team of experienced abseilers".
-  But its core trade is concrete cancer repair, not waterproofing.
-  **→ Move to batch 9 (Concreting / formwork / steel fixing / remedial).**
-
-### Dropped because the business's own site could not be reached (2)
-Both are plausible prospects; neither could be verified against a first-party source, and the
-workflow requires fetching the business's own site rather than trusting a directory summary.
-**→ Worth a manual check.**
-- **Waterpro** (Stepney SA 5067) — `waterpro.com.au` returns HTTP 403 to every client tried.
-  Directory data: (08) 8363 6050. ABN Lookup shows *The trustee for Waterpro Unit Trust*,
-  ABN 42 843 609 916, Fixed Unit Trust, SA 5067, active from 01 Jul 2011.
-- **Hydron Protector Systems Pty Ltd** (Seaton SA) — `hydron.com.au` fails TLS/connection.
-  Directory data: (08) 8235 1640. No SA ABN found under "Hydron Protector".
-
-### No website and/or no evidence of 8+ staff (16)
-Mobile-only listings from the Remedial Building Australia and Yellow Pages directories, none of
-which could be verified as more than a small operation: Adelaide Shower Seal, Adelaide Tiling &
-Waterproofing (×2 listings), Adelaide Waterproofing Services, Alliance Waterproofing Pty Ltd,
-Flexseal Waterproofing, Genius Waterproofing, Integral Waterproofing Solutions, Lifes Tiling,
-Mr Salt Damp, SA Waterproofing & Caulking, Statewide Salt Damp, Tubbed Waterproofing,
-Construction Caulking Services, The Box Gutter Guys, Adelaide Better Maintenance.
+| Trading as | Actual entity |
+|---|---|
+| Dayproof Waterproofing | **MEZ CONTRACTING (AUS) PTY LTD** |
+| XS Waterproofing & Flooring | **DELCORP WATERPROOFING AND FLOORING PTY LTD** (a second Delcorp entity holds the current business name) |
+| Systematic Plumbing | **S & K SYSTEMS PTY LTD** |
+| RAMVEK | **REMVIK PTY LTD** |
+| Hillsley Scaffolding | **LARK PRODUCTS PTY. LTD.** |
+| ICS Scaffolding | **I IN C Pty Ltd** |
+| Specialised Services | **SA ASBESTOS SERVICES PTY LTD** |
+| Adelaide Fire Solutions | **PNMCO PTY. LTD.** |
+| THG Electrical | **CONSTRUQT GROUP PTY LTD** |
+| Adelaide Commercial Painters | **The Trustee for Vellotti Family Trust** |
+| IMR Electrical | **TRUSTEE FOR BLIGHT TRADING PTY LTD & TRUSTEE FOR PEARCE TRADING PTY LTD** |
 
 ---
 
-## Fields left blank across this batch, and why
+## Exclusions
 
-| Field | Blank count | Reason |
+### Not a trade business — lead-generation sites posing as contractors (3)
+The most dangerous entries for a lead list; each looks like a contractor at a glance.
+- **Pro Waterproofing Adelaide** — "we help you find a licensed waterproofing contractor";
+  "Sample feedback from licensed waterproofing contractors we work with". Site phone differs
+  from its directory listing.
+- **ADL Waterproofers** — states outright: "Waterproofing Adelaide does not hold a BSA
+  waterproofing licence and does not perform waterproofing work."
+- **Viva Epoxy Flooring** — no matching ABN; registered address is "Suite 3293, 3/55 Gawler
+  Place" (a virtual-office suite number) with SEO suburb pages.
+
+### Not SA-based / multi-state corporates (10)
+RCR Services (Adelaide/Melbourne/Sydney/Newcastle) · WS Remedial Group (QLD/NSW) · Southern
+Remedial Solutions (NSW) · TBR Services (VIC) · United Trade Links (Sydney) · O.P. Industries
+(both group ABNs VIC-registered) · Aztech Services (Brisbane/Sydney/Adelaide/Perth) ·
+NOVALUX Electrical (VIC) · Australian Electrical Industries (VIC) · Southern Cross Contractors (NSW)
+
+### Manufacturers, suppliers and national franchises (6)
+Tremco CPG Australia · Bostik · Superflex Membranes/Ardex · Projex Group · Megasealed Adelaide
+(franchise) · Programmed (national corporate)
+
+### Sole traders — confirmed via ABN entity type (2)
+- **Alexander Ceilings** = ALEXANDER, DAVID JAMES, Individual/Sole Trader
+- **J Phillips Roofing And Cladding** = PHILLIPS, JONATHAN EDWARD, Individual/Sole Trader
+
+### Below the size floor (6)
+Tapp Electrical (4 employees, LinkedIn) · Adelaide Electrical Group (2–10) · DNA Electrical
+Systems (2–10) · JDF Waterproofing (single operator) · Tech-Dry SA (Friday 9am–12pm opening
+hours only) · Future Carpentry & Linings (entities registered Oct/Dec 2025, sole-trader origin)
+
+### Self-described as small (2)
+- **C & J Painting** — "locally owned and operated as a **small** family business"
+- **Watermark Painting Specialists** — "a proud South Australian **boutique** painting business…
+  **small** commercial"
+
+### Dropped because the business's own site could not be reached (3)
+All three are plausible; none could be verified against a first-party source. **Worth a manual check.**
+- **Hartley Glass** (SA 5013, ABN 90 008 034 900, active since 2000) — a search summary
+  references a "fleet of 16 vehicles", which would make it Tier A. Site is bot-blocked.
+- **Waterpro**, Stepney (The trustee for Waterpro Unit Trust, ABN 42 843 609 916, since 2011)
+- **Hydron Protector Systems**, Seaton — TLS failure
+
+### Re-categorised, not excluded
+- **Synergy Specialists** — found in the waterproofing batch, core trade is concrete cancer
+  repair; moved to batch 9.
+- **Floortek Group** — appears in both waterproofing and floor laying; deduplicated out of
+  master on ABN, retained in `floor-laying.csv`.
+
+---
+
+## Fields left blank across the dataset, and why
+
+| Field | Blank | Reason |
 |---|---|---|
-| `staff_estimate` | 6 of 7 | Only Floortek publishes a verifiable band (LinkedIn "11-50 employees"). No other business publishes a headcount, and none has a LinkedIn company page. Personal LinkedIn profiles were available for two of them but are excluded by the sourcing rules. **No numbers were estimated.** `staff_evidence` instead quotes the multi-crew language that supports inclusion. |
-| `decision_maker_linkedin` | 6 of 7 | Only Floortek has a company LinkedIn page. Personal profiles not used. |
-| `decision_maker_role` | 5 of 7 | Role is only stated for Anthony Gouros (Floortek, founder) and Lloyd Wegener (ABS, "Our owner"). George Rowan, Reno and Ward are named via published business contact details with no role given. |
-| `decision_maker_name` | 1 of 7 | Patch and Caulk publishes no name from a company-controlled source. |
-| `signal_fleet` | 6 of 7 | Only Universal Waterproofing mentions a fleet. Vehicle photos exist on other sites but weren't treated as evidence. |
-| `signal_yard_or_depot` | 4 of 7 | Marked Y only where a specific industrial/commercial premises address is published. |
-| `current_software_visible` | 6 of 7 | Only Universal Waterproofing mentions software, and does **not** name the product — recorded as an unnamed platform rather than guessing a vendor. |
-| `abn_status` | 2 of 7 | No ABN found for Hydroproof or Universal Waterproofing under their trading names. |
-| `suburb` | 2 of 7 | Hydroproof and Universal Waterproofing publish no street address. |
-| `work_mix` | 1 of 7 | Universal Waterproofing does not state a commercial/domestic split. |
-| `signal_hiring` | 0 of 7 | Marked N for all seven — **not verified as a true negative.** No careers pages exist on any of these sites, and SEEK returned HTTP 403, so live job ads could not be checked. Treat "N" here as "no ad found", not "not hiring". |
-| `signal_accreditations` | 1 of 7 | Universal Waterproofing publishes none. |
+| `staff_estimate` | 50 of 61 | Only 11 businesses publish or expose a verifiable figure. **No headcounts were estimated.** `staff_evidence` instead quotes the multi-crew, facility or fleet language that supports inclusion. |
+| `decision_maker_linkedin` | 56 of 61 | Only five have company LinkedIn pages. Personal profiles not used. |
+| `decision_maker_name` | 40 of 61 | Most SA subcontractors publish no name. Where a first name only was published (Shane, Matt, Reno, Ward, Jason, Patrick), that is what is recorded — no surnames were inferred. |
+| `signal_hiring` | Recorded as N on 55 of 61 — **not verified as a true negative.** SEEK returned 403 throughout and most sites have no careers page. Read "N" as "no ad found". Four genuine Y results: Connekt Plumbing, Olde Style Roofing, Sakar Constructions (soft), H. Irwin (expired ad). |
+| `general_email` | 9 of 61 | Several businesses publish no email at all — itself a manual-process signal, recorded as such. |
+| `phone` | 5 of 61 | RAMVEK, Wood N Stamp, SAC Facades, Floors 2 Go and Clean Air Asbestos publish no phone number anywhere on their sites. |
+| `abn_status` | 4 of 61 | No ABN could be matched for Hydroproof, Universal Waterproofing, Sakar Constructions, R.D Scaffold Services or Four Corner Ceilings under their trading names. |
+| `suburb` | 24 of 61 | No street address published. |
+| `current_software_visible` | 55 of 61 | See below. |
 
-## Data-quality notes worth carrying forward
+---
 
-1. **Trading-history claims conflict with ABN registration dates** on three rows. Dayproof claims
-   "over 40 years" against a 2017 entity; Patch and Caulk shows a "40 years" banner against a 2015
-   entity; Floortek's about page carries an "Established 2008" heading while its own body text and
-   ABN both say 2016. Both figures are recorded in `years_trading` rather than picking one.
-2. **Floortek and Patch and Caulk are adjacent-trade businesses** (commercial flooring, and
-   caulking/concrete remediation respectively) that market waterproofing as a named service line.
-   Both are flagged in `trade_category` and will re-surface in batches 4 and 9 — dedupe on ABN then.
-3. **`signal_hiring` is the weakest column in this batch.** If hiring is an important scoring input,
-   it needs a job-board route that isn't SEEK.
+## Software incumbents found
+
+Only one business in 61 advertises a named job-management platform:
+
+- **Olde Style Roofing & Guttering** — **ServiceM8**, promoted on a dedicated navigation page:
+  *"With the help of our ServiceM8 software, you will always be kept in the loop with job
+  progress."* Scored −3 per the rule; row kept and marked as a displacement call. They also
+  publish "Over 10 In House Staff" and are actively hiring — a strong "what doesn't it do?" target.
+
+Three others show partial or unnamed systems:
+- **Universal Waterproofing** — "cutting edge live job tracking & scheduling software" (unnamed).
+  No −3 applied since no platform is named, but the manual-process point was withheld. Scored 1.
+- **Ballestrin** — "a centralised Data Management System that can be accessed by all staff"
+  (unnamed). Manual-process point withheld.
+- **DCM Services**, **Shop Graphics**, **CFI** — Revit / CAD / CNC. These are design and
+  manufacturing tools, not job management, and are recorded as such rather than counted as incumbents.
+
+**Interpretation:** 57 of 61 show no job-management system of any kind. The recurring evidence
+is departmental email inboxes (`estimating@`, `service@`, `office@`), per-function mobile numbers,
+bigpond and outlook addresses, and per-project compliance paperwork with no system named.
+
+## The sharpest manual-process signals found
+
+1. **Compliant Fire Services** — "We have an emergency afterhour service company who divert calls
+   to oncall technicians." After-hours dispatch outsourced to a phone-answering service, across 35+ vehicles.
+2. **Kolen Carpentry** — "Every doorset checked, installed and functioned against the hardware
+   schedule, with item-level ITP records supporting every sign-off." Item-level QA records, no system named.
+3. **ICS Scaffolding** — "we test and certify every scaffold we build… will issue JSA and WSMS
+   when required." Per-scaffold certification, mobile-only contact, no email published.
+4. **Tinmen SA** — estimating, project management and general enquiries each on a separate mobile,
+   with no shared email address anywhere on the site.
+5. **Watson Fitzgerald** — three departmental inboxes (`office@`, `service@`, `estimating@`) with
+   nothing joining them.
+6. **De-Construct** — competes explicitly on "the technical and **administrative** sides of
+   hazardous material management" across twelve service lines.
+7. **H. Irwin Electrical** — their own marketing sells against the handover problem: *"A tradie
+   quotes the job, then sends someone different to do it. That person doesn't know what was discussed."*
+
+---
+
+## Data-quality notes
+
+1. **Trading-history claims routinely conflict with ABN registration dates** — Dayproof ("over 40
+   years" vs a 2017 entity), Patch and Caulk ("40 years" vs 2015), Floortek ("Established 2008"
+   heading vs its own body text and ABN saying 2016), Adelaide Commercial Painters ("50+ Years"
+   vs 2003), CFI ("since the 1980's" vs a 2025 entity). Both figures are recorded in
+   `years_trading` rather than picking one. Most are explained by restructures, but they should
+   not be quoted back to a prospect as fact.
+2. **`signal_hiring` is the weakest column in the dataset.** If hiring matters to scoring it needs
+   a job-board route that is not SEEK.
+3. **Adjacent-trade businesses appear in more than one category.** Floortek (waterproofing +
+   flooring), Patch and Caulk (waterproofing + concrete remediation), Synergy (waterproofing →
+   concreting). Category CSVs retain them; master deduplicates on ABN.
+4. **Two rows sit outside the ICP and say so in their own `score_reasoning`:** Floors 2 Go is a
+   retail showroom that also installs, and JS Form describes itself as partly a labour-hire
+   company (an explicit exclude category). Both are flagged rather than silently kept or dropped.
