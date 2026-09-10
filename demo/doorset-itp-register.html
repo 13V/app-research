@@ -1,473 +1,404 @@
 <title>Doorset ITP Register</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
-  --paper:#F1F4F7; --surface:#FFFFFF; --surface-2:#E7EDF2; --surface-3:#DCE4EB;
-  --ink:#111C2B; --ink-2:#46586C; --ink-3:#8395A7;
-  --rule:#C9D5DF; --rule-2:#A6B7C6;
-  --accent:#1A3A6B; --accent-2:#2E6DB4; --accent-soft:#E3EBF5;
-  --fire:#BE342B; --fire-soft:#F8E7E5;
-  --ok:#1F7A52; --ok-soft:#E0F0E8;
-  --wait:#AE7412; --wait-soft:#F8EEDC;
-  --display:"Archivo",system-ui,-apple-system,Segoe UI,sans-serif;
+  --paper:#FBFBF9; --field:#FFFFFF; --wash:#F1F1ED;
+  --ink:#14171A; --ink-2:#4A5157; --ink-3:#6E757C;
+  --rule:#D9D9D3; --rule-hard:#14171A;
+  --sig:#2D6A4A;      /* signed */
+  --hold:#9A6B14;     /* outstanding / bottleneck */
+  --fire:#A32B21;     /* fire rating — semantic only */
+  --link:#1B4D8F;
   --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --paper:#0A1017; --surface:#121B25; --surface-2:#1A2631; --surface-3:#22303C;
-    --ink:#E8EEF4; --ink-2:#9CAFC1; --ink-3:#6A7D8F;
-    --rule:#25323E; --rule-2:#394957;
-    --accent:#7FA9E0; --accent-2:#9BC3ED; --accent-soft:#16243A;
-    --fire:#E5786D; --fire-soft:#2C1917;
-    --ok:#4FBF8B; --ok-soft:#12291F;
-    --wait:#DCA84A; --wait-soft:#2A2113;
+    --paper:#0D0F11; --field:#141719; --wash:#1B1F22;
+    --ink:#E8E9E5; --ink-2:#AAB2B8; --ink-3:#848C93;
+    --rule:#292E32; --rule-hard:#5A6167;
+    --sig:#5FA47F; --hold:#C79A45; --fire:#D46A5F; --link:#7FA9E0;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0A1017; --surface:#121B25; --surface-2:#1A2631; --surface-3:#22303C;
-  --ink:#E8EEF4; --ink-2:#9CAFC1; --ink-3:#6A7D8F;
-  --rule:#25323E; --rule-2:#394957;
-  --accent:#7FA9E0; --accent-2:#9BC3ED; --accent-soft:#16243A;
-  --fire:#E5786D; --fire-soft:#2C1917;
-  --ok:#4FBF8B; --ok-soft:#12291F;
-  --wait:#DCA84A; --wait-soft:#2A2113;
+  --paper:#0D0F11; --field:#141719; --wash:#1B1F22;
+  --ink:#E4E5E1; --ink-2:#9CA3A9; --ink-3:#6B7278;
+  --rule:#292E32; --rule-hard:#5A6167;
+  --sig:#5FA47F; --hold:#C79A45; --fire:#D46A5F; --link:#7FA9E0;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
-  font-size:14.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1140px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
-h1,h2,h3{margin:0;text-wrap:balance}
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.sheet{max-width:1040px;margin:0 auto;padding-inline:18px;padding-block:0 64px}
+h1{margin:0;font-size:20px;font-weight:600;letter-spacing:-.015em}
 button{font:inherit;cursor:pointer}
-:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
-.lbl{font-family:var(--display);font-size:10px;font-weight:600;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--ink-3)}
+:focus-visible{outline:1.5px solid var(--link);outline-offset:1px}
+.cap{font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+.m{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-/* ── prototype banner ── */
-.proto{background:var(--ink);color:var(--paper);font-size:12px;letter-spacing:.02em;
-  padding:8px 20px;text-align:center}
-.proto b{font-family:var(--display);font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--wait);margin-right:6px}
+/* ── header: one dense band, fields on a baseline ── */
+.top{border-bottom:1.5px solid var(--rule-hard);padding-block:22px 0}
+.top .id{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.top .id .no{font-family:var(--mono);font-size:13.5px;color:var(--ink-2)}
+.top .id .rev{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);
+  padding:1px 6px;color:var(--ink-2)}
+.fields{display:flex;flex-wrap:wrap;gap:4px 34px;margin-top:16px;padding-bottom:16px}
+.fld{display:flex;flex-direction:column;gap:3px;padding-block:2px}
+.fld .v{font-family:var(--mono);font-size:14px;font-weight:500;white-space:nowrap}
+.fld .v.warn{color:var(--hold)}
 
-/* ── title block (drawing-office convention) ── */
-.titleblock{display:grid;grid-template-columns:1fr auto;gap:0;border:1.5px solid var(--ink);
-  background:var(--surface);margin-top:24px}
-.tb-main{padding:16px 18px;border-right:1.5px solid var(--ink);min-width:0}
-.tb-main h1{font-family:var(--display);font-weight:700;font-size:27px;letter-spacing:-.02em;
-  line-height:1.1}
-.tb-main .tag{display:inline-block;margin-bottom:9px}
-.tb-main p{margin:7px 0 0;color:var(--ink-2);font-size:13.5px;max-width:60ch}
-.tb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-.tb-cell{padding:9px 13px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule)}
-.tb-cell:nth-child(2n){border-right:0}
-.tb-cell:nth-last-child(-n+2){border-bottom:0}
-.tb-cell .v{font-family:var(--mono);font-size:13px;font-weight:500;margin-top:2px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* ── stage strip: small multiples, not stat boxes ── */
+.strip{display:flex;align-items:flex-end;gap:0;border-bottom:1px solid var(--rule);
+  padding:18px 0 0}
+.st{flex:1;min-width:0;padding:0 10px 12px;border-right:1px solid var(--rule);position:relative}
+.st:last-child{border-right:0}
+.st .n{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em}
+.st .n u{text-decoration:none;color:var(--ink-3);font-size:11.5px}
+.st .plot{height:6px;background:var(--rule);margin:9px 0 9px}
+.st .plot i{display:block;height:100%;background:var(--sig);min-width:1px}
+.st .k{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);letter-spacing:.01em}
+.st .k b{color:var(--ink);font-weight:600}
+.st.fireonly .k b{color:var(--fire)}
+.st.stuck{background:var(--wash)}
+.st.stuck .plot i{background:var(--hold)}
+.st.stuck .n{color:var(--hold)}
+.stripnote{padding:14px 0 2px;font-size:14px;color:var(--ink-2)}
+.stripnote b{color:var(--ink);font-weight:600}
+.stripnote .m{color:var(--hold);font-weight:500}
 
-/* ── stage funnel ── */
-.funnel{margin-top:22px;border:1px solid var(--rule);background:var(--surface)}
-.funnel-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;
-  padding:12px 16px;border-bottom:1px solid var(--rule);flex-wrap:wrap}
-.funnel-head .read{font-family:var(--mono);font-size:12.5px;color:var(--ink-2)}
-.funnel-head .read b{color:var(--ink);font-weight:600}
-.stages{display:grid;grid-template-columns:repeat(7,1fr)}
-.stage{padding:11px 8px 13px;border-right:1px solid var(--rule);text-align:center;position:relative}
-.stage:last-child{border-right:0}
-.stage .code{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--accent-2)}
-.stage.fireonly .code{color:var(--fire)}
-.stage .n{font-family:var(--mono);font-size:22px;font-weight:500;line-height:1.1;margin-top:4px;
-  font-variant-numeric:tabular-nums}
-.stage .of{font-size:11px;color:var(--ink-3)}
-.stage .nm{font-size:10.5px;color:var(--ink-2);line-height:1.3;margin-top:5px;
-  min-height:2.6em;display:flex;align-items:flex-start;justify-content:center}
-.stage .fill{height:3px;background:var(--surface-3);margin-top:9px;overflow:hidden}
-.stage .fill i{display:block;height:100%;background:var(--ok);transition:width .4s ease}
-.stage.blocked{background:var(--wait-soft)}
-.stage.blocked .n{color:var(--wait)}
-
-/* ── toolbar ── */
-.tools{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:22px 0 10px}
-.tools .grow{flex:1;min-width:0}
-.seg{display:inline-flex;border:1px solid var(--rule-2)}
-.seg button{background:var(--surface);border:0;padding:7px 14px;font-size:12.5px;color:var(--ink-2);
-  border-right:1px solid var(--rule);font-family:var(--display);font-weight:500;letter-spacing:.02em}
-.seg button:last-child{border-right:0}
-.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
-.btn{background:var(--surface);border:1px solid var(--rule-2);padding:7px 15px;font-size:12.5px;
-  color:var(--ink);font-family:var(--display);font-weight:500;letter-spacing:.02em}
-.btn:hover{border-color:var(--accent-2);color:var(--accent-2)}
-.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn.primary:hover{background:var(--accent-2);border-color:var(--accent-2);color:#fff}
-.sig{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink-2)}
-.sig input{font-family:var(--mono);font-size:12.5px;width:64px;padding:6px 8px;text-transform:uppercase;
-  border:1px solid var(--rule-2);background:var(--surface);color:var(--ink);text-align:center}
+/* ── controls: text, not chrome ── */
+.ctl{display:flex;gap:8px 22px;flex-wrap:wrap;align-items:center;padding:15px 0;
+  border-bottom:1px solid var(--rule);font-size:14px}
+.ctl .grp{display:flex;gap:12px;align-items:center}
+.ctl .grow{flex:1}
+.lk{background:none;border:0;padding:0;color:var(--ink-2);font-size:14px;
+  border-bottom:1px solid transparent}
+.lk:hover{color:var(--link);border-bottom-color:var(--link)}
+.lk[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.ctl input{font-family:var(--mono);font-size:14px;width:50px;padding:2px 4px;text-transform:uppercase;
+  border:0;border-bottom:1px solid var(--rule-hard);background:none;color:var(--ink);text-align:center}
+.act{background:none;border:1px solid var(--rule-hard);padding:6px 14px;font-size:13px;
+  font-weight:500;color:var(--ink)}
+.act:hover{background:var(--ink);color:var(--paper)}
 
 /* ── register ── */
-.scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--surface)}
-table{border-collapse:collapse;width:100%;min-width:720px}
-thead th{padding:9px 12px;border-bottom:1.5px solid var(--ink);background:var(--surface-2);
-  text-align:left;white-space:nowrap;font-family:var(--display);font-size:10px;font-weight:600;
-  letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2)}
-tbody td{padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:middle;font-size:13px}
-tbody tr.row{cursor:pointer}
-tbody tr.row:hover td{background:var(--accent-soft)}
-tbody tr.row[aria-expanded="true"] td{background:var(--accent-soft);border-bottom-color:var(--accent-2)}
-.ref{font-family:var(--mono);font-size:13px;font-weight:600;white-space:nowrap}
-.loc{color:var(--ink-2)}
-.spec{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);white-space:nowrap;line-height:1.5}
-.frl{font-family:var(--mono);font-size:12px;font-weight:500;white-space:nowrap;color:var(--ink-3)}
-.frl.rated{color:var(--fire)}
-/* fire tag rendered as the physical object it is */
-.firetag{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;
-  font-weight:500;color:var(--fire);background:var(--fire-soft);border:1px solid var(--fire);
-  border-radius:999px;padding:2px 9px 2px 6px;white-space:nowrap}
-.firetag::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--fire);flex:none}
-.notag{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th{padding:11px 11px 9px;border-bottom:1px solid var(--rule-hard);text-align:left;white-space:nowrap;
+  font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3)}
+th.r,td.r{text-align:right}
+td{padding:9px 11px;border-bottom:1px solid var(--rule);white-space:nowrap;font-size:14px}
+tr.row{cursor:pointer}
+tr.row:hover td{background:var(--wash)}
+tr.row[aria-expanded="true"] td{background:var(--wash);border-bottom-color:var(--rule-hard)}
+td.ref{font-family:var(--mono);font-weight:600;letter-spacing:-.01em}
+td.loc{white-space:normal;color:var(--ink)}
+td.d{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+td.frl{font-family:var(--mono);font-size:13px;color:var(--ink-3)}
+td.frl.rated{color:var(--fire);font-weight:500}
+td.tag{font-family:var(--mono);font-size:13px;color:var(--ink-2)}
+td.tag.none{color:var(--ink-3)}
 
-/* stage track — the point of the redesign */
-.track{display:flex;gap:2px;align-items:center}
-.track i{width:13px;height:15px;background:var(--surface-3);display:block;flex:none}
-.track i.done{background:var(--ok)}
-.track i.next{background:var(--wait-soft);box-shadow:inset 0 0 0 1.5px var(--wait)}
-.track i.na{background:transparent;box-shadow:inset 0 0 0 1px var(--rule);width:7px}
-.track .txt{font-family:var(--mono);font-size:11px;color:var(--ink-2);margin-left:7px;white-space:nowrap;
-  font-variant-numeric:tabular-nums}
-.track .txt.ready{color:var(--ok);font-weight:600}
+/* stage track — seven cells, read left to right like the ITP itself */
+.trk{display:inline-flex;gap:1px;vertical-align:-2px}
+.trk i{width:13px;height:15px;display:block;background:var(--sig)}
+.trk i.open{background:var(--rule)}
+.trk i.next{background:var(--hold)}
+.trk i.na{background:repeating-linear-gradient(45deg,transparent,transparent 2px,var(--rule) 2px,var(--rule) 3px)}
+.at{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-left:11px}
+.at.done{color:var(--sig)}
 
-/* ── hold points ── */
-tr.detail td{padding:0;background:var(--surface-2);border-bottom:1.5px solid var(--rule-2)}
-.hp{padding:4px 12px 14px}
-.hp .hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
-  padding:11px 2px 9px;flex-wrap:wrap}
-.hp ol{list-style:none;margin:0;padding:0;border:1px solid var(--rule);background:var(--surface)}
-.hp li{display:flex;gap:0;align-items:stretch;border-bottom:1px solid var(--rule)}
-.hp li:last-child{border-bottom:0}
-.hp li.done{background:var(--ok-soft)}
-.hp .code{font-family:var(--mono);font-size:11.5px;font-weight:600;color:var(--accent-2);
-  padding:11px 10px;min-width:52px;border-right:1px solid var(--rule);flex:none;
-  display:flex;flex-direction:column;gap:3px;align-items:flex-start}
-.hp li.done .code{color:var(--ok)}
-.hp .kind{font-family:var(--display);font-size:8.5px;font-weight:600;letter-spacing:.09em;
-  text-transform:uppercase;color:var(--ink-3)}
-.hp .body{flex:1;min-width:0;padding:11px 13px}
-.hp .body b{display:block;font-weight:600;font-size:13.5px}
-.hp .body p{margin:2px 0 0;font-size:12.5px;color:var(--ink-2);line-height:1.45}
-.hp .sign{flex:none;width:132px;border-left:1px solid var(--rule);padding:9px 11px;
-  display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:4px}
-/* sign-off styled as the stamp it replaces */
-.stamp{font-family:var(--mono);font-size:10.5px;color:var(--ok);text-align:center;line-height:1.35;
-  border:1.5px solid var(--ok);padding:3px 9px;transform:rotate(-1.2deg)}
-.stamp b{display:block;font-size:13px;font-weight:600;letter-spacing:.04em}
-.tick{border:1px solid var(--rule-2);background:var(--surface);padding:6px 12px;font-size:12px;
-  color:var(--ink-2);white-space:nowrap;font-family:var(--display);font-weight:500}
-.tick:hover{border-color:var(--ok);color:var(--ok)}
-.tick.undo{border:0;background:transparent;color:var(--ink-3);padding:1px 3px;font-size:10.5px;
-  font-family:var(--sans);font-weight:400;text-decoration:underline}
-.tick.undo:hover{color:var(--fire)}
-.hp li.locked .body{opacity:.5}
-.hp li.locked .sign{color:var(--ink-3);font-size:11px;font-family:var(--mono);text-align:right;
-  align-items:flex-end;justify-content:center}
+/* ── expanded ITP: an indented sub-register, not cards ── */
+tr.det td{padding:0;background:var(--wash);border-bottom:1.5px solid var(--rule-hard)}
+.itp{padding:6px 11px 18px 34px}
+.itp table{min-width:0;width:100%}
+.itp th{border-bottom:1px solid var(--rule);padding:13px 10px 8px 0}
+.itp td{border-bottom:1px solid var(--rule);padding:11px 10px 11px 0;white-space:normal;
+  vertical-align:baseline}
+.itp tr:last-child td{border-bottom:0}
+.itp .c{font-family:var(--mono);font-size:13px;font-weight:600;width:38px;color:var(--ink)}
+.itp .kd{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);width:72px}
+.itp .nm{font-weight:600;font-size:14px}
+.itp .nm span{display:block;font-weight:400;font-size:13.5px;color:var(--ink-2);
+  margin-top:3px;max-width:62ch;line-height:1.5}
+.itp .by{font-family:var(--mono);font-size:13px;color:var(--sig);width:1%;white-space:nowrap}
+.itp .by u{text-decoration:none;color:var(--ink-3);margin-left:7px}
+.itp tr.skip .nm,.itp tr.skip .c,.itp tr.skip .kd{color:var(--ink-3);font-weight:400}
+.itp tr.skip .nm{font-weight:500}
+.sign{background:none;border:1px solid var(--rule-hard);padding:4px 12px;font-size:12.5px;
+  font-weight:500;color:var(--ink);white-space:nowrap}
+.sign:hover{background:var(--ink);color:var(--paper)}
+.undo{background:none;border:0;padding:0;margin-left:10px;font-size:12px;color:var(--ink-3);
+  text-decoration:underline}
+.undo:hover{color:var(--fire)}
 
-/* ── import ── */
-details.import{margin-top:22px;border:1px solid var(--rule);background:var(--surface)}
-details.import summary{padding:12px 16px;cursor:pointer;font-family:var(--display);font-size:12.5px;
-  font-weight:600;letter-spacing:.02em;list-style:none;display:flex;align-items:center;gap:9px}
-details.import summary::-webkit-details-marker{display:none}
-details.import summary::before{content:"[+]";font-family:var(--mono);color:var(--accent-2);font-size:12px}
-details.import[open] summary::before{content:"[–]"}
-.import .in{padding:14px 16px 16px;border-top:1px solid var(--rule)}
-.import p{margin:0 0 10px;font-size:12.5px;color:var(--ink-2)}
-.import code{font-family:var(--mono);font-size:11.5px;background:var(--surface-2);padding:1px 5px}
-.import textarea{width:100%;min-height:110px;font-family:var(--mono);font-size:11.5px;line-height:1.65;
-  padding:11px;border:1px solid var(--rule-2);resize:vertical;background:var(--paper);color:var(--ink)}
-.import .act{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:11px}
-.import .msg{font-family:var(--mono);font-size:12px;color:var(--ok)}
-.import .msg.bad{color:var(--fire)}
+/* ── footer ── */
+.foot{margin-top:34px;padding-top:20px;border-top:1px solid var(--rule);
+  display:grid;grid-template-columns:1fr 1fr;gap:34px;font-size:14px;color:var(--ink-2);line-height:1.6}
+.foot b{color:var(--ink);font-weight:600}
+.foot textarea{width:100%;min-height:80px;font-family:var(--mono);font-size:12.5px;line-height:1.65;
+  margin-top:7px;padding:7px;border:1px solid var(--rule);background:var(--field);color:var(--ink);
+  resize:vertical}
+.foot .row{display:flex;gap:10px;align-items:center;margin-top:7px;flex-wrap:wrap}
+.foot .msg{font-family:var(--mono);font-size:12.5px;color:var(--sig)}
+.foot .msg.bad{color:var(--fire)}
 
-.note{margin-top:26px;padding:15px 18px;background:var(--surface);border:1px solid var(--rule);
-  border-left:3px solid var(--accent-2);font-size:13px;color:var(--ink-2);line-height:1.6}
-.note b{color:var(--ink)}
+.origin{padding:9px 18px;border-bottom:1px solid var(--rule);font-size:12.5px;color:var(--ink-3);
+  max-width:1040px;margin:0 auto}
+.origin b{color:var(--ink-2);font-weight:600}
 
-@media (max-width:820px){
-  .titleblock{grid-template-columns:1fr}
-  .tb-main{border-right:0;border-bottom:1.5px solid var(--ink)}
-  .stages{grid-template-columns:repeat(4,1fr)}
-  .stage:nth-child(4){border-right:0}
-  .stage:nth-child(-n+4){border-bottom:1px solid var(--rule)}
-  .hp li{flex-wrap:wrap}
-  .hp .sign{width:100%;border-left:0;border-top:1px solid var(--rule);
-    flex-direction:row;justify-content:flex-end;align-items:center;gap:10px}
+@media (max-width:760px){
+  .st .k{font-size:9px}
+  .foot{grid-template-columns:1fr}
+  .itp{padding-left:9px}
 }
 @media (max-width:460px){
-  .stages{grid-template-columns:repeat(2,1fr)}
-  .stage:nth-child(2n){border-right:0}
-  .tb-main h1{font-size:22px}
+  .strip{flex-wrap:wrap}
+  .st{flex:0 0 25%;border-bottom:1px solid var(--rule)}
+  .st:nth-child(4n){border-right:0}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-
 @media print{
-  .proto,.tools,.import,.note,.tick,.funnel{display:none!important}
-  body{background:#fff;color:#000;font-size:10pt}
-  .wrap{max-width:none;padding:0}
-  .scroll{border:0;overflow:visible}
+  .ctl,.foot,.sign,.undo,.origin,.strip,.stripnote{display:none!important}
+  body{background:#fff;color:#000;font-size:9.5pt}
+  .sheet{max-width:none;padding:0}
   table{min-width:0}
-  tr.detail{display:table-row!important}
-  .hp li{break-inside:avoid}
+  tr.det{display:table-row!important}
+  .itp tr{break-inside:avoid}
   thead{display:table-header-group}
-  .titleblock{break-after:avoid}
 }
 </style>
 
-<div class="proto"><b>Prototype</b> Built by [your studio] for Kolen Carpentry. Sample data from a
-fictional job — nothing here is Kolen's real project information.</div>
+<div class="origin"><b>Prototype</b> — built by [your studio] for Kolen Carpentry.
+Fictional job data; nothing here is Kolen's project information.</div>
 
-<div class="wrap">
+<div class="sheet">
 
-  <section class="titleblock">
-    <div class="tb-main">
-      <span class="lbl tag">Inspection &amp; Test Plan · Doorsets</span>
+  <header class="top">
+    <div class="id">
       <h1>Doorset ITP Register</h1>
-      <p>Every doorset checked and functioned against the hardware schedule, with item-level
-         records behind each sign-off — from schedule import to signed handover pack.</p>
+      <span class="no">ITP-DR-01</span>
+      <span class="rev">REV C</span>
     </div>
-    <div class="tb-grid">
-      <div class="tb-cell"><span class="lbl">Project</span><div class="v">Ward 1A Refurbishment</div></div>
-      <div class="tb-cell"><span class="lbl">Head contractor</span><div class="v">CS Construction</div></div>
-      <div class="tb-cell"><span class="lbl">ITP no.</span><div class="v">ITP-DR-01</div></div>
-      <div class="tb-cell"><span class="lbl">Revision</span><div class="v">C</div></div>
-      <div class="tb-cell"><span class="lbl">Standard</span><div class="v">AS 1905.1</div></div>
-      <div class="tb-cell"><span class="lbl">Status</span><div class="v" id="tbStatus">—</div></div>
+    <div class="fields">
+      <div class="fld"><span class="cap">Project</span><span class="v">Ward 1A Refurbishment</span></div>
+      <div class="fld"><span class="cap">Head contractor</span><span class="v">CS Construction</span></div>
+      <div class="fld"><span class="cap">Standard</span><span class="v">AS 1905.1</span></div>
+      <div class="fld"><span class="cap">Doorsets</span><span class="v" id="fDoors">—</span></div>
+      <div class="fld"><span class="cap">Released</span><span class="v" id="fRel">—</span></div>
+      <div class="fld"><span class="cap">Outstanding</span><span class="v warn" id="fOut">—</span></div>
     </div>
-  </section>
+  </header>
 
-  <section class="funnel">
-    <div class="funnel-head">
-      <span class="lbl">Doorsets cleared, by hold point</span>
-      <span class="read" id="funnelRead"></span>
-    </div>
-    <div class="stages" id="stages"></div>
-  </section>
+  <section class="strip" id="strip"></section>
+  <p class="stripnote" id="stripnote"></p>
 
-  <div class="tools">
-    <div class="seg" role="group" aria-label="Filter doorsets">
-      <button id="fAll" aria-pressed="true">All</button>
-      <button id="fFire" aria-pressed="false">Fire-rated</button>
-      <button id="fOpen" aria-pressed="false">Incomplete</button>
+  <div class="ctl">
+    <div class="grp">
+      <span class="cap">Show</span>
+      <button class="lk" id="fAll" aria-pressed="true">All</button>
+      <button class="lk" id="fFire" aria-pressed="false">Fire-rated</button>
+      <button class="lk" id="fOpen" aria-pressed="false">Outstanding</button>
     </div>
-    <label class="sig" for="initials">Signing as
-      <input id="initials" value="DK" maxlength="4" aria-label="Your initials"></label>
+    <div class="grp">
+      <span class="cap">Signing as</span>
+      <input id="initials" value="DK" maxlength="4" aria-label="Your initials">
+    </div>
     <div class="grow"></div>
-    <button class="btn" id="expandAll">Expand all</button>
-    <button class="btn primary" id="printPack">Generate handover pack</button>
+    <button class="lk" id="expandAll">Expand all</button>
+    <button class="act" id="printPack">Handover pack</button>
   </div>
 
   <div class="scroll">
     <table>
       <thead><tr>
-        <th>Door ref</th><th>Location</th><th>Leaf / frame</th><th>FRL</th>
-        <th>HW set</th><th>Fire tag</th><th>ITP progress</th>
+        <th>Door</th><th>Location</th><th>Leaf</th><th>Frame</th><th>FRL</th>
+        <th>HW</th><th>Tag</th><th>ITP</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
 
-  <details class="import">
-    <summary>Import a hardware schedule</summary>
-    <div class="in">
-      <p>Paste a CSV export from the door and hardware schedule. Columns:
-        <code>ref, location, leaf, frame, frl, hw, tag</code>. An <code>frl</code> of
-        <code>-</code> means non-rated, and the fire-tag hold point drops out of that doorset's
-        ITP automatically.</p>
+  <div class="foot">
+    <div>
+      <b>Import a hardware schedule.</b> Paste a CSV from the door and hardware schedule —
+      <span class="m">ref, location, leaf, frame, frl, hw, tag</span>. An <span class="m">frl</span>
+      of <span class="m">-</span> means non-rated, and H4 drops out of that doorset's ITP.
       <textarea id="csv" spellcheck="false" aria-label="Hardware schedule CSV"></textarea>
-      <div class="act">
-        <button class="btn primary" id="doImport">Rebuild register</button>
-        <button class="btn" id="loadSample">Restore sample job</button>
+      <div class="row">
+        <button class="act" id="doImport">Rebuild register</button>
+        <button class="lk" id="loadSample">Restore sample</button>
         <span class="msg" id="msg"></span>
       </div>
     </div>
-  </details>
-
-  <p class="note"><b>What this is.</b> A working slice of the idea, not a finished product — the
-  register, the hold points and the handover pack, running on sample data. Sign-offs stay in this
-  browser. The real build would pull the schedule straight from the door register, capture photos
-  against each hold point, and produce the signed pack as a PDF.
-  <b>If the hold points below are wrong for how Kolen actually works, that's the useful part —
-  tell us where.</b></p>
+    <div>
+      <b>What this is.</b> A working slice, not a finished product — the register, the hold points
+      and the handover pack, on sample data. Sign-offs stay in this browser. The real build pulls
+      the schedule from the door register, captures photos against each hold point, and issues the
+      signed pack as a PDF.<br><br>
+      <b>If these hold points are wrong for how Kolen works, that's the useful part. Tell us where.</b>
+    </div>
+  </div>
 </div>
 
 <script>
-const SAMPLE = `ref,location,leaf,frame,frl,hw,tag
-D-1.014,Ward 1A corridor north,2040x920x45 solid core,Steel painted,-/60/30,HW-04,FD-1142
-D-1.015,Ward 1A corridor south,2040x920x45 solid core,Steel painted,-/60/30,HW-04,FD-1143
-D-1.021,Treatment room 1,2040x870x40 solid core,Timber MDF,-,HW-11,
-D-1.022,Treatment room 2,2040x870x40 solid core,Timber MDF,-,HW-11,
-D-1.030,Clean utility,2040x920x45 solid core,Steel painted,-/60/30,HW-06,FD-1147
-D-1.031,Dirty utility,2040x920x45 solid core,Steel painted,-/60/30,HW-06,FD-1148
-D-1.040,Staff station store,2040x820x40 solid core,Timber MDF,-,HW-02,
-D-1.055,Fire stair 2 lobby,2040x1020x45 solid core,Steel painted,-/120/30,HW-09,FD-1151
-D-1.056,Fire stair 2 landing,2040x1020x45 solid core,Steel painted,-/120/30,HW-09,FD-1152
-D-1.061,Plant room 1.6,2100x920x45 solid core,Steel painted,-/60/30,HW-07,FD-1155
-D-1.070,Bed bay 4 ensuite,2040x870x40 solid core,Timber MDF,-,HW-13,
-D-1.071,Bed bay 5 ensuite,2040x870x40 solid core,Timber MDF,-,HW-13,`;
+const SAMPLE=`ref,location,leaf,frame,frl,hw,tag
+D-1.014,Ward 1A corridor north,2040x920x45 SC,Steel painted,-/60/30,HW-04,FD-1142
+D-1.015,Ward 1A corridor south,2040x920x45 SC,Steel painted,-/60/30,HW-04,FD-1143
+D-1.021,Treatment room 1,2040x870x40 SC,Timber MDF,-,HW-11,
+D-1.022,Treatment room 2,2040x870x40 SC,Timber MDF,-,HW-11,
+D-1.030,Clean utility,2040x920x45 SC,Steel painted,-/60/30,HW-06,FD-1147
+D-1.031,Dirty utility,2040x920x45 SC,Steel painted,-/60/30,HW-06,FD-1148
+D-1.040,Staff station store,2040x820x40 SC,Timber MDF,-,HW-02,
+D-1.055,Fire stair 2 lobby,2040x1020x45 SC,Steel painted,-/120/30,HW-09,FD-1151
+D-1.056,Fire stair 2 landing,2040x1020x45 SC,Steel painted,-/120/30,HW-09,FD-1152
+D-1.061,Plant room 1.6,2100x920x45 SC,Steel painted,-/60/30,HW-07,FD-1155
+D-1.070,Bed bay 4 ensuite,2040x870x40 SC,Timber MDF,-,HW-13,
+D-1.071,Bed bay 5 ensuite,2040x870x40 SC,Timber MDF,-,HW-13,`;
 
-const HOLD_POINTS = [
-  {code:'H1',kind:'Hold',   short:'Delivery',   name:'Delivery conformance',
-   detail:'Leaf and frame checked against the door and hardware schedule. Manufacturer certification labels present and legible.'},
-  {code:'H2',kind:'Hold',   short:'Frame fixed',name:'Frame set out and fixed',
-   detail:'Frame plumb and square within tolerance. Fixing type and centres to manufacturer specification.'},
-  {code:'W1',kind:'Witness',short:'Leaf hung',  name:'Leaf hung, clearances recorded',
-   detail:'Perimeter and threshold gaps measured and within AS 1905.1 tolerance for the rating.'},
-  {code:'H3',kind:'Hold',   short:'Hardware',   name:'Hardware installed to set',
-   detail:'All items fitted per the hardware set. Fire-rated components certified for the assembly.'},
-  {code:'W2',kind:'Witness',short:'Function',   name:'Function test',
-   detail:'Door self-closes from 15 degrees and latches without manual assistance. Seals continuous.'},
-  {code:'H4',kind:'Hold',   short:'Fire tag',   name:'Fire tag affixed and registered', fireOnly:true,
-   detail:'Tag number recorded against the door reference and entered in the fire door register per AS 1905.1.'},
-  {code:'H5',kind:'Hold',   short:'Handover',   name:'Final QA and handover',
-   detail:'Defects closed out. Doorset released for inclusion in the handover pack.'}
+const HP=[
+ {c:'H1',k:'Hold',s:'Delivery',n:'Delivery conformance',
+  d:'Leaf and frame checked against the door and hardware schedule. Certification labels present and legible.'},
+ {c:'H2',k:'Hold',s:'Frame',n:'Frame set out and fixed',
+  d:'Frame plumb and square within tolerance. Fixing type and centres to manufacturer specification.'},
+ {c:'W1',k:'Witness',s:'Hung',n:'Leaf hung, clearances recorded',
+  d:'Perimeter and threshold gaps measured and within AS 1905.1 tolerance for the rating.'},
+ {c:'H3',k:'Hold',s:'Hardware',n:'Hardware installed to set',
+  d:'All items fitted per the hardware set. Fire-rated components certified for the assembly.'},
+ {c:'W2',k:'Witness',s:'Function',n:'Function test',
+  d:'Self-closes from 15 degrees and latches without manual assistance. Seals continuous.'},
+ {c:'H4',k:'Hold',s:'Tag',n:'Fire tag affixed and registered',fire:true,
+  d:'Tag number recorded against the door reference and entered in the fire door register per AS 1905.1.'},
+ {c:'H5',k:'Hold',s:'Handover',n:'Final QA and handover',
+  d:'Defects closed out. Doorset released for inclusion in the handover pack.'}
 ];
 
-const KEY='doorset-itp-v1';
-let doors=[], signs={}, filter='all';
+const KEY='doorset-itp-v2';
+let doors=[],signs={},filter='all';
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const isFire=d=>d.frl&&d.frl!=='-';
-const applies=(h,d)=>!h.fireOnly||isFire(d);
-const pointsFor=d=>HOLD_POINTS.filter(h=>applies(h,d));
-const signed=(d,h)=>!!signs[d.ref+'|'+h.code];
-const doneCount=d=>pointsFor(d).filter(h=>signed(d,h)).length;
-const nextPoint=d=>pointsFor(d).find(h=>!signed(d,h))||null;
+const fire=d=>d.frl&&d.frl!=='-';
+const has=(h,d)=>!h.fire||fire(d);
+const pts=d=>HP.filter(h=>has(h,d));
+const ok=(d,h)=>!!signs[d.ref+'|'+h.c];
+const done=d=>pts(d).filter(h=>ok(d,h)).length;
+const next=d=>pts(d).find(h=>!ok(d,h))||null;
 
 function load(){try{signs=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){signs={}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(signs))}catch(e){}}
 
-function parseCSV(text){
-  const lines=text.trim().split(/\r?\n/).filter(l=>l.trim());
-  if(!lines.length) throw new Error('nothing to read');
-  const head=lines[0].split(',').map(h=>h.trim().toLowerCase());
-  const missing=['ref','location','leaf','frame','frl','hw'].filter(n=>!head.includes(n));
-  if(missing.length) throw new Error('missing column: '+missing.join(', '));
-  return lines.slice(1).map(l=>{
-    const c=l.split(',').map(v=>v.trim()), o={};
-    head.forEach((h,i)=>o[h]=c[i]||''); return o;
-  }).filter(o=>o.ref);
+function parseCSV(t){
+  const L=t.trim().split(/\r?\n/).filter(x=>x.trim());
+  if(!L.length)throw new Error('nothing to read');
+  const h=L[0].split(',').map(x=>x.trim().toLowerCase());
+  const miss=['ref','location','leaf','frame','frl','hw'].filter(n=>!h.includes(n));
+  if(miss.length)throw new Error('missing column: '+miss.join(', '));
+  return L.slice(1).map(l=>{const c=l.split(',').map(v=>v.trim()),o={};
+    h.forEach((k,i)=>o[k]=c[i]||'');return o}).filter(o=>o.ref);
 }
 
-/* ── the funnel: how many doorsets have cleared each hold point, and where the job is stuck ── */
-function renderFunnel(){
-  const cells = HOLD_POINTS.map(h=>{
-    const scope = doors.filter(d=>applies(h,d));
-    const cleared = scope.filter(d=>signed(d,h)).length;
-    const stuck = doors.filter(d=>{const n=nextPoint(d);return n&&n.code===h.code}).length;
-    const pct = scope.length?Math.round(cleared/scope.length*100):0;
-    return {h,cleared,total:scope.length,stuck,pct};
+function strip(){
+  const cells=HP.map(h=>{
+    const scope=doors.filter(d=>has(h,d));
+    const cleared=scope.filter(d=>ok(d,h)).length;
+    const stuck=doors.filter(d=>{const n=next(d);return n&&n.c===h.c}).length;
+    return{h,cleared,total:scope.length,stuck};
   });
-  const worst = cells.reduce((a,b)=>b.stuck>a.stuck?b:a, cells[0]);
-  const ready = doors.filter(d=>!nextPoint(d)).length;
+  const worst=cells.reduce((a,b)=>b.stuck>a.stuck?b:a,cells[0]);
+  const rel=doors.filter(d=>!next(d)).length;
+  const out=doors.reduce((n,d)=>n+(pts(d).length-done(d)),0);
 
-  $('#stages').innerHTML = cells.map(c=>`
-    <div class="stage ${c.h.fireOnly?'fireonly':''} ${c.stuck&&c===worst?'blocked':''}">
-      <div class="code">${c.h.code}</div>
-      <div class="n">${c.cleared}<span class="of">/${c.total}</span></div>
-      <div class="nm">${esc(c.h.short)}</div>
-      <div class="fill"><i style="width:${c.pct}%"></i></div>
-    </div>`).join('');
+  $('#strip').innerHTML=cells.map(c=>{
+    const pct=c.total?c.cleared/c.total:0;
+    return `<div class="st ${c.h.fire?'fireonly':''} ${c.stuck&&c===worst&&c.stuck>0?'stuck':''}">
+      <div class="n">${c.cleared}<u>/${c.total}</u></div>
+      <div class="plot"><i style="width:${Math.max(pct*100,1.5)}%"></i></div>
+      <div class="k"><b>${c.h.c}</b> ${esc(c.h.s)}</div></div>`;}).join('');
 
-  $('#funnelRead').innerHTML = worst && worst.stuck
-    ? `<b>${worst.stuck}</b> doorset${worst.stuck===1?'':'s'} waiting on <b>${worst.h.code} ${esc(worst.h.short)}</b>`
-    : `<b>All doorsets cleared.</b>`;
-  $('#tbStatus').textContent = `${ready} of ${doors.length} released`;
+  $('#stripnote').innerHTML = worst&&worst.stuck
+    ? `Bottleneck: <b>${worst.stuck}</b> doorset${worst.stuck===1?'':'s'} waiting on
+       <span class="m">${worst.h.c}</span> <b>${esc(worst.h.n).toLowerCase()}</b>.`
+    : `<b>All doorsets released.</b> Handover pack is complete.`;
+  $('#fDoors').textContent=doors.length;
+  $('#fRel').textContent=`${rel} of ${doors.length}`;
+  $('#fOut').textContent=`${out} sign-off${out===1?'':'s'}`;
 }
 
-function trackFor(d){
-  const next=nextPoint(d);
-  const seg=HOLD_POINTS.map(h=>{
-    if(!applies(h,d)) return `<i class="na" title="${h.code} not applicable — non-rated"></i>`;
-    if(signed(d,h))   return `<i class="done" title="${h.code} ${esc(h.short)} — signed"></i>`;
-    if(next&&next.code===h.code) return `<i class="next" title="${h.code} ${esc(h.short)} — next"></i>`;
-    return `<i title="${h.code} ${esc(h.short)}"></i>`;
+function track(d){
+  const n=next(d);
+  const cells=HP.map(h=>{
+    if(!has(h,d))return `<i class="na" title="${h.c} not applicable"></i>`;
+    if(ok(d,h))return `<i title="${h.c} signed"></i>`;
+    if(n&&n.c===h.c)return `<i class="next" title="${h.c} ${esc(h.s)} — next"></i>`;
+    return `<i class="open" title="${h.c} ${esc(h.s)}"></i>`;
   }).join('');
-  const txt = next
-    ? `<span class="txt">${doneCount(d)}/${pointsFor(d).length} · ${esc(next.code)}</span>`
-    : `<span class="txt ready">Released</span>`;
-  return `<div class="track">${seg}${txt}</div>`;
+  return `<span class="trk">${cells}</span>`+(n
+    ? `<span class="at">${n.c}</span>`
+    : `<span class="at done">released</span>`);
 }
 
-function renderRows(){
-  const list=doors.filter(d=>
-    filter==='fire'?isFire(d):filter==='open'?!!nextPoint(d):true);
-  $('#rows').innerHTML = list.map(d=>`
-    <tr class="row" data-ref="${esc(d.ref)}" aria-expanded="${d._open?'true':'false'}" tabindex="0">
+function rows(){
+  const list=doors.filter(d=>filter==='fire'?fire(d):filter==='open'?!!next(d):true);
+  $('#rows').innerHTML=list.map(d=>`
+    <tr class="row" data-ref="${esc(d.ref)}" aria-expanded="${d._o?'true':'false'}" tabindex="0">
       <td class="ref">${esc(d.ref)}</td>
       <td class="loc">${esc(d.location)}</td>
-      <td class="spec">${esc(d.leaf)}<br>${esc(d.frame)}</td>
-      <td class="frl ${isFire(d)?'rated':''}">${esc(d.frl||'—')}</td>
-      <td class="spec">${esc(d.hw)}</td>
-      <td>${d.tag?`<span class="firetag">${esc(d.tag)}</span>`:'<span class="notag">n/a</span>'}</td>
-      <td>${trackFor(d)}</td>
-    </tr>`+(d._open?detailRow(d):'')).join('')
-    || `<tr><td colspan="7" style="padding:28px;text-align:center;color:var(--ink-3)">No doorsets match this filter.</td></tr>`;
+      <td class="d">${esc(d.leaf)}</td>
+      <td class="d">${esc(d.frame)}</td>
+      <td class="frl ${fire(d)?'rated':''}">${fire(d)?esc(d.frl):'—'}</td>
+      <td class="d">${esc(d.hw)}</td>
+      <td class="tag ${d.tag?'':'none'}">${esc(d.tag||'—')}</td>
+      <td>${track(d)}</td>
+    </tr>`+(d._o?detail(d):'')).join('')
+    ||`<tr><td colspan="8" style="padding:24px 9px;color:var(--ink-3)">No doorsets match.</td></tr>`;
 }
 
-function detailRow(d){
-  const items=HOLD_POINTS.map(h=>{
-    if(!applies(h,d)) return `<li class="locked">
-      <span class="code">${h.code}<span class="kind">${h.kind}</span></span>
-      <div class="body"><b>${esc(h.name)}</b><p>${esc(h.detail)}</p></div>
-      <div class="sign">Not applicable<br>non-rated</div></li>`;
-    const k=d.ref+'|'+h.code, s=signs[k];
-    return `<li class="${s?'done':''}">
-      <span class="code">${h.code}<span class="kind">${h.kind}</span></span>
-      <div class="body"><b>${esc(h.name)}</b><p>${esc(h.detail)}</p></div>
-      <div class="sign">${ s
-        ? `<span class="stamp"><b>${esc(s.by)}</b>${esc(s.on)}</span>
-           <button class="tick undo" data-k="${esc(k)}" data-act="undo">Undo</button>`
-        : `<button class="tick" data-k="${esc(k)}" data-act="sign">Sign off</button>` }</div></li>`;
+function detail(d){
+  const body=HP.map(h=>{
+    if(!has(h,d))return `<tr class="skip"><td class="c">${h.c}</td><td class="kd">${h.k}</td>
+      <td class="nm">${esc(h.n)}<span>Not applicable — non-rated doorset.</span></td>
+      <td class="by" style="color:var(--ink-3)">n/a</td></tr>`;
+    const k=d.ref+'|'+h.c,s=signs[k];
+    return `<tr><td class="c">${h.c}</td><td class="kd">${h.k}</td>
+      <td class="nm">${esc(h.n)}<span>${esc(h.d)}</span></td>
+      <td class="by">${s
+        ?`${esc(s.by)}<u>${esc(s.on)}</u><button class="undo" data-k="${esc(k)}" data-a="u">undo</button>`
+        :`<button class="sign" data-k="${esc(k)}" data-a="s">Sign off</button>`}</td></tr>`;
   }).join('');
-  const n=doneCount(d), t=pointsFor(d).length;
-  return `<tr class="detail"><td colspan="7"><div class="hp">
-    <div class="hd"><span class="lbl">Hold points — ${esc(d.ref)}${isFire(d)?' · fire-rated assembly':''}</span>
-      <span class="track"><span class="txt">${n} of ${t} signed</span></span></div>
-    <ol>${items}</ol></div></td></tr>`;
+  return `<tr class="det"><td colspan="8"><div class="itp"><table>
+    <thead><tr><th colspan="3">Hold points — ${esc(d.ref)}${fire(d)?' · fire-rated assembly':''}</th>
+    <th class="r">${done(d)} of ${pts(d).length} signed</th></tr></thead>
+    <tbody>${body}</tbody></table></div></td></tr>`;
 }
 
-function render(){renderFunnel();renderRows()}
+function render(){strip();rows()}
 
 $('#rows').addEventListener('click',e=>{
-  const tick=e.target.closest('.tick');
-  if(tick){
-    const k=tick.dataset.k;
-    if(tick.dataset.act==='sign'){
-      signs[k]={by:($('#initials').value||'QA').toUpperCase().slice(0,4),
-        on:new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'})};
-    } else delete signs[k];
-    save();render();return;
-  }
-  const row=e.target.closest('tr.row');
-  if(row){const d=doors.find(x=>x.ref===row.dataset.ref); if(d){d._open=!d._open;render()}}
+  const b=e.target.closest('[data-a]');
+  if(b){const k=b.dataset.k;
+    if(b.dataset.a==='s')signs[k]={by:($('#initials').value||'QA').toUpperCase().slice(0,4),
+      on:new Date().toLocaleDateString('en-AU',{day:'2-digit',month:'short'})};
+    else delete signs[k];
+    save();render();return}
+  const r=e.target.closest('tr.row');
+  if(r){const d=doors.find(x=>x.ref===r.dataset.ref);if(d){d._o=!d._o;render()}}
 });
 $('#rows').addEventListener('keydown',e=>{
-  if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('row')){e.preventDefault();e.target.click()}
-});
-function setFilter(f,btn){filter=f;
-  ['#fAll','#fFire','#fOpen'].forEach(s=>$(s).setAttribute('aria-pressed','false'));
-  btn.setAttribute('aria-pressed','true');renderRows()}
-$('#fAll').onclick=e=>setFilter('all',e.currentTarget);
-$('#fFire').onclick=e=>setFilter('fire',e.currentTarget);
-$('#fOpen').onclick=e=>setFilter('open',e.currentTarget);
-$('#expandAll').onclick=e=>{const any=doors.some(d=>!d._open);doors.forEach(d=>d._open=any);
-  e.currentTarget.textContent=any?'Collapse all':'Expand all';renderRows()};
-$('#printPack').onclick=()=>{doors.forEach(d=>d._open=true);renderRows();window.print()};
+  if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('row')){e.preventDefault();e.target.click()}});
+function setF(f,b){filter=f;['#fAll','#fFire','#fOpen'].forEach(s=>$(s).setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true');rows()}
+$('#fAll').onclick=e=>setF('all',e.currentTarget);
+$('#fFire').onclick=e=>setF('fire',e.currentTarget);
+$('#fOpen').onclick=e=>setF('open',e.currentTarget);
+$('#expandAll').onclick=e=>{const a=doors.some(d=>!d._o);doors.forEach(d=>d._o=a);
+  e.currentTarget.textContent=a?'Collapse all':'Expand all';rows()};
+$('#printPack').onclick=()=>{doors.forEach(d=>d._o=true);rows();window.print()};
 $('#doImport').onclick=()=>{const m=$('#msg');
-  try{const rows=parseCSV($('#csv').value);
-    if(!rows.length) throw new Error('no doorsets found');
-    doors=rows;render();m.className='msg';
-    m.textContent=`${rows.length} doorsets · ${rows.filter(isFire).length} fire-rated`;
+  try{const r=parseCSV($('#csv').value);if(!r.length)throw new Error('no doorsets found');
+    doors=r;render();m.className='msg';m.textContent=`${r.length} doorsets · ${r.filter(fire).length} fire-rated`;
   }catch(err){m.className='msg bad';m.textContent='Could not read that — '+err.message}};
 $('#loadSample').onclick=()=>{$('#csv').value=SAMPLE;doors=parseCSV(SAMPLE);
-  $('#msg').className='msg';$('#msg').textContent='Sample job restored.';render()};
+  $('#msg').className='msg';$('#msg').textContent='Sample restored.';render()};
 
-/* boot in a believable mid-job state */
 load();
 doors=parseCSV(SAMPLE);
 $('#csv').value=SAMPLE;
@@ -476,16 +407,13 @@ if(!Object.keys(signs).length){
               ['D-1.030',7],['D-1.031',3],['D-1.040',6],['D-1.055',2],
               ['D-1.056',2],['D-1.061',0],['D-1.070',4],['D-1.071',1]];
   const who=['DK','NP','BP'];
-  seed.forEach(([ref,n],i)=>{
-    const d=doors.find(x=>x.ref===ref); if(!d) return;
-    pointsFor(d).slice(0,n).forEach((h,j)=>{
-      signs[ref+'|'+h.code]={by:who[(i+j)%who.length],
-        on:new Date(Date.now()-(14-j)*864e5).toLocaleDateString('en-AU',
-          {day:'2-digit',month:'short',year:'numeric'})};
-    });
+  seed.forEach(([ref,n],i)=>{const d=doors.find(x=>x.ref===ref);if(!d)return;
+    pts(d).slice(0,n).forEach((h,j)=>{
+      signs[ref+'|'+h.c]={by:who[(i+j)%who.length],
+        on:new Date(Date.now()-(14-j)*864e5).toLocaleDateString('en-AU',{day:'2-digit',month:'short'})}});
   });
   save();
 }
-doors[0]._open=true;
+doors[0]._o=true;
 render();
 </script>
