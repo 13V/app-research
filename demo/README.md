@@ -21,13 +21,28 @@ imagining and starts using.
 
 - Parses a door and hardware schedule (CSV) into a doorset register
 - Generates the ITP hold points per doorset — **fire-rated assemblies automatically get the
-  extra AS 1905.1 fire-tag hold point; non-rated ones don't**
-- Sign-off per hold point with initials and date
-- Live pack-readiness percentage across the job
+  extra AS 1905.1 fire-tag hold point; non-rated ones don't**, and the track shows those as
+  skipped rather than outstanding
+- **Hold-point funnel** — how many doorsets have cleared each stage, with the bottleneck
+  highlighted: *"2 doorsets waiting on W1 Leaf hung"*
+- **Per-doorset stage track** — seven segments showing exactly where each door is stuck,
+  instead of a percentage nobody can act on
+- Sign-off per hold point, stamped with initials and date
 - Filters: all / fire-rated / incomplete
 - "Generate handover pack" opens a print view with every hold point expanded
 
 Opens in a realistic mid-job state — some packs closed out, some part-signed, one not started.
+
+## Design notes
+
+Laid out as a construction document rather than a web dashboard: a drawing-office title block
+carrying project, ITP number, revision and standard; fire tags rendered as the physical discs
+they are; sign-offs stamped rather than ticked. Archivo for headings, IBM Plex Sans for text,
+IBM Plex Mono for every door ref, FRL and tag number.
+
+The information design is the argument. A supervisor doesn't need to know a door is 71% done —
+they need to know it's waiting on a function test. That's what the track and the funnel show, and
+it's the thing no generic job app does.
 
 ## The seven hold points
 
